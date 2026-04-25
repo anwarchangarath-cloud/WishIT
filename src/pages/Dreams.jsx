@@ -89,12 +89,26 @@ function SaveButton({ dreamId, initialSaved, onToggle }) {
   );
 }
 
-function DreamCard({ dream, onFulfill, onSupport, onReport }) {
+const ACCENT_BARS = [
+  'from-blue-500 to-indigo-500',
+  'from-violet-500 to-purple-500',
+  'from-emerald-500 to-teal-500',
+  'from-rose-500 to-pink-500',
+  'from-amber-500 to-orange-500',
+  'from-sky-500 to-cyan-500',
+];
+
+function DreamCard({ dream, onFulfill, onSupport, onReport, index = 0 }) {
   const urgency = URGENCY_CONFIG[dream.urgency];
+  const accent = ACCENT_BARS[index % ACCENT_BARS.length];
 
   return (
-    <motion.div layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-      className="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col group">
+    <motion.div layout initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+      transition={{ delay: index * 0.04 }}
+      className="card group flex flex-col overflow-hidden">
+      {/* Accent bar */}
+      <div className={`h-1 w-full bg-gradient-to-r ${accent} flex-shrink-0`} />
+
       <div className="p-6 flex flex-col flex-1">
         {/* Top row */}
         <div className="flex items-start justify-between gap-2 mb-4">
@@ -109,9 +123,9 @@ function DreamCard({ dream, onFulfill, onSupport, onReport }) {
               </span>
             )}
           </div>
-          <div className="flex items-center gap-1 flex-shrink-0">
+          <div className="flex items-center gap-1.5 flex-shrink-0">
             <SaveButton dreamId={dream.id} initialSaved={dream.is_saved} />
-            <span className="flex items-center gap-1 text-xs text-slate-400">
+            <span className="flex items-center gap-1 text-xs text-slate-400 bg-slate-50 px-2 py-1 rounded-lg">
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
               </svg>
@@ -140,8 +154,8 @@ function DreamCard({ dream, onFulfill, onSupport, onReport }) {
 
         {/* Support bar */}
         <div className="flex items-center gap-2 mt-4">
-          <div className="flex-1 h-1 bg-slate-100 rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full"
+          <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+            <div className={`h-full bg-gradient-to-r ${accent} rounded-full transition-all duration-700`}
               style={{ width: `${Math.min(100, Math.round((dream.support_count || 0) / 1.5))}%` }} />
           </div>
           <button onClick={() => onSupport(dream.id)}
@@ -156,7 +170,7 @@ function DreamCard({ dream, onFulfill, onSupport, onReport }) {
 
       <div className="px-6 pb-6 pt-0 space-y-2">
         <button onClick={() => onFulfill(dream)}
-          className="w-full py-2.5 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-sm active:scale-[0.98] transition-all duration-200">
+          className="w-full py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 shadow-blue-sm active:scale-[0.98] transition-all duration-200">
           Make This Dream Real
         </button>
         <button onClick={() => onReport(dream)}
@@ -435,15 +449,18 @@ export default function Dreams() {
       <Navbar />
 
       {/* Hero */}
-      <div className="gradient-navy pt-24 pb-12">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="gradient-mesh pt-24 pb-14 relative overflow-hidden">
+        <div className="absolute inset-0 dot-pattern opacity-40 pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-2xl">
-            <span className="inline-flex items-center gap-1.5 text-blue-400 text-sm font-semibold mb-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+            <span className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
               Dream Marketplace
             </span>
-            <h1 className="text-4xl lg:text-5xl font-black text-white mb-4">Discover Dreams</h1>
-            <p className="text-slate-400 text-lg">Every dream here is real, reviewed, and published anonymously. Find one that speaks to what you can offer.</p>
+            <h1 className="text-4xl lg:text-5xl font-black text-white mb-4 leading-tight">
+              Discover <span style={{ background: 'linear-gradient(135deg, #60A5FA, #818CF8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Dreams</span>
+            </h1>
+            <p className="text-slate-300 text-lg leading-relaxed">Every dream here is real, reviewed, and published anonymously. Find one that speaks to what you can offer.</p>
           </motion.div>
         </div>
       </div>
@@ -545,8 +562,8 @@ export default function Dreams() {
         ) : (
           <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <AnimatePresence>
-              {dreams.map(d => (
-                <DreamCard key={d.id} dream={d} onFulfill={handleFulfill} onSupport={handleSupport} onReport={handleReport} />
+              {dreams.map((d, i) => (
+                <DreamCard key={d.id} dream={d} index={i} onFulfill={handleFulfill} onSupport={handleSupport} onReport={handleReport} />
               ))}
             </AnimatePresence>
           </motion.div>

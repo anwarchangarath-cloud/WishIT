@@ -77,19 +77,20 @@ function DreamJourneyTracker({ status }) {
 
 function StatCard({ label, value, sub, icon, color = 'blue' }) {
   const colors = {
-    blue: 'bg-blue-50 text-blue-600 border-blue-100',
-    emerald: 'bg-emerald-50 text-emerald-600 border-emerald-100',
-    violet: 'bg-violet-50 text-violet-600 border-violet-100',
-    amber: 'bg-amber-50 text-amber-600 border-amber-100',
+    blue:    { bg: 'bg-gradient-to-br from-blue-50 to-blue-100/60',    text: 'text-blue-600',    border: 'border-blue-100',    icon: 'bg-blue-100 text-blue-600' },
+    emerald: { bg: 'bg-gradient-to-br from-emerald-50 to-emerald-100/60', text: 'text-emerald-600', border: 'border-emerald-100', icon: 'bg-emerald-100 text-emerald-600' },
+    violet:  { bg: 'bg-gradient-to-br from-violet-50 to-violet-100/60',  text: 'text-violet-600',  border: 'border-violet-100',  icon: 'bg-violet-100 text-violet-600' },
+    amber:   { bg: 'bg-gradient-to-br from-amber-50 to-amber-100/60',   text: 'text-amber-600',   border: 'border-amber-100',   icon: 'bg-amber-100 text-amber-600' },
   };
+  const c = colors[color];
   return (
-    <div className={`p-5 rounded-2xl border ${colors[color]}`}>
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-xs font-semibold opacity-70 uppercase tracking-wide">{label}</span>
-        {icon}
+    <div className={`p-5 rounded-2xl border shadow-card ${c.bg} ${c.border}`}>
+      <div className="flex items-center justify-between mb-3">
+        <span className={`w-9 h-9 rounded-xl flex items-center justify-center ${c.icon}`}>{icon}</span>
+        <span className={`text-3xl font-black ${c.text}`}>{value}</span>
       </div>
-      <div className="text-3xl font-black">{value}</div>
-      {sub && <div className="text-xs mt-1 opacity-60">{sub}</div>}
+      <div className={`text-xs font-bold uppercase tracking-wide ${c.text} opacity-70`}>{label}</div>
+      {sub && <div className="text-xs mt-0.5 text-slate-400">{sub}</div>}
     </div>
   );
 }
@@ -180,8 +181,9 @@ export default function Dashboard() {
       <Navbar />
 
       {/* Hero Header */}
-      <div className="gradient-navy pt-16">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10">
+      <div className="gradient-mesh pt-16 relative overflow-hidden">
+        <div className="absolute inset-0 dot-pattern opacity-30 pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10 relative">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
             <div className="flex items-center gap-5">
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-2xl font-black shadow-blue">
@@ -256,11 +258,13 @@ export default function Dashboard() {
         )}
 
         {/* Tabs */}
-        <div className="flex gap-1 bg-white border border-slate-100 rounded-2xl p-1.5 mb-6 shadow-card overflow-x-auto">
+        <div className="flex gap-1 bg-white border border-slate-100 rounded-2xl p-1.5 mb-6 shadow-card overflow-x-auto scrollbar-hide">
           {TABS.map((t) => (
             <button key={t.key} onClick={() => setTab(t.key)}
               className={`flex-shrink-0 flex items-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold transition-all whitespace-nowrap ${
-                tab === t.key ? 'bg-slate-900 text-white shadow' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                tab === t.key
+                  ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-blue-sm'
+                  : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
               }`}>
               <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={t.icon}/>

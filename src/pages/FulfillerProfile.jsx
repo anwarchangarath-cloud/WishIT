@@ -103,8 +103,9 @@ export default function FulfillerProfile() {
       <Navbar />
 
       {/* Hero */}
-      <div className="gradient-navy pt-24 pb-32">
-        <div className="max-w-5xl mx-auto px-6 lg:px-8">
+      <div className="gradient-mesh pt-24 pb-32 relative overflow-hidden">
+        <div className="absolute inset-0 dot-pattern opacity-30 pointer-events-none" />
+        <div className="max-w-5xl mx-auto px-6 lg:px-8 relative">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
             {/* Avatar */}
             <div className="flex-shrink-0 w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center shadow-lg">

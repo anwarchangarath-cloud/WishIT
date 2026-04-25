@@ -87,10 +87,19 @@ function StoryCard({ story, index }) {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08, duration: 0.5 }}
-      className="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+      className="card overflow-hidden">
 
-      {/* Color accent bar */}
-      <div className="h-1 bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600" />
+      {/* Color accent bar per-card */}
+      {[
+        'from-blue-500 to-indigo-500',
+        'from-emerald-500 to-teal-500',
+        'from-violet-500 to-purple-500',
+        'from-rose-500 to-pink-500',
+        'from-amber-500 to-orange-500',
+        'from-sky-500 to-cyan-500',
+      ][index % 6] && (
+        <div className={`h-1 bg-gradient-to-r ${['from-blue-500 to-indigo-500','from-emerald-500 to-teal-500','from-violet-500 to-purple-500','from-rose-500 to-pink-500','from-amber-500 to-orange-500','from-sky-500 to-cyan-500'][index % 6]}`} />
+      )}
 
       <div className="p-6">
         {/* Header */}
@@ -184,14 +193,15 @@ export default function SuccessStories() {
       <Navbar />
 
       {/* Hero */}
-      <div className="gradient-navy pt-24 pb-20">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="gradient-mesh pt-24 pb-20 relative overflow-hidden">
+        <div className="absolute inset-0 dot-pattern opacity-40 pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center max-w-3xl mx-auto">
-            <span className="inline-flex items-center gap-1.5 text-blue-400 text-sm font-semibold mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+            <span className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
               Impact Stories
             </span>
-            <h1 className="text-4xl lg:text-5xl font-black text-white mb-5">Dreams Made Real</h1>
+            <h1 className="text-4xl lg:text-5xl font-black text-white mb-5">Dreams <span style={{ background: 'linear-gradient(135deg, #60A5FA, #34D399)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Made Real</span></h1>
             <p className="text-slate-300 text-lg leading-relaxed">
               These are the stories of people whose dreams came true — because someone stepped up to make it happen.
             </p>
