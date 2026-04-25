@@ -137,14 +137,19 @@ export default function Navbar() {
         <Logo dark={!transparent} />
 
         <div className="hidden md:flex items-center gap-1">
-          {[['Explore Dreams', '/dreams'], ['How It Works', '/#how-it-works'], ['Success Stories', '/stories']].map(([label, to]) => (
-            <Link key={label} to={to}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-                transparent ? 'text-white/70 hover:text-white hover:bg-white/10' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-              }`}>
-              {label}
-            </Link>
-          ))}
+          {[['Explore Dreams', '/dreams'], ['How It Works', '/#how-it-works'], ['Success Stories', '/stories']].map(([label, to]) => {
+            const active = to !== '/' && to !== '/#how-it-works' && location.pathname === to;
+            return (
+              <Link key={label} to={to}
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+                  active
+                    ? transparent ? 'text-white bg-white/15' : 'text-blue-700 bg-blue-50 font-semibold'
+                    : transparent ? 'text-white/70 hover:text-white hover:bg-white/10' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                }`}>
+                {label}
+              </Link>
+            );
+          })}
         </div>
 
         <div className="hidden md:flex items-center gap-2">
@@ -265,9 +270,15 @@ export default function Navbar() {
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }} className="md:hidden bg-white border-t border-slate-100 overflow-hidden">
             <div className="px-6 py-4 space-y-1">
-              {[['Explore Dreams', '/dreams'], ['How It Works', '/#how-it-works'], ['Success Stories', '/stories']].map(([label, to]) => (
-                <Link key={label} to={to} className="block px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-xl">{label}</Link>
-              ))}
+              {[['Explore Dreams', '/dreams'], ['How It Works', '/#how-it-works'], ['Success Stories', '/stories']].map(([label, to]) => {
+                const active = to !== '/' && to !== '/#how-it-works' && location.pathname === to;
+                return (
+                  <Link key={label} to={to}
+                    className={`block px-3 py-2.5 text-sm font-medium rounded-xl transition-colors ${active ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-slate-700 hover:bg-slate-50'}`}>
+                    {label}
+                  </Link>
+                );
+              })}
               <div className="pt-3 border-t border-slate-100 mt-3 space-y-2">
                 {user ? (
                   <>

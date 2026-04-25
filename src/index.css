@@ -73,3 +73,19 @@ body {
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 99px; }
+
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+
+/* ── Responsive utilities ── */
+@media (max-width: 640px) {
+  .headline { font-size: clamp(1.75rem, 7vw, 2.5rem); }
+  .display  { font-size: clamp(2.25rem, 8vw, 3.5rem); }
+  .input    { font-size: 1rem; } /* prevent iOS zoom */
+}
+
+/* ── Tap target minimum ── */
+@media (max-width: 768px) {
+  button, a { min-height: 44px; }
+  .no-min-h button, .no-min-h a { min-height: unset; }
+}

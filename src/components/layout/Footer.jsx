@@ -18,7 +18,7 @@ const LINKS = [
       ['Explore Dreams', '/dreams'],
       ['Submit a Dream', '/submit-dream'],
       ['Become a Fulfiller', '/register?mode=fulfiller'],
-      ['How It Works', '/#how-it-works'],
+      ['Success Stories', '/stories'],
     ],
   },
   {
@@ -34,9 +34,9 @@ const LINKS = [
     heading: 'Company',
     items: [
       ['About WishIT', '/about'],
-      ['Success Stories', '/#stories'],
       ['Contact Us', '/contact'],
       ['Careers', '/careers'],
+      ['How It Works', '/#how-it-works'],
     ],
   },
 ];

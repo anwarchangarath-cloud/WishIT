@@ -13,9 +13,16 @@ import SuccessStories from './pages/SuccessStories';
 import Messages from './pages/Messages';
 import Notifications from './pages/Notifications';
 import FulfillerProfile from './pages/FulfillerProfile';
+import NotFound from './pages/NotFound';
+import Legal from './pages/Legal';
 
 function ProtectedRoute({ children, roles }) {
-  const { user, profile } = useAuth();
+  const { user, profile, loading } = useAuth();
+  if (loading) return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
   if (!user) return <Navigate to="/login" replace />;
   if (roles && profile && !roles.includes(profile.role)) return <Navigate to="/dashboard" replace />;
   return children;
@@ -31,6 +38,15 @@ function AppRoutes() {
       <Route path="/dreams" element={<Dreams />} />
       <Route path="/stories" element={<SuccessStories />} />
       <Route path="/fulfiller/:uid" element={<FulfillerProfile />} />
+
+      {/* Legal / info pages */}
+      <Route path="/privacy" element={<Legal />} />
+      <Route path="/terms" element={<Legal />} />
+      <Route path="/trust" element={<Legal />} />
+      <Route path="/about" element={<Legal />} />
+      <Route path="/contact" element={<Legal />} />
+      <Route path="/careers" element={<Legal />} />
+      <Route path="/report" element={<Legal />} />
 
       {/* Protected — any authenticated user */}
       <Route path="/submit-dream" element={
@@ -59,7 +75,8 @@ function AppRoutes() {
         <ProtectedRoute roles={['admin']}><AdminDashboard /></ProtectedRoute>
       } />
 
-      <Route path="*" element={<Navigate to="/" replace />} />
+      {/* 404 */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
