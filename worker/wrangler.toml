@@ -5,7 +5,7 @@ compatibility_flags = ["nodejs_compat"]
 
 [vars]
 FIREBASE_PROJECT_ID = "wishit-76b10"
-ALLOWED_ORIGIN = "https://wishit.pages.dev"
+ALLOWED_ORIGIN = "https://wishit.pages.dev,https://0ba7435a.wishit.pages.dev"
 
 [[d1_databases]]
 binding = "DB"
