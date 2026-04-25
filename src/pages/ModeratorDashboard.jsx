@@ -85,8 +85,8 @@ export default function ModeratorDashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <div className="pt-20 px-4 pb-12">
-        <div className="max-w-6xl mx-auto">
+      <div className="pt-20 pb-12">
+        <div className="w-full max-w-6xl mx-auto px-6 lg:px-8">
           <div className="pt-6 mb-8">
             <h1 className="text-3xl font-black text-blue-900">Moderator Dashboard</h1>
             <p className="text-gray-500 mt-1">Review and approve dreams, fulfillers, and reports</p>

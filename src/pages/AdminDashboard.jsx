@@ -99,8 +99,8 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <div className="pt-20 px-4 pb-12">
-        <div className="max-w-7xl mx-auto">
+      <div className="pt-20 pb-12">
+        <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
           <div className="pt-6 mb-8">
             <div className="flex items-center gap-3 mb-1">
               <h1 className="text-3xl font-black text-blue-900">Admin Dashboard</h1>
