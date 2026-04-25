@@ -4,13 +4,13 @@ compatibility_date = "2024-11-01"
 compatibility_flags = ["nodejs_compat"]
 
 [vars]
-FIREBASE_PROJECT_ID = "your-firebase-project-id"
+FIREBASE_PROJECT_ID = "wishit-76b10"
 ALLOWED_ORIGIN = "https://wishit.pages.dev"
 
 [[d1_databases]]
 binding = "DB"
 database_name = "wishit-db"
-database_id = "your-d1-database-id"
+database_id = "469cad75-20a3-4434-a6e6-e127b9fae824"
 
 [[r2_buckets]]
 binding = "BUCKET"
