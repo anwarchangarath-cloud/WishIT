@@ -1,0 +1,17 @@
+name = "wishit-worker"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+FIREBASE_PROJECT_ID = "your-firebase-project-id"
+ALLOWED_ORIGIN = "https://wishit.pages.dev"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "wishit-db"
+database_id = "your-d1-database-id"
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "wishit-storage"
