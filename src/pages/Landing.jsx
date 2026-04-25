@@ -224,15 +224,15 @@ export default function Landing() {
 
             {/* timeline */}
             <div className="relative w-full mt-20">
-              {/* connecting line — centered through badge midpoints */}
+              {/* connecting line — bisects the 56px badges */}
               <div className="hidden lg:block absolute top-7 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent" />
 
-              <Cascade className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-8">
+              <Cascade className="grid grid-cols-1 lg:grid-cols-5 gap-8 w-full justify-items-center">
                 {STEPS.map((s) => (
-                  <Item key={s.n}>
-                    <div className="group flex flex-col items-center text-center">
+                  <Item key={s.n} className="w-full flex justify-center">
+                    <div className="group flex flex-col items-center text-center w-full max-w-[220px] lg:max-w-none">
                       {/* badge on the line */}
-                      <div className="relative z-10 mb-8 w-14 h-14 rounded-full bg-white border-2 border-slate-200 shadow-sm flex items-center justify-center group-hover:border-blue-500 group-hover:bg-blue-600 transition-all duration-300">
+                      <div className="relative z-10 mb-8 w-14 h-14 rounded-full bg-white border-2 border-slate-200 shadow-sm flex items-center justify-center group-hover:border-blue-500 group-hover:bg-blue-600 transition-all duration-300 flex-shrink-0">
                         <span className="text-[13px] font-black text-slate-400 group-hover:text-white transition-colors duration-300 tabular-nums">{s.n}</span>
                       </div>
                       <h3 className="text-[15px] font-bold text-slate-900 mb-3 leading-snug">{s.title}</h3>

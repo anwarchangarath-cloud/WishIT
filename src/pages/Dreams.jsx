@@ -1,287 +1,636 @@
-import { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
-import Button from '../components/ui/Button';
-import Badge from '../components/ui/Badge';
-import Modal from '../components/ui/Modal';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 
-const CATEGORIES = ['All', 'Education', 'Health', 'Career', 'Family', 'Community', 'Creative', 'Travel', 'Technology', 'Other'];
-const REASONS = ['Inappropriate content', 'Spam', 'Fake dream', 'Privacy concern', 'Other'];
-
-const CATEGORY_COLORS = {
-  Education: 'bg-blue-100 text-blue-700', Health: 'bg-green-100 text-green-700',
-  Career: 'bg-purple-100 text-purple-700', Community: 'bg-orange-100 text-orange-700',
-  Creative: 'bg-pink-100 text-pink-700', Technology: 'bg-cyan-100 text-cyan-700',
-  Family: 'bg-red-100 text-red-700', Travel: 'bg-yellow-100 text-yellow-700',
-  Other: 'bg-gray-100 text-gray-600',
-};
-
-// Fallback mock data for when API is not connected
-const MOCK_DREAMS = [
-  { id: '1', title: 'Start My Own Bakery', story: 'I\'ve always dreamed of sharing my grandmother\'s recipes with the world. Her baking brought our whole community together and I want to carry on that legacy by opening a small artisan bakery in my neighborhood.', category: 'Career', support_count: 47, status: 'published' },
-  { id: '2', title: 'Medical Treatment Abroad', story: 'My daughter needs specialized treatment only available in a few centers overseas. We have been on a waitlist for 2 years and dream of getting her the care she deserves.', category: 'Health', support_count: 128, status: 'published' },
-  { id: '3', title: 'Finish My CS Degree', story: 'I had to drop out due to financial difficulties in my second year but dream of completing my computer science education. I have been teaching myself in the evenings but need formal accreditation.', category: 'Education', support_count: 83, status: 'published' },
-  { id: '4', title: 'Build a Community Garden', story: 'Our neighborhood lacks green spaces. I dream of transforming the unused lot on our street into a thriving community garden where children and elderly alike can connect with nature.', category: 'Community', support_count: 61, status: 'published' },
-  { id: '5', title: 'Record My First Album', story: 'Music has been my outlet through the hardest times of my life. I\'ve written 12 original songs and dream of recording them professionally to share with the world.', category: 'Creative', support_count: 34, status: 'published' },
-  { id: '6', title: 'Learn Coding to Support My Family', story: 'As a single parent, I dream of a career in technology to provide a better future for my kids. I have been learning online but need mentorship and structured guidance.', category: 'Technology', support_count: 92, status: 'published' },
+const CATS = ['All', 'Education', 'Health', 'Career', 'Family', 'Community', 'Creative', 'Travel', 'Technology', 'Other'];
+const COUNTRIES = ['All', 'United States', 'United Kingdom', 'Canada', 'Australia', 'India', 'Nigeria', 'Kenya', 'Brazil', 'Germany', 'France', 'Other'];
+const SORT_OPTIONS = [
+  { value: 'recent', label: 'Most Recent' },
+  { value: 'supported', label: 'Most Supported' },
+  { value: 'urgent', label: 'Most Urgent' },
+];
+const BADGES = [
+  { value: '', label: 'Any badge' },
+  { value: 'verified', label: 'Verified' },
+  { value: 'urgent', label: 'Urgent' },
+  { value: 'community_supported', label: 'Community Supported' },
+  { value: 'featured', label: 'Featured' },
+  { value: 'mod_recommended', label: 'Mod Recommended' },
 ];
 
-function DreamCard({ dream, onFulfill, onSupport, onReport }) {
+const CAT_STYLE = {
+  Career: 'bg-violet-50 text-violet-700 border-violet-100',
+  Health: 'bg-emerald-50 text-emerald-700 border-emerald-100',
+  Education: 'bg-blue-50 text-blue-700 border-blue-100',
+  Community: 'bg-orange-50 text-orange-700 border-orange-100',
+  Creative: 'bg-pink-50 text-pink-700 border-pink-100',
+  Technology: 'bg-cyan-50 text-cyan-700 border-cyan-100',
+  Family: 'bg-red-50 text-red-700 border-red-100',
+  Travel: 'bg-amber-50 text-amber-700 border-amber-100',
+  Other: 'bg-slate-50 text-slate-600 border-slate-100',
+};
+
+const BADGE_CONFIG = {
+  verified: { label: 'Verified', color: 'bg-blue-100 text-blue-700', icon: '✓' },
+  urgent: { label: 'Urgent', color: 'bg-red-100 text-red-700', icon: '!' },
+  community_supported: { label: 'Community', color: 'bg-orange-100 text-orange-700', icon: '★' },
+  featured: { label: 'Featured', color: 'bg-purple-100 text-purple-700', icon: '◆' },
+  mod_recommended: { label: 'Recommended', color: 'bg-emerald-100 text-emerald-700', icon: '✦' },
+};
+
+const URGENCY_CONFIG = {
+  critical: { label: 'Critical', color: 'text-red-600 bg-red-50 border-red-200' },
+  urgent: { label: 'Urgent', color: 'text-amber-600 bg-amber-50 border-amber-200' },
+  normal: { label: '', color: '' },
+};
+
+const REPORT_REASONS = ['Inappropriate content', 'Spam or fake', 'Privacy concern', 'Misleading information', 'Other'];
+
+function DreamBadge({ badge }) {
+  if (!badge || badge === 'none' || !BADGE_CONFIG[badge]) return null;
+  const cfg = BADGE_CONFIG[badge];
   return (
-    <motion.div layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-      className="card-hover bg-white rounded-2xl border border-blue-50 p-6 flex flex-col">
-      <div className="flex items-start justify-between mb-3">
-        <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${CATEGORY_COLORS[dream.category] || 'bg-gray-100 text-gray-600'}`}>
-          {dream.category}
-        </span>
-        <Badge label={dream.status} type={dream.status} />
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold ${cfg.color}`}>
+      <span>{cfg.icon}</span>{cfg.label}
+    </span>
+  );
+}
+
+function SaveButton({ dreamId, initialSaved, onToggle }) {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [saved, setSaved] = useState(initialSaved);
+  const [loading, setLoading] = useState(false);
+
+  const toggle = async (e) => {
+    e.stopPropagation();
+    if (!user) return navigate('/login');
+    setLoading(true);
+    try {
+      if (saved) { await api.unsaveDream(dreamId); setSaved(false); }
+      else { await api.saveDream(dreamId); setSaved(true); }
+      onToggle?.();
+    } catch {}
+    setLoading(false);
+  };
+
+  return (
+    <button onClick={toggle} disabled={loading}
+      className={`p-1.5 rounded-lg transition-colors ${saved ? 'text-blue-600 bg-blue-50' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'}`}
+      title={saved ? 'Remove from saved' : 'Save dream'}>
+      <svg className="w-4 h-4" fill={saved ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-4-7 4V5z"/>
+      </svg>
+    </button>
+  );
+}
+
+function DreamCard({ dream, onFulfill, onSupport, onReport }) {
+  const urgency = URGENCY_CONFIG[dream.urgency];
+
+  return (
+    <motion.div layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+      className="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col group">
+      <div className="p-6 flex flex-col flex-1">
+        {/* Top row */}
+        <div className="flex items-start justify-between gap-2 mb-4">
+          <div className="flex flex-wrap gap-1.5 flex-1">
+            <span className={`px-2.5 py-1 rounded-full text-xs font-bold border flex-shrink-0 ${CAT_STYLE[dream.category] || 'bg-slate-50 text-slate-600 border-slate-100'}`}>
+              {dream.category}
+            </span>
+            <DreamBadge badge={dream.badge} />
+            {urgency?.label && (
+              <span className={`px-2.5 py-1 rounded-full text-xs font-bold border ${urgency.color}`}>
+                {urgency.label}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-1 flex-shrink-0">
+            <SaveButton dreamId={dream.id} initialSaved={dream.is_saved} />
+            <span className="flex items-center gap-1 text-xs text-slate-400">
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              </svg>
+              Anon
+            </span>
+          </div>
+        </div>
+
+        <h3 className="text-base font-bold text-slate-900 mb-2.5 leading-snug group-hover:text-blue-700 transition-colors line-clamp-2">
+          {dream.title}
+        </h3>
+        <p className="text-slate-500 text-sm leading-relaxed flex-1 line-clamp-3">{dream.story}</p>
+
+        {/* Meta */}
+        <div className="flex items-center gap-3 mt-4 text-xs text-slate-400">
+          {dream.country && (
+            <span className="flex items-center gap-1">
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              </svg>
+              {dream.country}
+            </span>
+          )}
+          {dream.timeline && <span>{dream.timeline}</span>}
+        </div>
+
+        {/* Support bar */}
+        <div className="flex items-center gap-2 mt-4">
+          <div className="flex-1 h-1 bg-slate-100 rounded-full overflow-hidden">
+            <div className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full"
+              style={{ width: `${Math.min(100, Math.round((dream.support_count || 0) / 1.5))}%` }} />
+          </div>
+          <button onClick={() => onSupport(dream.id)}
+            className="flex items-center gap-1 text-xs font-semibold text-slate-400 hover:text-rose-500 transition-colors">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+            </svg>
+            {dream.support_count || 0}
+          </button>
+        </div>
       </div>
 
-      <h3 className="text-lg font-bold text-blue-900 mb-2 leading-snug">{dream.title}</h3>
-      <p className="text-gray-500 text-sm leading-relaxed flex-1 mb-4 line-clamp-4">{dream.story}</p>
-
-      <div className="flex items-center justify-between text-xs text-gray-400 mb-4">
-        <span className="flex items-center gap-1">
-          <svg className="w-3.5 h-3.5 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-          </svg>
-          {dream.support_count} supporting
-        </span>
-        <span>Anonymous Dreamer</span>
-      </div>
-
-      <div className="flex gap-2">
-        <Button size="sm" className="flex-1" onClick={() => onFulfill(dream)}>
-          Request to Fulfill
-        </Button>
-        <button onClick={() => onSupport(dream.id)}
-          className="p-2 rounded-xl border border-blue-200 text-blue-600 hover:bg-blue-50 transition-colors">
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-          </svg>
+      <div className="px-6 pb-6 pt-0 space-y-2">
+        <button onClick={() => onFulfill(dream)}
+          className="w-full py-2.5 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-sm active:scale-[0.98] transition-all duration-200">
+          Make This Dream Real
         </button>
         <button onClick={() => onReport(dream)}
-          className="p-2 rounded-xl border border-gray-200 text-gray-400 hover:bg-gray-50 transition-colors">
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
-          </svg>
+          className="w-full py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-colors">
+          Report this dream
         </button>
       </div>
     </motion.div>
   );
 }
 
+function FilterPanel({ filters, setFilters, open, onClose }) {
+  return (
+    <AnimatePresence>
+      {open && (
+        <>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            onClick={onClose} className="fixed inset-0 bg-black/30 z-40 lg:hidden" />
+          <motion.div initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+            className="fixed right-0 top-0 bottom-0 w-80 bg-white z-50 shadow-2xl overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="font-bold text-slate-900">Filters</h3>
+                <button onClick={onClose} className="p-2 rounded-lg hover:bg-slate-100 text-slate-500">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-3">Country</label>
+                  <select value={filters.country} onChange={e => setFilters(f => ({ ...f, country: e.target.value }))}
+                    className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    {COUNTRIES.map(c => <option key={c} value={c === 'All' ? '' : c}>{c}</option>)}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-3">Urgency</label>
+                  <div className="space-y-2">
+                    {[{ v: '', l: 'Any urgency' }, { v: 'critical', l: 'Critical' }, { v: 'urgent', l: 'Urgent' }, { v: 'normal', l: 'Normal' }].map(o => (
+                      <button key={o.v} onClick={() => setFilters(f => ({ ...f, urgency: o.v }))}
+                        className={`w-full text-left px-4 py-2.5 rounded-xl border text-sm transition-all ${filters.urgency === o.v ? 'border-blue-600 bg-blue-50 text-blue-700 font-semibold' : 'border-slate-200 text-slate-700 hover:border-slate-300'}`}>
+                        {o.l}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-3">Badge</label>
+                  <div className="space-y-2">
+                    {BADGES.map(b => (
+                      <button key={b.value} onClick={() => setFilters(f => ({ ...f, badge: b.value }))}
+                        className={`w-full text-left px-4 py-2.5 rounded-xl border text-sm transition-all ${filters.badge === b.value ? 'border-blue-600 bg-blue-50 text-blue-700 font-semibold' : 'border-slate-200 text-slate-700 hover:border-slate-300'}`}>
+                        {b.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-3">Sort by</label>
+                  <div className="space-y-2">
+                    {SORT_OPTIONS.map(s => (
+                      <button key={s.value} onClick={() => setFilters(f => ({ ...f, sort: s.value }))}
+                        className={`w-full text-left px-4 py-2.5 rounded-xl border text-sm transition-all ${filters.sort === s.value ? 'border-blue-600 bg-blue-50 text-blue-700 font-semibold' : 'border-slate-200 text-slate-700 hover:border-slate-300'}`}>
+                        {s.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <button onClick={() => setFilters({ country: '', urgency: '', badge: '', sort: 'recent' })}
+                  className="w-full py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-colors">
+                  Clear Filters
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+
+function FulfillModal({ dream, onClose }) {
+  const [step, setStep] = useState(0);
+  const [form, setForm] = useState({ why_help: '', how_fulfill: '', experience: '' });
+  const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  if (!dream) return null;
+
+  const submit = async () => {
+    if (!user) return navigate('/register?mode=fulfiller');
+    if (!form.why_help.trim() || !form.how_fulfill.trim()) return;
+    setLoading(true);
+    try {
+      await api.requestFulfillment(dream.id, form);
+      setDone(true);
+    } catch (e) {
+      alert(e.message || 'Failed to submit.');
+    }
+    setLoading(false);
+  };
+
+  if (done) return (
+    <div className="text-center space-y-4 py-4">
+      <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto">
+        <svg className="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+      <h3 className="font-bold text-slate-900 text-lg">Application Submitted!</h3>
+      <p className="text-slate-500 text-sm">Our moderation team will review your request before any connection is made.</p>
+      <button onClick={onClose} className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-colors">Done</button>
+    </div>
+  );
+
+  const STEPS = ['Why You?', 'Your Plan', 'Review'];
+
+  return (
+    <div className="space-y-5">
+      {/* Dream preview */}
+      <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
+        <span className={`px-2.5 py-1 rounded-full text-xs font-bold border ${CAT_STYLE[dream.category] || ''} mb-2 inline-block`}>{dream.category}</span>
+        <h3 className="font-bold text-slate-900 text-sm">{dream.title}</h3>
+      </div>
+
+      {/* Mini stepper */}
+      <div className="flex gap-2 mb-1">
+        {STEPS.map((s, i) => (
+          <div key={s} className={`flex-1 h-1 rounded-full transition-colors ${i <= step ? 'bg-blue-600' : 'bg-slate-200'}`} />
+        ))}
+      </div>
+
+      {step === 0 && (
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-bold text-slate-700 mb-2">Why do you want to help? <span className="text-red-400">*</span></label>
+            <textarea value={form.why_help} onChange={e => setForm(f => ({ ...f, why_help: e.target.value }))} rows={4}
+              placeholder="What connects you to this dream? Why do you feel called to help?"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
+          </div>
+          <div className="flex gap-3">
+            <button onClick={onClose} className="flex-1 py-2.5 rounded-xl text-sm font-semibold text-slate-600 border border-slate-200 hover:bg-slate-50 transition-colors">Cancel</button>
+            <button onClick={() => setStep(1)} disabled={!form.why_help.trim()} className="flex-1 py-2.5 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors disabled:opacity-40">Continue</button>
+          </div>
+        </div>
+      )}
+
+      {step === 1 && (
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-bold text-slate-700 mb-2">How will you fulfill this dream? <span className="text-red-400">*</span></label>
+            <textarea value={form.how_fulfill} onChange={e => setForm(f => ({ ...f, how_fulfill: e.target.value }))} rows={4}
+              placeholder="Describe your specific plan, resources, skills, or connections you'll use..."
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
+          </div>
+          <div>
+            <label className="block text-sm font-bold text-slate-700 mb-2">Relevant experience (optional)</label>
+            <textarea value={form.experience} onChange={e => setForm(f => ({ ...f, experience: e.target.value }))} rows={2}
+              placeholder="Any experience, credentials, or background relevant to this dream..."
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
+          </div>
+          <div className="flex gap-3">
+            <button onClick={() => setStep(0)} className="flex-1 py-2.5 rounded-xl text-sm font-semibold text-slate-600 border border-slate-200 hover:bg-slate-50 transition-colors">Back</button>
+            <button onClick={() => setStep(2)} disabled={!form.how_fulfill.trim()} className="flex-1 py-2.5 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors disabled:opacity-40">Review</button>
+          </div>
+        </div>
+      )}
+
+      {step === 2 && (
+        <div className="space-y-4">
+          <div className="space-y-2 text-sm">
+            <div className="p-3 bg-slate-50 rounded-xl"><p className="text-xs text-slate-400 mb-1">Why you?</p><p className="text-slate-700">{form.why_help}</p></div>
+            <div className="p-3 bg-slate-50 rounded-xl"><p className="text-xs text-slate-400 mb-1">Your plan</p><p className="text-slate-700">{form.how_fulfill}</p></div>
+            {form.experience && <div className="p-3 bg-slate-50 rounded-xl"><p className="text-xs text-slate-400 mb-1">Experience</p><p className="text-slate-700">{form.experience}</p></div>}
+          </div>
+          <div className="p-3 bg-amber-50 border border-amber-100 rounded-xl">
+            <p className="text-amber-700 text-xs">Your request will be reviewed by our moderation team before any connection is made.</p>
+          </div>
+          <div className="flex gap-3">
+            <button onClick={() => setStep(1)} className="flex-1 py-2.5 rounded-xl text-sm font-semibold text-slate-600 border border-slate-200 hover:bg-slate-50 transition-colors">Back</button>
+            <button onClick={submit} disabled={loading} className="flex-1 py-2.5 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors disabled:opacity-50">
+              {loading ? 'Submitting…' : 'Submit Application'}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Dreams() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [dreams, setDreams] = useState(MOCK_DREAMS);
-  const [loading, setLoading] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'All');
+  const [searchParams] = useSearchParams();
+  const [dreams, setDreams] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [cat, setCat] = useState(searchParams.get('category') || 'All');
+  const [filters, setFilters] = useState({ country: '', urgency: '', badge: '', sort: 'recent' });
+  const [filterOpen, setFilterOpen] = useState(false);
   const [fulfillModal, setFulfillModal] = useState(null);
   const [reportModal, setReportModal] = useState(null);
-  const [fulfillMsg, setFulfillMsg] = useState('');
   const [reportReason, setReportReason] = useState('');
+  const [reportDetails, setReportDetails] = useState('');
   const [actionLoading, setActionLoading] = useState(false);
   const [toast, setToast] = useState('');
+  const searchTimer = useRef(null);
 
-  useEffect(() => {
-    fetchDreams();
-  }, [selectedCategory]);
+  const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(''), 3500); };
 
   const fetchDreams = async () => {
     setLoading(true);
     try {
-      const params = selectedCategory !== 'All' ? { category: selectedCategory } : {};
+      const params = {};
+      if (cat !== 'All') params.category = cat;
+      if (filters.country) params.country = filters.country;
+      if (filters.urgency) params.urgency = filters.urgency;
+      if (filters.badge) params.badge = filters.badge;
+      if (filters.sort) params.sort = filters.sort;
+      if (search.trim()) params.search = search.trim();
       const data = await api.getPublicDreams(params);
-      if (data.dreams?.length > 0) setDreams(data.dreams);
+      setDreams(data.dreams || []);
     } catch {
-      // Use mock data if API not connected
-    } finally {
-      setLoading(false);
+      setDreams([]);
     }
+    setLoading(false);
   };
 
-  const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(''), 3000); };
+  useEffect(() => {
+    clearTimeout(searchTimer.current);
+    searchTimer.current = setTimeout(fetchDreams, search ? 400 : 0);
+    return () => clearTimeout(searchTimer.current);
+  }, [cat, filters, search]);
 
   const handleFulfill = (dream) => {
     if (!user) return navigate('/register?mode=fulfiller');
     setFulfillModal(dream);
   };
 
-  const handleSupport = async (dreamId) => {
+  const handleSupport = async (id) => {
     if (!user) return navigate('/login');
     try {
-      await api.supportDream(dreamId);
+      await api.supportDream(id);
       showToast('Dream supported!');
-      setDreams((d) => d.map((dr) => dr.id === dreamId ? { ...dr, support_count: dr.support_count + 1 } : dr));
-    } catch { showToast('Could not support dream.'); }
+      setDreams(d => d.map(dr => dr.id === id ? { ...dr, support_count: (dr.support_count || 0) + 1 } : dr));
+    } catch { showToast('Could not support.'); }
   };
 
-  const handleReport = (dream) => {
-    if (!user) return navigate('/login');
-    setReportModal(dream);
-  };
-
-  const submitFulfillment = async () => {
-    setActionLoading(true);
-    try {
-      await api.requestFulfillment(fulfillModal.id, fulfillMsg);
-      setFulfillModal(null);
-      setFulfillMsg('');
-      showToast('Fulfillment request submitted! Our moderators will review it.');
-    } catch (err) {
-      showToast(err.message || 'Failed to submit request.');
-    } finally {
-      setActionLoading(false);
-    }
-  };
+  const handleReport = (dream) => { if (!user) return navigate('/login'); setReportModal(dream); };
 
   const submitReport = async () => {
     if (!reportReason) return;
     setActionLoading(true);
     try {
-      await api.reportDream(reportModal.id, reportReason);
-      setReportModal(null);
-      setReportReason('');
-      showToast('Report submitted. Thank you for keeping WishIT safe.');
+      await api.reportDream(reportModal.id, reportReason, reportDetails);
+      setReportModal(null); setReportReason(''); setReportDetails('');
+      showToast('Report submitted. Thank you.');
     } catch { showToast('Failed to submit report.'); }
-    finally { setActionLoading(false); }
+    setActionLoading(false);
   };
 
-  const filtered = selectedCategory === 'All' ? dreams : dreams.filter((d) => d.category === selectedCategory);
+  const activeFiltersCount = [filters.country, filters.urgency, filters.badge, filters.sort !== 'recent' ? filters.sort : ''].filter(Boolean).length;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50 overflow-x-hidden">
       <Navbar />
 
-      <div className="pt-20">
-        {/* Header */}
-        <div className="gradient-hero py-16 px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-              className="text-4xl font-black text-white mb-3">
-              Discover Dreams
-            </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-              className="text-blue-100 mb-8">
-              Every dream here belongs to a real person — reviewed, approved, and published anonymously
-            </motion.p>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="flex flex-wrap justify-center gap-2">
-              {CATEGORIES.map((cat) => (
-                <button key={cat} onClick={() => setSelectedCategory(cat)}
-                  className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
-                    selectedCategory === cat
-                      ? 'bg-white text-blue-700 shadow-lg'
-                      : 'glass text-white/80 hover:bg-white/20'
-                  }`}>
-                  {cat}
+      {/* Hero */}
+      <div className="gradient-navy pt-24 pb-12">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-2xl">
+            <span className="inline-flex items-center gap-1.5 text-blue-400 text-sm font-semibold mb-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+              Dream Marketplace
+            </span>
+            <h1 className="text-4xl lg:text-5xl font-black text-white mb-4">Discover Dreams</h1>
+            <p className="text-slate-400 text-lg">Every dream here is real, reviewed, and published anonymously. Find one that speaks to what you can offer.</p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Sticky filter bar */}
+      <div className="sticky top-16 z-30 bg-white/90 backdrop-blur-xl border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-3">
+          <div className="flex items-center gap-3">
+            {/* Search */}
+            <div className="relative flex-1 max-w-xs">
+              <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+              <input value={search} onChange={e => setSearch(e.target.value)}
+                placeholder="Search dreams..." className="w-full pl-9 pr-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            {/* Category pills */}
+            <div className="flex gap-1.5 overflow-x-auto pb-0.5 scrollbar-hide flex-1">
+              {CATS.map(c => (
+                <button key={c} onClick={() => setCat(c)}
+                  className={`flex-shrink-0 px-3.5 py-2 rounded-full text-xs font-semibold transition-all ${cat === c ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>
+                  {c}
                 </button>
               ))}
-            </motion.div>
+            </div>
+
+            {/* Sort (desktop) */}
+            <select value={filters.sort} onChange={e => setFilters(f => ({ ...f, sort: e.target.value }))}
+              className="hidden lg:block px-3 py-2.5 border border-slate-200 rounded-xl text-xs font-semibold text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+              {SORT_OPTIONS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
+            </select>
+
+            {/* Filter button */}
+            <button onClick={() => setFilterOpen(true)}
+              className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border text-xs font-semibold transition-colors ${activeFiltersCount > 0 ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:bg-slate-50'}`}>
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/>
+              </svg>
+              Filters{activeFiltersCount > 0 ? ` (${activeFiltersCount})` : ''}
+            </button>
           </div>
         </div>
+      </div>
 
-        {/* Dreams grid */}
-        <div className="max-w-7xl mx-auto px-4 py-12">
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="h-64 bg-white rounded-2xl border border-blue-50 animate-pulse" />
-              ))}
-            </div>
-          ) : (
-            <>
-              <div className="flex items-center justify-between mb-6">
-                <p className="text-gray-500 text-sm">{filtered.length} dreams found</p>
-                <Button variant="secondary" size="sm" onClick={() => navigate('/submit-dream')}>
-                  + Submit Your Dream
-                </Button>
-              </div>
-              <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <AnimatePresence>
-                  {filtered.map((dream) => (
-                    <DreamCard key={dream.id} dream={dream}
-                      onFulfill={handleFulfill} onSupport={handleSupport} onReport={handleReport} />
-                  ))}
-                </AnimatePresence>
-              </motion.div>
-              {filtered.length === 0 && (
-                <div className="text-center py-20 text-gray-400">
-                  <div className="text-5xl mb-4">✨</div>
-                  <p className="text-lg font-semibold">No dreams found in this category</p>
-                  <p className="text-sm mt-1">Be the first to submit a dream</p>
-                </div>
-              )}
-            </>
-          )}
+      {/* Active filter chips */}
+      {activeFiltersCount > 0 && (
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-4">
+          <div className="flex flex-wrap gap-2">
+            {filters.country && <Chip label={`Country: ${filters.country}`} onRemove={() => setFilters(f => ({ ...f, country: '' }))} />}
+            {filters.urgency && <Chip label={`Urgency: ${filters.urgency}`} onRemove={() => setFilters(f => ({ ...f, urgency: '' }))} />}
+            {filters.badge && <Chip label={`Badge: ${filters.badge}`} onRemove={() => setFilters(f => ({ ...f, badge: '' }))} />}
+            {filters.sort !== 'recent' && <Chip label={`Sort: ${SORT_OPTIONS.find(s => s.value === filters.sort)?.label}`} onRemove={() => setFilters(f => ({ ...f, sort: 'recent' }))} />}
+            <button onClick={() => setFilters({ country: '', urgency: '', badge: '', sort: 'recent' })}
+              className="px-3 py-1 text-xs font-semibold text-slate-500 hover:text-slate-700 transition-colors">
+              Clear all
+            </button>
+          </div>
         </div>
+      )}
+
+      {/* Main grid */}
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10">
+        <div className="flex items-center justify-between mb-6">
+          <p className="text-slate-500 text-sm">
+            {loading ? 'Loading…' : <><span className="font-bold text-slate-900">{dreams.length}</span> dreams found</>}
+          </p>
+          <Link to="/submit-dream">
+            <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 shadow-sm transition-colors">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/>
+              </svg>
+              Post Your Dream
+            </button>
+          </Link>
+        </div>
+
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-white rounded-2xl border border-slate-100 p-6 animate-pulse">
+                <div className="h-4 bg-slate-200 rounded-full w-20 mb-4" />
+                <div className="h-5 bg-slate-200 rounded-full w-3/4 mb-2" />
+                <div className="h-4 bg-slate-200 rounded-full w-full mb-1" />
+                <div className="h-4 bg-slate-200 rounded-full w-5/6" />
+              </div>
+            ))}
+          </div>
+        ) : dreams.length === 0 ? (
+          <div className="text-center py-32">
+            <div className="w-16 h-16 rounded-3xl bg-slate-100 flex items-center justify-center mx-auto mb-5">
+              <svg className="w-8 h-8 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+            </div>
+            <h3 className="font-bold text-slate-900 text-xl mb-2">No dreams found</h3>
+            <p className="text-slate-500 text-sm">Try adjusting your filters or search term</p>
+          </div>
+        ) : (
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <AnimatePresence>
+              {dreams.map(d => (
+                <DreamCard key={d.id} dream={d} onFulfill={handleFulfill} onSupport={handleSupport} onReport={handleReport} />
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        )}
       </div>
 
       <Footer />
 
+      {/* Filter panel */}
+      <FilterPanel filters={filters} setFilters={setFilters} open={filterOpen} onClose={() => setFilterOpen(false)} />
+
       {/* Fulfill Modal */}
-      <Modal open={!!fulfillModal} onClose={() => setFulfillModal(null)} title="Request to Fulfill This Dream">
-        {fulfillModal && (
-          <div className="space-y-4">
-            <div className="p-4 bg-blue-50 rounded-xl">
-              <div className="font-bold text-blue-900">{fulfillModal.title}</div>
-              <div className="text-xs text-blue-600 mt-1">{fulfillModal.category}</div>
+      {fulfillModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div onClick={() => setFulfillModal(null)} className="absolute inset-0 bg-black/50" />
+          <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+            className="relative bg-white rounded-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="font-bold text-slate-900 text-lg">Make This Dream Real</h2>
+              <button onClick={() => setFulfillModal(null)} className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
             </div>
-            <div>
-              <label className="block text-sm font-bold text-blue-900 mb-2">Why do you want to fulfill this dream?</label>
-              <textarea value={fulfillMsg} onChange={(e) => setFulfillMsg(e.target.value)}
-                rows={4} placeholder="Tell us about your skills, resources, or passion that makes you the right person to fulfill this dream..."
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
-            </div>
-            <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-xl text-xs text-yellow-700">
-              Your request will be reviewed by our moderation team before any connection is made.
-            </div>
-            <div className="flex gap-3">
-              <Button variant="secondary" className="flex-1" onClick={() => setFulfillModal(null)}>Cancel</Button>
-              <Button className="flex-1" loading={actionLoading} onClick={submitFulfillment}>Submit Request</Button>
-            </div>
-          </div>
-        )}
-      </Modal>
+            <FulfillModal dream={fulfillModal} onClose={() => setFulfillModal(null)} />
+          </motion.div>
+        </div>
+      )}
 
       {/* Report Modal */}
-      <Modal open={!!reportModal} onClose={() => setReportModal(null)} title="Report This Dream">
-        {reportModal && (
-          <div className="space-y-4">
-            <p className="text-sm text-gray-500">Select a reason for reporting:</p>
-            <div className="space-y-2">
-              {REASONS.map((r) => (
+      {reportModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div onClick={() => setReportModal(null)} className="absolute inset-0 bg-black/50" />
+          <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+            className="relative bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl">
+            <h2 className="font-bold text-slate-900 text-lg mb-1">Report this Dream</h2>
+            <p className="text-slate-500 text-sm mb-5">Select a reason below</p>
+            <div className="space-y-2 mb-4">
+              {REPORT_REASONS.map(r => (
                 <button key={r} onClick={() => setReportReason(r)}
-                  className={`w-full text-left px-4 py-3 rounded-xl border-2 text-sm transition-all ${
-                    reportReason === r ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-gray-200 text-gray-600 hover:border-blue-300'
-                  }`}>
+                  className={`w-full text-left px-4 py-3 rounded-xl border text-sm transition-all ${reportReason === r ? 'border-blue-600 bg-blue-50 text-blue-700 font-semibold' : 'border-slate-200 text-slate-700 hover:border-slate-300'}`}>
                   {r}
                 </button>
               ))}
             </div>
+            {reportReason && (
+              <textarea value={reportDetails} onChange={e => setReportDetails(e.target.value)} rows={2}
+                placeholder="Additional details (optional)..."
+                className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none mb-4" />
+            )}
             <div className="flex gap-3">
-              <Button variant="secondary" className="flex-1" onClick={() => setReportModal(null)}>Cancel</Button>
-              <Button variant="danger" className="flex-1" loading={actionLoading} onClick={submitReport}>Submit Report</Button>
+              <button onClick={() => setReportModal(null)} className="flex-1 py-2.5 rounded-xl text-sm font-semibold text-slate-600 border border-slate-200 hover:bg-slate-50 transition-colors">Cancel</button>
+              <button onClick={submitReport} disabled={!reportReason || actionLoading}
+                className="flex-1 py-2.5 rounded-xl text-sm font-bold text-white bg-red-500 hover:bg-red-600 transition-colors disabled:opacity-40">
+                {actionLoading ? 'Submitting…' : 'Submit Report'}
+              </button>
             </div>
-          </div>
-        )}
-      </Modal>
+          </motion.div>
+        </div>
+      )}
 
       {/* Toast */}
       <AnimatePresence>
         {toast && (
-          <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 50 }}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-blue-900 text-white px-6 py-3 rounded-2xl shadow-xl text-sm font-medium z-50">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 40 }}
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 px-6 py-3.5 bg-slate-900 text-white text-sm font-semibold rounded-2xl shadow-2xl">
             {toast}
           </motion.div>
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+function Chip({ label, onRemove }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 border border-blue-100 rounded-full text-xs font-semibold text-blue-700">
+      {label}
+      <button onClick={onRemove} className="hover:text-blue-900 transition-colors">
+        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </span>
   );
 }

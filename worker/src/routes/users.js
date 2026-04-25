@@ -5,24 +5,53 @@ import { now } from '../utils/helpers.js';
 const users = new Hono();
 users.use('*', authMiddleware());
 
+// My full profile
 users.get('/me', (c) => c.json({ user: c.get('user') }));
 
+// Update own profile
 users.put('/me', async (c) => {
   const user = c.get('user');
-  const { name, bio, mode, skills, interests, location } = await c.req.json();
+  const { name, bio, fulfiller_bio, mode, skills, interests, causes, location, country, website } = await c.req.json();
 
   await c.env.DB.prepare(
-    `UPDATE users SET name=COALESCE(?,name), bio=COALESCE(?,bio), mode=COALESCE(?,mode),
-     skills=COALESCE(?,skills), interests=COALESCE(?,interests), location=COALESCE(?,location),
-     updated_at=? WHERE uid=?`
-  ).bind(name, bio, mode, skills ? JSON.stringify(skills) : null,
-    interests ? JSON.stringify(interests) : null, location, now(), user.uid).run();
+    `UPDATE users SET
+     name=COALESCE(?,name), bio=COALESCE(?,bio), fulfiller_bio=COALESCE(?,fulfiller_bio),
+     mode=COALESCE(?,mode), skills=COALESCE(?,skills), interests=COALESCE(?,interests),
+     causes=COALESCE(?,causes), location=COALESCE(?,location), country=COALESCE(?,country),
+     website=COALESCE(?,website), updated_at=? WHERE uid=?`
+  ).bind(name, bio, fulfiller_bio, mode,
+    skills ? JSON.stringify(skills) : null,
+    interests ? JSON.stringify(interests) : null,
+    causes ? JSON.stringify(causes) : null,
+    location, country, website, now(), user.uid).run();
 
-  const updated = await c.env.DB.prepare('SELECT * FROM users WHERE uid=?').bind(user.uid).first();
+  const updated = await c.env.DB.prepare('SELECT * FROM users WHERE uid = ?').bind(user.uid).first();
   return c.json({ user: updated });
 });
 
-// Admin: list all users
+// Public fulfiller profile
+users.get('/:uid/public', async (c) => {
+  const u = await c.env.DB.prepare(
+    `SELECT uid, name, mode, trust_score, verified, fulfilled_count, dream_count,
+            bio, fulfiller_bio, skills, interests, causes, location, country,
+            website, avatar_url, impact_score, created_at
+     FROM users WHERE uid = ? AND banned = 0 AND suspended = 0`
+  ).bind(c.req.param('uid')).first();
+  if (!u) return c.json({ error: 'Not found' }, 404);
+
+  // Public fulfilled dreams count and recent
+  const { results: fulfilledDreams } = await c.env.DB.prepare(`
+    SELECT d.id, d.title, d.category, d.fulfilled_at
+    FROM dreams d
+    JOIN fulfillment_requests fr ON fr.dream_id = d.id AND fr.fulfiller_uid = ? AND fr.status = 'approved'
+    WHERE d.status = 'fulfilled'
+    ORDER BY d.fulfilled_at DESC LIMIT 5
+  `).bind(u.uid).all();
+
+  return c.json({ user: u, fulfilledDreams });
+});
+
+// Admin: all users
 users.get('/', requireRole('admin'), async (c) => {
   const { results } = await c.env.DB.prepare('SELECT * FROM users ORDER BY created_at DESC').all();
   return c.json({ users: results });

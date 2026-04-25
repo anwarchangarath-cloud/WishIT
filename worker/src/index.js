@@ -9,6 +9,10 @@ import fulfillmentRoutes from './routes/fulfillments.js';
 import reportRoutes from './routes/reports.js';
 import moderatorRoutes from './routes/moderator.js';
 import adminRoutes from './routes/admin.js';
+import notificationRoutes from './routes/notifications.js';
+import messageRoutes from './routes/messages.js';
+import saveRoutes from './routes/saves.js';
+import matchingRoutes from './routes/matching.js';
 
 const app = new Hono();
 
@@ -24,7 +28,7 @@ app.use('*', cors({
   maxAge: 86400,
 }));
 
-app.get('/', (c) => c.json({ status: 'WishIT API running', version: '1.0.0' }));
+app.get('/', (c) => c.json({ status: 'WishIT API running', version: '2.0.0' }));
 
 app.route('/api/auth', authRoutes);
 app.route('/api/users', userRoutes);
@@ -33,6 +37,10 @@ app.route('/api/fulfillments', fulfillmentRoutes);
 app.route('/api/reports', reportRoutes);
 app.route('/api/mod', moderatorRoutes);
 app.route('/api/admin', adminRoutes);
+app.route('/api/notifications', notificationRoutes);
+app.route('/api/messages', messageRoutes);
+app.route('/api/saves', saveRoutes);
+app.route('/api/matching', matchingRoutes);
 
 app.notFound((c) => c.json({ error: 'Not found' }, 404));
 app.onError((err, c) => {
