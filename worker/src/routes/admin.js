@@ -97,8 +97,15 @@ admin.put('/users/:uid', async (c) => {
   await c.env.DB.prepare(
     `UPDATE users SET role=COALESCE(?,role), trust_score=COALESCE(?,trust_score),
      verified=COALESCE(?,verified), bio=COALESCE(?,bio), name=COALESCE(?,name), updated_at=? WHERE uid=?`
-  ).bind(role, trust_score, verified !== undefined ? (verified ? 1 : 0) : null,
-    bio, name, now(), c.req.param('uid')).run();
+  ).bind(
+    role ?? null,
+    trust_score ?? null,
+    verified !== undefined ? (verified ? 1 : 0) : null,
+    bio ?? null,
+    name ?? null,
+    now(),
+    c.req.param('uid')
+  ).run();
   await audit(c.env.DB, actor.uid, 'USER_UPDATED', c.req.param('uid'), 'user', { role, trust_score, verified });
   return c.json({ success: true });
 });

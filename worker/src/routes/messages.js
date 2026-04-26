@@ -37,7 +37,7 @@ messages.get('/thread/:dreamId', async (c) => {
     'SELECT * FROM message_threads WHERE dream_id = ? AND (dreamer_uid = ? OR fulfiller_uid = ?)'
   ).bind(dreamId, user.uid, user.uid).first();
 
-  if (!thread) return c.json({ thread: null, messages: [] });
+  if (!thread) return c.json({ thread: null, messages: [], dream: { id: dream.id, status: dream.status, user_uid: dream.user_uid, fulfiller_uid: dream.fulfiller_uid, title: dream.title } });
 
   const { results } = await c.env.DB.prepare(`
     SELECT m.*, u.name as sender_name
@@ -51,7 +51,11 @@ messages.get('/thread/:dreamId', async (c) => {
   await c.env.DB.prepare('UPDATE messages SET read = 1 WHERE thread_id = ? AND receiver_uid = ?')
     .bind(thread.id, user.uid).run();
 
-  return c.json({ thread, messages: results });
+  return c.json({
+    thread,
+    messages: results,
+    dream: { id: dream.id, status: dream.status, user_uid: dream.user_uid, fulfiller_uid: dream.fulfiller_uid, title: dream.title },
+  });
 });
 
 // Send a message
@@ -62,7 +66,7 @@ messages.post('/', async (c) => {
 
   const dream = await c.env.DB.prepare('SELECT * FROM dreams WHERE id = ?').bind(dreamId).first();
   if (!dream) return c.json({ error: 'Dream not found' }, 404);
-  if (!['matched', 'in_progress', 'fulfilled'].includes(dream.status)) {
+  if (!['matched', 'in_progress', 'pending_fulfillment', 'fulfilled'].includes(dream.status)) {
     return c.json({ error: 'Messaging is only available after connection is approved' }, 403);
   }
 

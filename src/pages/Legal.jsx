@@ -88,38 +88,38 @@ export default function Legal() {
   const page = PAGES[slug] || PAGES.about;
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
       <Navbar />
 
-      <div className="gradient-navy pt-24 pb-16">
+      <div className="gradient-mesh pt-24 pb-16">
         <div className="max-w-3xl mx-auto px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <span className="inline-flex items-center gap-1.5 text-blue-400 text-xs font-semibold mb-4 uppercase tracking-wider">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-              {page.badge}
-            </span>
-            <h1 className="text-3xl lg:text-4xl font-black text-white">{page.title}</h1>
+            <div className="eyebrow-light mb-4">{page.badge}</div>
+            <h1 className="font-extrabold text-white" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.75rem)', letterSpacing: '-0.035em' }}>
+              {page.title}
+            </h1>
           </motion.div>
         </div>
       </div>
 
       <div className="max-w-3xl mx-auto px-6 lg:px-8 py-12">
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm divide-y divide-slate-100">
+        <div className="card-white overflow-hidden" style={{ divideColor: 'var(--border)' }}>
           {page.sections.map((s, i) => (
             <motion.div key={s.heading} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }} className="p-6 lg:p-8">
-              <h2 className="font-bold text-slate-900 text-lg mb-3">{s.heading}</h2>
-              <p className="text-slate-600 leading-relaxed text-sm">{s.body}</p>
+              transition={{ delay: i * 0.05 }} className="p-6 lg:p-8"
+              style={{ borderBottom: i < page.sections.length - 1 ? '1px solid var(--border)' : 'none' }}>
+              <h2 className="font-extrabold text-[1.05rem] mb-3" style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}>{s.heading}</h2>
+              <p className="leading-relaxed text-[14px]" style={{ color: 'var(--text-3)' }}>{s.body}</p>
             </motion.div>
           ))}
         </div>
 
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Link to="/" className="text-sm text-slate-500 hover:text-slate-700 transition-colors">← Home</Link>
-          <span className="text-slate-300">·</span>
-          <Link to="/dreams" className="text-sm text-slate-500 hover:text-slate-700 transition-colors">Browse Dreams</Link>
-          <span className="text-slate-300">·</span>
-          <Link to="/register" className="text-sm text-blue-600 hover:text-blue-700 transition-colors font-semibold">Get Started</Link>
+        <div className="mt-8 flex flex-wrap gap-3 items-center">
+          <Link to="/" className="text-[13.5px] font-medium transition-colors" style={{ color: 'var(--text-3)' }}>← Home</Link>
+          <span style={{ color: 'var(--border-dark)' }}>·</span>
+          <Link to="/dreams" className="text-[13.5px] font-medium transition-colors" style={{ color: 'var(--text-3)' }}>Browse Dreams</Link>
+          <span style={{ color: 'var(--border-dark)' }}>·</span>
+          <Link to="/register" className="text-[13.5px] font-bold transition-colors" style={{ color: 'var(--blue)' }}>Get Started →</Link>
         </div>
       </div>
 

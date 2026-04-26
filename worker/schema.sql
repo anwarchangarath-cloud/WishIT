@@ -246,6 +246,20 @@ CREATE TABLE IF NOT EXISTS audit_logs (
   created_at TEXT DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS fulfillment_completions (
+  id TEXT PRIMARY KEY,
+  dream_id TEXT NOT NULL,
+  fulfiller_uid TEXT NOT NULL,
+  note TEXT,
+  proof_url TEXT,
+  status TEXT NOT NULL DEFAULT 'pending',     -- pending | dreamer_notified | confirmed | needs_more_support
+  moderator_uid TEXT,
+  moderator_reviewed_at TEXT,
+  created_at TEXT DEFAULT (datetime('now')),
+  FOREIGN KEY (dream_id) REFERENCES dreams(id),
+  FOREIGN KEY (fulfiller_uid) REFERENCES users(uid)
+);
+
 -- ── Indexes ──────────────────────────────────────────────
 CREATE INDEX IF NOT EXISTS idx_dreams_status       ON dreams(status);
 CREATE INDEX IF NOT EXISTS idx_dreams_user         ON dreams(user_uid);
@@ -267,3 +281,5 @@ CREATE INDEX IF NOT EXISTS idx_saves_dream         ON dream_saves(dream_id);
 CREATE INDEX IF NOT EXISTS idx_mod_notes_target    ON moderator_notes(target_id);
 CREATE INDEX IF NOT EXISTS idx_trust_events_user   ON trust_score_events(user_uid);
 CREATE INDEX IF NOT EXISTS idx_escalations_status  ON escalations(status);
+CREATE INDEX IF NOT EXISTS idx_completions_dream   ON fulfillment_completions(dream_id);
+CREATE INDEX IF NOT EXISTS idx_completions_status  ON fulfillment_completions(status);

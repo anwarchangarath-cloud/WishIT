@@ -61,6 +61,8 @@ export const api = {
   getMyFulfillments: () => get('/api/fulfillments/my'),
   getDreamFulfillments: (dreamId) => get(`/api/fulfillments/dream/${dreamId}`),
   withdrawFulfillment: (id) => del(`/api/fulfillments/${id}`),
+  requestCompletion: (dreamId, note, proofUrl) => post('/api/fulfillments/complete', { dreamId, note, proofUrl }),
+  dreamerResponse: (dreamId, action) => post(`/api/fulfillments/${dreamId}/dreamer-response`, { action }),
 
   // ── Reports ───────────────────────────────────────────
   reportDream: (dreamId, reason, details) => post('/api/reports', { dreamId, reason, details }),
@@ -99,6 +101,8 @@ export const api = {
     getPendingFulfillments: () => get('/api/mod/fulfillments'),
     approveFulfillment: (id, notes) => put(`/api/mod/fulfillments/${id}/approve`, { notes }),
     rejectFulfillment: (id, notes) => put(`/api/mod/fulfillments/${id}/reject`, { notes }),
+    getCompletions: () => get('/api/mod/completions'),
+    notifyDreamerCompletion: (id) => put(`/api/mod/completions/${id}/notify-dreamer`, {}),
     getReports: (params = {}) => get(`/api/mod/reports?${new URLSearchParams(params)}`),
     reviewReport: (id, status, action_taken) => put(`/api/mod/reports/${id}`, { status, action_taken }),
     addNote: (targetId, targetType, note, note_type) => post('/api/mod/notes', { targetId, targetType, note, note_type }),

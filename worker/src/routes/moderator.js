@@ -196,15 +196,56 @@ mod.post('/escalate', async (c) => {
   return c.json({ success: true, id });
 });
 
+// ── Fulfillment Completions Queue ───────────────────────
+
+mod.get('/completions', async (c) => {
+  const { results } = await c.env.DB.prepare(`
+    SELECT fc.*,
+           d.title as dream_title, d.category as dream_category, d.status as dream_status,
+           u.name as fulfiller_name, u.email as fulfiller_email, u.trust_score, u.fulfilled_count,
+           dreamer.name as dreamer_name, dreamer.email as dreamer_email
+    FROM fulfillment_completions fc
+    JOIN dreams d ON fc.dream_id = d.id
+    JOIN users u ON fc.fulfiller_uid = u.uid
+    JOIN users dreamer ON d.user_uid = dreamer.uid
+    WHERE fc.status IN ('pending', 'dreamer_notified')
+    ORDER BY fc.created_at ASC
+  `).all();
+  return c.json({ completions: results });
+});
+
+mod.put('/completions/:id/notify-dreamer', async (c) => {
+  const user = c.get('user');
+  const completion = await c.env.DB.prepare('SELECT * FROM fulfillment_completions WHERE id = ?')
+    .bind(c.req.param('id')).first();
+  if (!completion) return c.json({ error: 'Not found' }, 404);
+
+  await c.env.DB.prepare(
+    "UPDATE fulfillment_completions SET status='dreamer_notified', moderator_uid=?, moderator_reviewed_at=? WHERE id=?"
+  ).bind(user.uid, now(), completion.id).run();
+
+  const dream = await c.env.DB.prepare('SELECT * FROM dreams WHERE id = ?').bind(completion.dream_id).first();
+  if (dream) {
+    await notify(c.env.DB, dream.user_uid, 'dreamer_confirmation_needed',
+      'Please confirm your dream fulfillment',
+      `The fulfiller for "${dream.title}" says they've completed it. Please confirm or let us know if you need more support.`,
+      '/dashboard');
+    await audit(c.env.DB, user.uid, 'DREAMER_NOTIFIED_FOR_CONFIRMATION', completion.id, 'fulfillment_completion', { dream_id: dream.id });
+  }
+
+  return c.json({ success: true });
+});
+
 // ── Stats ────────────────────────────────────────────────
 
 mod.get('/stats', async (c) => {
-  const [pendingDreams, pendingFulfillments, pendingReports, urgentDreams, openEscalations] = await Promise.all([
+  const [pendingDreams, pendingFulfillments, pendingReports, urgentDreams, openEscalations, pendingCompletions] = await Promise.all([
     c.env.DB.prepare("SELECT COUNT(*) as count FROM dreams WHERE status='pending'").first(),
     c.env.DB.prepare("SELECT COUNT(*) as count FROM fulfillment_requests WHERE status='pending'").first(),
     c.env.DB.prepare("SELECT COUNT(*) as count FROM reports WHERE status='pending'").first(),
     c.env.DB.prepare("SELECT COUNT(*) as count FROM dreams WHERE status='pending' AND urgency IN ('urgent','critical')").first(),
     c.env.DB.prepare("SELECT COUNT(*) as count FROM escalations WHERE status='open'").first(),
+    c.env.DB.prepare("SELECT COUNT(*) as count FROM fulfillment_completions WHERE status IN ('pending','dreamer_notified')").first(),
   ]);
   return c.json({
     pendingDreams: pendingDreams.count,
@@ -212,6 +253,7 @@ mod.get('/stats', async (c) => {
     pendingReports: pendingReports.count,
     urgentDreams: urgentDreams.count,
     openEscalations: openEscalations.count,
+    pendingCompletions: pendingCompletions.count,
   });
 });
 

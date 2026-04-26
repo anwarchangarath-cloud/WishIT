@@ -5,45 +5,156 @@ import { useAuth } from '../contexts/AuthContext';
 import { api } from '../services/api';
 import Navbar from '../components/layout/Navbar';
 
-const CATEGORIES = ['Education', 'Health', 'Career', 'Family', 'Community', 'Creative', 'Travel', 'Technology', 'Other'];
-const TIMELINES = ['Less than 1 month', '1-3 months', '3-6 months', '6-12 months', 'More than a year', 'Flexible'];
-const COUNTRIES = ['United States', 'United Kingdom', 'Canada', 'Australia', 'India', 'Nigeria', 'Kenya', 'Brazil', 'Germany', 'France', 'Other'];
+const ease = [0.22, 1, 0.36, 1];
 
-const STEPS = [
-  {
-    label: 'Dream Details',
-    icon: <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/></svg>,
-  },
-  {
-    label: 'Your Story',
-    icon: <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/></svg>,
-  },
-  {
-    label: 'Review',
-    icon: <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
-  },
+/* ── Category options with icons ── */
+const CATEGORIES = [
+  { value: 'Education',  emoji: '🎓', color: 'from-blue-500 to-blue-700' },
+  { value: 'Health',     emoji: '🌿', color: 'from-emerald-500 to-teal-600' },
+  { value: 'Career',     emoji: '🚀', color: 'from-violet-500 to-purple-700' },
+  { value: 'Family',     emoji: '🏠', color: 'from-rose-500 to-pink-600' },
+  { value: 'Community',  emoji: '🌍', color: 'from-orange-500 to-amber-600' },
+  { value: 'Creative',   emoji: '🎨', color: 'from-pink-500 to-fuchsia-600' },
+  { value: 'Travel',     emoji: '✈️',  color: 'from-amber-500 to-yellow-600' },
+  { value: 'Technology', emoji: '💡', color: 'from-cyan-500 to-sky-600' },
+  { value: 'Other',      emoji: '✦',  color: 'from-slate-500 to-slate-600' },
 ];
 
-const URGENCY_OPTIONS = [
-  { value: 'normal', label: 'Normal', desc: 'No immediate time pressure', color: 'border-slate-200 text-slate-700' },
-  { value: 'urgent', label: 'Urgent', desc: 'Help needed within weeks', color: 'border-amber-300 text-amber-700 bg-amber-50' },
-  { value: 'critical', label: 'Critical', desc: 'Immediate help required', color: 'border-red-300 text-red-700 bg-red-50' },
+/* ── Urgency options ── */
+const URGENCY = [
+  { value: 'normal',   label: 'No rush',        desc: 'I have time to wait',          dot: 'bg-slate-400' },
+  { value: 'urgent',   label: 'Soon',            desc: 'Help needed within weeks',     dot: 'bg-amber-400' },
+  { value: 'critical', label: 'Urgent',          desc: 'Immediate help needed',        dot: 'bg-red-500' },
 ];
+
+/* ── Timeline options ── */
+const TIMELINES = [
+  { value: 'Less than 1 month', label: '< 1 month' },
+  { value: '1-3 months',        label: '1–3 months' },
+  { value: '3-6 months',        label: '3–6 months' },
+  { value: '6-12 months',       label: '6–12 months' },
+  { value: 'More than a year',  label: '1+ year' },
+  { value: 'Flexible',          label: 'Flexible' },
+];
+
+/* ── Country list ── */
+const COUNTRIES = ['Afghanistan','Australia','Brazil','Canada','China','Egypt','Ethiopia','France','Germany','Ghana','India','Indonesia','Japan','Kenya','Mexico','Netherlands','Nigeria','Pakistan','Russia','Saudi Arabia','South Africa','South Korea','Spain','Turkey','Uganda','Ukraine','United Kingdom','United States','Vietnam','Zimbabwe','Other'];
+
+/* ── Step config (wizard steps) ── */
+const TOTAL_STEPS = 5;
+
+function ProgressBar({ step }) {
+  return (
+    <div className="w-full max-w-sm mx-auto">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-[11.5px] font-semibold text-[#9AAAC7]">Step {step + 1} of {TOTAL_STEPS}</span>
+        <span className="text-[11.5px] font-semibold text-[#9AAAC7]">{Math.round(((step + 1) / TOTAL_STEPS) * 100)}%</span>
+      </div>
+      <div className="h-[3px] bg-[#E4EAF4] rounded-full overflow-hidden">
+        <motion.div
+          className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"
+          initial={false}
+          animate={{ width: `${((step + 1) / TOTAL_STEPS) * 100}%` }}
+          transition={{ duration: 0.4, ease }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function WizardShell({ step, onBack, canBack, children }) {
+  return (
+    <div className="min-h-screen bg-white flex flex-col">
+      <Navbar />
+      <div className="flex-1 flex flex-col pt-20 pb-10">
+        {/* Top progress */}
+        <div className="px-5 pt-6 pb-0">
+          <ProgressBar step={step} />
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 flex flex-col items-center justify-center px-5 py-10">
+          <div className="w-full max-w-md">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={step}
+                initial={{ opacity: 0, x: 24 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.28, ease }}>
+                {children}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Back button */}
+        {canBack && (
+          <div className="px-5 pb-4 flex justify-center">
+            <button onClick={onBack}
+              className="flex items-center gap-1.5 text-[#9AAAC7] text-[13px] font-semibold hover:text-[#3D4F72] transition-colors no-min-h">
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"/>
+              </svg>
+              Back
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function NextBtn({ onClick, label = 'Continue', disabled = false, loading = false }) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled || loading}
+      className="w-full h-[52px] flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-[16px] transition-all disabled:opacity-40 disabled:cursor-not-allowed mt-6"
+      style={{ fontSize: '15px', letterSpacing: '-0.01em', boxShadow: disabled ? 'none' : '0 4px 14px rgba(37,99,235,0.28)' }}>
+      {loading ? (
+        <>
+          <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+          </svg>
+          {label}
+        </>
+      ) : (
+        <>
+          {label}
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"/>
+          </svg>
+        </>
+      )}
+    </button>
+  );
+}
+
+function StepLabel({ children }) {
+  return <p className="text-[11.5px] font-bold uppercase tracking-[0.14em] text-blue-600 mb-3">{children}</p>;
+}
+
+function StepTitle({ children }) {
+  return (
+    <h2 className="font-extrabold text-[#0A1628] mb-2.5" style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', letterSpacing: '-0.03em', lineHeight: 1.15 }}>
+      {children}
+    </h2>
+  );
+}
+
+function StepSub({ children }) {
+  return <p className="text-[#6B7A99] text-[14px] leading-[1.7] mb-7">{children}</p>;
+}
 
 export default function SubmitDream() {
   const { profile } = useAuth();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
-    title: '',
-    story: '',
-    category: '',
-    timeline: '',
-    urgency: 'normal',
-    location: '',
-    country: '',
-    tags: '',
-    anonymous: true,
+    title: '', story: '', category: '', timeline: '', urgency: 'normal',
+    location: '', country: '', tags: '', anonymous: true,
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -53,17 +164,16 @@ export default function SubmitDream() {
 
   const set = (key, val) => setForm(f => ({ ...f, [key]: val }));
 
-  const advance = () => {
+  const next = (validate) => {
+    if (validate) {
+      const err = validate();
+      if (err) { setError(err); return; }
+    }
     setError('');
-    if (step === 0) {
-      if (!form.title.trim()) return setError('Please enter a title for your dream.');
-      if (!form.category) return setError('Please select a category.');
-    }
-    if (step === 1) {
-      if (form.story.length < 50) return setError('Please write a more detailed story (at least 50 characters).');
-    }
     setStep(s => s + 1);
   };
+
+  const back = () => { setError(''); setStep(s => s - 1); };
 
   const handleSubmit = async () => {
     setError('');
@@ -76,47 +186,58 @@ export default function SubmitDream() {
       await api.submitDream(payload);
       setSubmitted(true);
     } catch (err) {
-      setError(err.message || 'Failed to submit dream. Please try again.');
+      setError(err.message || 'Failed to submit. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
+  /* ── Success screen ── */
   if (submitted) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-[#F4F7FB]">
         <Navbar />
-        <div className="pt-20 flex items-center justify-center min-h-screen p-6">
-          <motion.div initial={{ opacity: 0, scale: 0.92, y: 24 }} animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} className="max-w-md w-full text-center">
-            <div className="bg-white rounded-3xl p-10 shadow-card border border-slate-100">
-              <div className="w-20 h-20 gradient-blue rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-blue">
-                <svg className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/>
+        <div className="pt-20 min-h-screen flex items-center justify-center p-5">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92, y: 24 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.5, ease }}
+            className="max-w-sm w-full text-center">
+            <div className="bg-white rounded-[24px] p-10 border border-[#E4EAF4]" style={{ boxShadow: '0 20px 60px rgba(10,22,40,0.09)' }}>
+              <motion.div
+                initial={{ scale: 0.7, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.5, ease }}
+                className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-[20px] flex items-center justify-center mx-auto mb-6"
+                style={{ boxShadow: '0 8px 24px rgba(16,185,129,0.30)' }}>
+                <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/>
                 </svg>
-              </div>
-              <h2 className="text-2xl font-black text-slate-900 mb-3">Dream Submitted!</h2>
-              <p className="text-slate-500 leading-relaxed mb-2">Your dream is now under review by our moderation team.</p>
-              <p className="text-slate-400 text-sm mb-8">We'll notify you once it's approved and published anonymously for fulfillers to discover.</p>
-              <div className="p-4 bg-blue-50 rounded-2xl mb-8 text-left">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center">
-                    <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              </motion.div>
+              <h2 className="font-extrabold text-[#0A1628] mb-2.5" style={{ fontSize: '1.5rem', letterSpacing: '-0.03em' }}>Dream Submitted!</h2>
+              <p className="text-[#6B7A99] text-[13.5px] leading-[1.75] mb-2">Your dream is now under review by our moderation team.</p>
+              <p className="text-[#9AAAC7] text-[12.5px] mb-7">We'll notify you once it's approved and published anonymously.</p>
+
+              <div className="p-4 bg-blue-50/70 border border-[#BFDBFE] rounded-[16px] mb-7 text-left">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <div className="w-4 h-4 rounded-full bg-blue-600 flex items-center justify-center">
+                    <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                     </svg>
                   </div>
-                  <span className="text-blue-700 text-sm font-bold">Anonymous & Private</span>
+                  <span className="text-blue-700 text-[12.5px] font-bold">Anonymous & Private</span>
                 </div>
-                <p className="text-blue-600 text-xs leading-relaxed">Your identity stays completely hidden. Only your dream story will be visible to approved fulfillers.</p>
+                <p className="text-blue-600/75 text-[11.5px] leading-[1.65]">Your identity stays hidden. Only your dream story will be visible to approved fulfillers.</p>
               </div>
+
               <div className="flex gap-3">
                 <button onClick={() => navigate('/dashboard')}
-                  className="flex-1 py-3 px-4 border-2 border-slate-200 text-slate-700 font-semibold rounded-2xl hover:bg-slate-50 transition-colors text-sm">
+                  className="flex-1 h-10 border border-[#E4EAF4] text-[#3D4F72] font-semibold rounded-[12px] hover:bg-[#F4F7FB] transition-colors text-[13px] no-min-h">
                   Dashboard
                 </button>
-                <button onClick={() => { setSubmitted(false); setStep(0); setForm({ title: '', story: '', category: '', timeline: '', urgency: 'normal', location: '', country: '', tags: '', anonymous: true }); }}
-                  className="flex-1 py-3 px-4 bg-blue-600 text-white font-semibold rounded-2xl hover:bg-blue-700 transition-colors text-sm shadow-blue">
-                  Submit Another
+                <button onClick={() => { setSubmitted(false); setStep(0); setForm({ title:'',story:'',category:'',timeline:'',urgency:'normal',location:'',country:'',tags:'',anonymous:true }); }}
+                  className="flex-1 h-10 bg-blue-600 text-white font-semibold rounded-[12px] hover:bg-blue-700 transition-colors text-[13px] no-min-h shadow-blue">
+                  Another
                 </button>
               </div>
             </div>
@@ -126,276 +247,234 @@ export default function SubmitDream() {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-slate-50">
-      <Navbar />
-      <div className="pt-24 pb-16">
-        <div className="w-full max-w-2xl mx-auto px-6">
+  /* ── Step 0: Category ── */
+  if (step === 0) return (
+    <WizardShell step={0} onBack={() => navigate(-1)} canBack>
+      <StepLabel>Step 1 of {TOTAL_STEPS}</StepLabel>
+      <StepTitle>What's your dream about?</StepTitle>
+      <StepSub>Pick the category that fits best.</StepSub>
 
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-100 rounded-full mb-5">
-              <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-              <span className="text-blue-600 text-sm font-semibold">Anonymous Submission</span>
-            </div>
-            <h1 className="text-4xl font-black text-slate-900 mb-3">Share Your Dream</h1>
-            <p className="text-slate-500 max-w-sm mx-auto leading-relaxed">
-              Your dream will be reviewed, then published anonymously. The right fulfiller will find you.
-            </p>
-          </div>
+      {error && <p className="text-red-500 text-[13px] mb-4 -mt-2">{error}</p>}
 
-          {/* Progress stepper */}
-          <div className="flex items-center mb-8">
-            {STEPS.map((s, i) => (
-              <div key={s.label} className="flex items-center flex-1">
-                <div className="flex items-center gap-2.5 flex-shrink-0">
-                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all font-bold text-sm ${
-                    i < step ? 'bg-blue-600 text-white' :
-                    i === step ? 'gradient-blue text-white shadow-blue' :
-                    'bg-white border-2 border-slate-200 text-slate-400'
-                  }`}>
-                    {i < step
-                      ? <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/></svg>
-                      : s.icon}
-                  </div>
-                  <span className={`hidden sm:block text-xs font-semibold transition-colors ${i <= step ? 'text-slate-700' : 'text-slate-400'}`}>{s.label}</span>
-                </div>
-                {i < STEPS.length - 1 && (
-                  <div className={`flex-1 h-0.5 mx-3 rounded-full transition-all ${i < step ? 'bg-blue-600' : 'bg-slate-200'}`} />
-                )}
+      <div className="grid grid-cols-3 gap-2.5">
+        {CATEGORIES.map((cat) => {
+          const active = form.category === cat.value;
+          return (
+            <button key={cat.value} onClick={() => set('category', cat.value)}
+              className={`flex flex-col items-center gap-2 p-3.5 rounded-[16px] border-2 transition-all duration-200 no-min-h ${
+                active ? 'border-blue-600 bg-blue-50/70' : 'border-[#E4EAF4] hover:border-[#C8D5F0] bg-white'
+              }`}>
+              <span className="text-2xl">{cat.emoji}</span>
+              <span className={`text-[11.5px] font-bold text-center leading-tight ${active ? 'text-blue-700' : 'text-[#0A1628]'}`}>
+                {cat.value}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      <NextBtn
+        disabled={!form.category}
+        onClick={() => next(() => !form.category ? 'Please select a category.' : null)}
+        label="Continue"
+      />
+    </WizardShell>
+  );
+
+  /* ── Step 1: Title ── */
+  if (step === 1) return (
+    <WizardShell step={1} onBack={back} canBack>
+      <StepLabel>Step 2 of {TOTAL_STEPS}</StepLabel>
+      <StepTitle>Give your dream a title.</StepTitle>
+      <StepSub>A short, clear headline for your dream.</StepSub>
+
+      {error && <p className="text-red-500 text-[13px] mb-3 -mt-4">{error}</p>}
+
+      <input
+        value={form.title}
+        onChange={e => set('title', e.target.value)}
+        placeholder="e.g. Complete my CS degree"
+        maxLength={120}
+        className="input input-lg"
+        autoFocus
+      />
+      <div className="flex justify-between mt-1.5">
+        <span className="text-[11.5px] text-[#9AAAC7]">Keep it short and clear</span>
+        <span className="text-[11.5px] text-[#9AAAC7]">{form.title.length}/120</span>
+      </div>
+
+      <NextBtn
+        disabled={!form.title.trim()}
+        onClick={() => next(() => !form.title.trim() ? 'Please enter a title.' : null)}
+        label="Continue"
+      />
+    </WizardShell>
+  );
+
+  /* ── Step 2: Story ── */
+  if (step === 2) return (
+    <WizardShell step={2} onBack={back} canBack>
+      <StepLabel>Step 3 of {TOTAL_STEPS}</StepLabel>
+      <StepTitle>Tell your story.</StepTitle>
+      <StepSub>Why does this dream matter to you? What would it change?</StepSub>
+
+      {error && <p className="text-red-500 text-[13px] mb-3 -mt-4">{error}</p>}
+
+      <textarea
+        value={form.story}
+        onChange={e => set('story', e.target.value)}
+        rows={7}
+        placeholder="Share what this dream means to you. Be honest and personal — your story is what connects you to the right fulfiller."
+        className="input resize-none"
+        style={{ borderRadius: '16px', fontSize: '15px', lineHeight: '1.7' }}
+        autoFocus
+      />
+      <div className="flex justify-between mt-1.5">
+        <span className={`text-[11.5px] font-medium ${form.story.length < 50 ? 'text-amber-500' : 'text-emerald-500'}`}>
+          {form.story.length < 50 ? `${50 - form.story.length} more characters needed` : '✓ Looks good'}
+        </span>
+        <span className="text-[11.5px] text-[#9AAAC7]">{form.story.length} chars</span>
+      </div>
+
+      <div className="mt-4 flex items-start gap-2.5 p-3 bg-[#F4F7FB] rounded-[12px] border border-[#E4EAF4]">
+        <svg className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+        </svg>
+        <p className="text-[#6B7A99] text-[12px] leading-[1.6]">Don't include your real name, phone, or email. Your dream is published anonymously.</p>
+      </div>
+
+      <NextBtn
+        disabled={form.story.length < 50}
+        onClick={() => next(() => form.story.length < 50 ? 'Please write at least 50 characters.' : null)}
+        label="Continue"
+      />
+    </WizardShell>
+  );
+
+  /* ── Step 3: Urgency + Timeline ── */
+  if (step === 3) return (
+    <WizardShell step={3} onBack={back} canBack>
+      <StepLabel>Step 4 of {TOTAL_STEPS}</StepLabel>
+      <StepTitle>How urgent is this?</StepTitle>
+      <StepSub>This helps fulfillers prioritize. Be honest.</StepSub>
+
+      <div className="space-y-2.5 mb-6">
+        {URGENCY.map((u) => {
+          const active = form.urgency === u.value;
+          return (
+            <button key={u.value} onClick={() => set('urgency', u.value)}
+              className={`w-full flex items-center gap-4 p-4 rounded-[14px] border-2 text-left transition-all no-min-h ${
+                active ? 'border-blue-600 bg-blue-50/60' : 'border-[#E4EAF4] hover:border-[#C8D5F0] bg-white'
+              }`}>
+              <div className={`w-3 h-3 rounded-full flex-shrink-0 ${u.dot}`} />
+              <div>
+                <p className={`font-bold text-[14px] ${active ? 'text-blue-700' : 'text-[#0A1628]'}`}>{u.label}</p>
+                <p className={`text-[12px] mt-0.5 ${active ? 'text-blue-500/80' : 'text-[#9AAAC7]'}`}>{u.desc}</p>
               </div>
-            ))}
-          </div>
-
-          <div className="bg-white rounded-3xl shadow-card border border-slate-100 overflow-hidden">
-            <div className="p-8">
-              {error && (
-                <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
-                  className="mb-6 flex items-start gap-3 p-4 bg-red-50 border border-red-100 rounded-2xl">
-                  <svg className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              {active && (
+                <div className="ml-auto w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0">
+                  <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/>
                   </svg>
-                  <p className="text-red-600 text-sm">{error}</p>
-                </motion.div>
+                </div>
               )}
+            </button>
+          );
+        })}
+      </div>
 
-              <AnimatePresence mode="wait">
-                {/* ── Step 0: Dream Details ── */}
-                {step === 0 && (
-                  <motion.div key="step0"
-                    initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.25 }} className="space-y-6">
+      <p className="text-[12.5px] font-bold text-[#3D4F72] mb-2.5 uppercase tracking-[0.08em]">Timeline (optional)</p>
+      <div className="flex flex-wrap gap-2">
+        {TIMELINES.map((t) => (
+          <button key={t.value} onClick={() => set('timeline', form.timeline === t.value ? '' : t.value)}
+            className={`px-3.5 py-2 rounded-[10px] border text-[12.5px] font-semibold transition-all no-min-h ${
+              form.timeline === t.value ? 'border-blue-600 bg-blue-600 text-white' : 'border-[#E4EAF4] text-[#3D4F72] hover:border-[#C8D5F0] bg-white'
+            }`}>
+            {t.label}
+          </button>
+        ))}
+      </div>
 
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Dream Title <span className="text-red-400">*</span></label>
-                      <input value={form.title} onChange={e => set('title', e.target.value)}
-                        placeholder="Give your dream a clear, inspiring title…" maxLength={120} className="input" />
-                      <div className="flex items-center justify-between mt-1.5">
-                        <p className="text-xs text-slate-400">Appears publicly (identity stays anonymous)</p>
-                        <span className="text-xs text-slate-400">{form.title.length}/120</span>
-                      </div>
-                    </div>
+      <NextBtn onClick={() => { setError(''); setStep(4); }} label="Continue" />
+    </WizardShell>
+  );
 
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-3">Category <span className="text-red-400">*</span></label>
-                      <div className="flex flex-wrap gap-2">
-                        {CATEGORIES.map(cat => (
-                          <button key={cat} type="button" onClick={() => set('category', cat)}
-                            className={`px-4 py-2 rounded-xl text-sm font-semibold border-2 transition-all ${form.category === cat ? 'border-blue-600 bg-blue-600 text-white' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'}`}>
-                            {cat}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
+  /* ── Step 4: Location + Review ── */
+  if (step === 4) return (
+    <WizardShell step={4} onBack={back} canBack>
+      <StepLabel>Step 5 of {TOTAL_STEPS}</StepLabel>
+      <StepTitle>Last step. Review & submit.</StepTitle>
+      <StepSub>Check your dream details before submitting.</StepSub>
 
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-3">Urgency Level</label>
-                      <div className="grid grid-cols-3 gap-3">
-                        {URGENCY_OPTIONS.map(o => (
-                          <button key={o.value} type="button" onClick={() => set('urgency', o.value)}
-                            className={`p-3 rounded-xl border-2 text-left transition-all ${form.urgency === o.value ? `border-current ${o.color} shadow-sm` : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}>
-                            <p className="text-sm font-bold">{o.label}</p>
-                            <p className="text-xs mt-0.5 opacity-70">{o.desc}</p>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
+      {error && (
+        <div className="mb-4 flex items-start gap-2.5 p-3 bg-red-50 border border-red-100 rounded-[12px]">
+          <svg className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <p className="text-red-600 text-[13px]">{error}</p>
+        </div>
+      )}
 
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">Timeline</label>
-                        <div className="relative">
-                          <select value={form.timeline} onChange={e => set('timeline', e.target.value)}
-                            className="input appearance-none pr-10">
-                            <option value="">Select…</option>
-                            {TIMELINES.map(t => <option key={t} value={t}>{t}</option>)}
-                          </select>
-                          <svg className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
-                          </svg>
-                        </div>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">Country</label>
-                        <div className="relative">
-                          <select value={form.country} onChange={e => set('country', e.target.value)}
-                            className="input appearance-none pr-10">
-                            <option value="">Select…</option>
-                            {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
-                          </select>
-                          <svg className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">City / Region (optional)</label>
-                      <input value={form.location} onChange={e => set('location', e.target.value)}
-                        placeholder="e.g. Lagos, West Africa, or leave blank" className="input" />
-                      <p className="text-xs text-slate-400 mt-1.5">General area only — do not include your full address</p>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Tags (optional)</label>
-                      <input value={form.tags} onChange={e => set('tags', e.target.value)}
-                        placeholder="e.g. scholarship, medical, startup — comma separated" className="input" />
-                      <p className="text-xs text-slate-400 mt-1.5">Helps fulfillers discover your dream through search</p>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* ── Step 1: Story ── */}
-                {step === 1 && (
-                  <motion.div key="step1"
-                    initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.25 }} className="space-y-6">
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Your Dream Story <span className="text-red-400">*</span></label>
-                      <textarea value={form.story} onChange={e => set('story', e.target.value)} rows={10}
-                        placeholder="Tell us about your dream. Why is it important to you? What would it mean for your life? What kind of help or connection are you hoping for? Be as detailed as possible — a rich story helps fulfillers understand and connect with your dream."
-                        className="input resize-none" />
-                      <div className="flex items-center justify-between mt-1.5">
-                        <p className={`text-xs font-medium ${form.story.length < 50 ? 'text-amber-500' : 'text-emerald-500'}`}>
-                          {form.story.length < 50 ? `${50 - form.story.length} more characters needed` : 'Story looks great!'}
-                        </p>
-                        <span className="text-xs text-slate-400">{form.story.length} chars</span>
-                      </div>
-                    </div>
-
-                    <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-start gap-3">
-                      <svg className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                      </svg>
-                      <div>
-                        <p className="text-sm text-slate-700 font-semibold">Privacy Reminder</p>
-                        <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">Do not include your real name, phone number, email, or any personally identifying details. Your dream will be published anonymously.</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* ── Step 2: Review ── */}
-                {step === 2 && (
-                  <motion.div key="step2"
-                    initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.25 }} className="space-y-5">
-                    <h3 className="font-bold text-slate-900 text-lg">Review your dream</h3>
-
-                    <div className="space-y-3">
-                      <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                        <p className="text-xs text-slate-400 font-medium mb-1">Title</p>
-                        <p className="font-bold text-slate-900">{form.title}</p>
-                      </div>
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                          <p className="text-xs text-slate-400 font-medium mb-1">Category</p>
-                          <p className="font-bold text-slate-900">{form.category || '—'}</p>
-                        </div>
-                        <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                          <p className="text-xs text-slate-400 font-medium mb-1">Urgency</p>
-                          <p className={`font-bold text-sm capitalize ${form.urgency === 'critical' ? 'text-red-600' : form.urgency === 'urgent' ? 'text-amber-600' : 'text-slate-900'}`}>{form.urgency}</p>
-                        </div>
-                        <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                          <p className="text-xs text-slate-400 font-medium mb-1">Timeline</p>
-                          <p className="font-bold text-slate-900 text-sm">{form.timeline || '—'}</p>
-                        </div>
-                        <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                          <p className="text-xs text-slate-400 font-medium mb-1">Country</p>
-                          <p className="font-bold text-slate-900 text-sm">{form.country || '—'}</p>
-                        </div>
-                      </div>
-                      {form.tags && (
-                        <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                          <p className="text-xs text-slate-400 font-medium mb-2">Tags</p>
-                          <div className="flex flex-wrap gap-1.5">
-                            {form.tags.split(',').map(t => t.trim()).filter(Boolean).map(t => (
-                              <span key={t} className="px-2.5 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-full">{t}</span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                        <p className="text-xs text-slate-400 font-medium mb-2">Story</p>
-                        <p className="text-sm text-slate-600 leading-relaxed line-clamp-6">{form.story}</p>
-                      </div>
-                    </div>
-
-                    <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl flex items-start gap-3">
-                      <svg className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126z"/>
-                      </svg>
-                      <p className="text-sm text-amber-700">
-                        By submitting, you confirm this dream is genuine and you haven't included personal contact information. Our moderators will review it before it goes live.
-                      </p>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            <div className="px-8 pb-8 flex items-center justify-between gap-4">
-              <button onClick={() => step > 0 ? setStep(step - 1) : navigate(-1)}
-                className="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/>
-                </svg>
-                {step === 0 ? 'Cancel' : 'Back'}
-              </button>
-
-              {step < 2 ? (
-                <button onClick={advance}
-                  className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors shadow-blue text-sm">
-                  Continue
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/>
-                  </svg>
-                </button>
-              ) : (
-                <button onClick={handleSubmit} disabled={loading}
-                  className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors shadow-blue text-sm disabled:opacity-60 disabled:cursor-not-allowed">
-                  {loading ? (
-                    <>
-                      <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
-                      </svg>
-                      Submitting…
-                    </>
-                  ) : (
-                    <>
-                      Submit Dream
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-                      </svg>
-                    </>
-                  )}
-                </button>
-              )}
-            </div>
+      {/* Location fields — minimal */}
+      <div className="grid grid-cols-2 gap-3 mb-5">
+        <div>
+          <label className="block text-[11.5px] font-bold text-[#6B7A99] mb-1.5 uppercase tracking-[0.08em]">Country</label>
+          <div className="relative">
+            <select value={form.country} onChange={e => set('country', e.target.value)}
+              className="input appearance-none pr-8 text-[13.5px]">
+              <option value="">Select…</option>
+              {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
+            <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#9AAAC7] pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
           </div>
         </div>
+        <div>
+          <label className="block text-[11.5px] font-bold text-[#6B7A99] mb-1.5 uppercase tracking-[0.08em]">Region</label>
+          <input value={form.location} onChange={e => set('location', e.target.value)}
+            placeholder="City or region"
+            className="input text-[13.5px]" />
+        </div>
       </div>
-    </div>
+
+      {/* Review card */}
+      <div className="bg-[#F4F7FB] rounded-[16px] border border-[#E4EAF4] p-5 mb-5">
+        <div className="flex items-start justify-between mb-3">
+          <div>
+            <p className="font-extrabold text-[#0A1628] text-[15px] leading-snug mb-1" style={{ letterSpacing: '-0.02em' }}>{form.title}</p>
+            <div className="flex items-center gap-2">
+              <span className={`badge ${CATEGORIES.find(c=>c.value===form.category)?.value ? `cat-${form.category.toLowerCase()}` : 'badge-slate'}`}>{form.category}</span>
+              {form.urgency !== 'normal' && (
+                <span className={`badge ${form.urgency === 'critical' ? 'badge-red' : 'badge-amber'} capitalize`}>{form.urgency}</span>
+              )}
+            </div>
+          </div>
+          <button onClick={() => setStep(0)} className="text-[11.5px] text-blue-500 font-semibold hover:text-blue-700 no-min-h">Edit</button>
+        </div>
+        <p className="text-[#6B7A99] text-[12.5px] leading-[1.7] line-clamp-3">{form.story}</p>
+        {(form.country || form.timeline) && (
+          <div className="flex items-center gap-3 mt-3 pt-3 border-t border-[#E4EAF4]">
+            {form.country && <span className="text-[11.5px] text-[#9AAAC7]">📍 {form.country}</span>}
+            {form.timeline && <span className="text-[11.5px] text-[#9AAAC7]">⏱ {form.timeline}</span>}
+          </div>
+        )}
+      </div>
+
+      <div className="flex items-start gap-2.5 p-3 bg-amber-50 border border-amber-200 rounded-[12px] mb-1">
+        <svg className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
+        </svg>
+        <p className="text-amber-700 text-[12px] leading-[1.6]">By submitting, you confirm this dream is genuine and contains no personal contact information.</p>
+      </div>
+
+      <NextBtn
+        onClick={handleSubmit}
+        label={loading ? 'Submitting…' : 'Submit Dream'}
+        loading={loading}
+      />
+    </WizardShell>
   );
+
+  return null;
 }
