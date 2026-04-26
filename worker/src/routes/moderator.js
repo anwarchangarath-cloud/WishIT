@@ -102,7 +102,7 @@ mod.put('/fulfillments/:id/approve', async (c) => {
 
   const dream = await c.env.DB.prepare('SELECT * FROM dreams WHERE id = ?').bind(fr.dream_id).first();
   if (dream && !dream.dream_team) {
-    await c.env.DB.prepare("UPDATE dreams SET fulfiller_uid=?, status='matched', updated_at=? WHERE id=?")
+    await c.env.DB.prepare("UPDATE dreams SET fulfiller_uid=?, status='in_progress', updated_at=? WHERE id=?")
       .bind(fr.fulfiller_uid, now(), fr.dream_id).run();
   }
 

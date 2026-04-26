@@ -288,7 +288,7 @@ export default function Messages() {
 
   const activeThread = threads.find(t => t.dream_id === activeDreamId);
   const isFulfiller = activeThread && user && activeThread.fulfiller_uid === user.uid;
-  const canMarkFulfilled = isFulfiller && dreamInfo?.status === 'in_progress';
+  const canMarkFulfilled = isFulfiller && ['matched', 'in_progress'].includes(dreamInfo?.status);
   const isPendingVerification = dreamInfo?.status === 'pending_fulfillment';
 
   if (!user) return null;

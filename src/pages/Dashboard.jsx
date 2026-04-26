@@ -533,18 +533,11 @@ export default function Dashboard() {
                             </div>
                           )}
 
-                          {dream.status === 'matched' && (
+                          {['matched', 'in_progress'].includes(dream.status) && (
                             <div className="mt-3 pt-3 flex items-center justify-between" style={{ borderTop: '1px solid var(--border)' }}>
-                              <span className="text-[12.5px]" style={{ color: 'var(--text-3)' }}>A fulfiller has been matched to your dream</span>
-                              <Link to={`/messages/${dream.id}`} className="btn-primary" style={{ fontSize: '12px', padding: '7px 14px' }}>
-                                Open Chat
-                              </Link>
-                            </div>
-                          )}
-
-                          {dream.status === 'in_progress' && (
-                            <div className="mt-3 pt-3 flex items-center justify-between" style={{ borderTop: '1px solid var(--border)' }}>
-                              <span className="text-[12.5px]" style={{ color: 'var(--text-3)' }}>Active fulfillment in progress</span>
+                              <span className="text-[12.5px]" style={{ color: 'var(--text-3)' }}>
+                                {dream.status === 'matched' ? 'A fulfiller has been matched to your dream' : 'Active fulfillment in progress'}
+                              </span>
                               <Link to={`/messages/${dream.id}`} className="btn-primary" style={{ fontSize: '12px', padding: '7px 14px' }}>
                                 Open Chat
                               </Link>
