@@ -8,13 +8,13 @@ import Navbar from '../components/layout/Navbar';
 const ease = [0.22, 1, 0.36, 1];
 
 const NOTIF_ICONS = {
-  dream_approved:      { icon: '✓', bg: '#D1FAE5', color: '#065F46' },
-  dream_rejected:      { icon: '✕', bg: '#FEE2E2', color: '#991B1B' },
-  dream_info_request:  { icon: '?', bg: '#FEF3C7', color: '#92400E' },
-  fulfillment_received:{ icon: '✦', bg: '#EFF6FF', color: '#1D4ED8' },
-  fulfillment_approved:{ icon: '✓', bg: '#D1FAE5', color: '#065F46' },
-  fulfillment_rejected:{ icon: '✕', bg: '#FEE2E2', color: '#991B1B' },
-  message:             { icon: '✉', bg: '#EDE9FE', color: '#5B21B6' },
+  dream_approved:      { icon: '✓', bg: '#0F3A2E', color: '#7BEFC9' },
+  dream_rejected:      { icon: '✕', bg: '#3A181E', color: '#FF9D9D' },
+  dream_info_request:  { icon: '?', bg: '#3A2D12', color: '#FFC97A' },
+  fulfillment_received:{ icon: '✦', bg: '#12204A', color: '#5B8DFF' },
+  fulfillment_approved:{ icon: '✓', bg: '#0F3A2E', color: '#7BEFC9' },
+  fulfillment_rejected:{ icon: '✕', bg: '#3A181E', color: '#FF9D9D' },
+  message:             { icon: '✉', bg: '#251C4E', color: '#C3AFFF' },
   support_milestone:   { icon: '♡', bg: '#FFE4E6', color: '#9F1239' },
   system:              { icon: 'i', bg: 'var(--bg)', color: 'var(--text-3)' },
 };
@@ -86,7 +86,7 @@ function NotifItem({ notif, onRead, onDelete }) {
             </button>
           )}
           <button onClick={() => onDelete(notif.id)}
-            className="text-[12px] ml-auto transition-colors hover:text-red-400" style={{ color: 'var(--border-dark)' }}>
+            className="text-[12px] ml-auto transition-colors hover:text-[#FF6E6E]" style={{ color: 'var(--border-dark)' }}>
             Delete
           </button>
         </div>
@@ -186,17 +186,17 @@ export default function Notifications() {
               <button key={f.value} onClick={() => setFilter(f.value)}
                 className="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-bold transition-all"
                 style={{
-                  background: active ? 'var(--blue)' : 'white',
+                  background: active ? 'var(--blue)' : 'var(--surface)',
                   color: active ? 'white' : 'var(--text-2)',
                   border: `1.5px solid ${active ? 'var(--blue)' : 'var(--border)'}`,
-                  boxShadow: active ? '0 2px 8px rgba(37,99,235,0.25)' : 'none',
+                  boxShadow: active ? '0 2px 8px rgba(61,123,255,0.25)' : 'none',
                 }}>
                 {f.label}
                 {f.value === 'unread' && unreadCount > 0 && (
                   <span className="w-4.5 h-4.5 flex items-center justify-center rounded-full text-[10px] font-extrabold"
                     style={{
                       background: active ? 'rgba(255,255,255,0.3)' : 'var(--blue)',
-                      color: active ? 'white' : 'white',
+                      color: active ? 'white' : 'var(--text-2)',
                       width: '18px', height: '18px',
                     }}>
                     {unreadCount}
@@ -212,7 +212,7 @@ export default function Notifications() {
           <div className="space-y-3">
             {[...Array(5)].map((_, i) => (
               <div key={i} className="flex gap-4 p-5 rounded-[18px] animate-pulse"
-                style={{ background: 'white', border: '1px solid var(--border)' }}>
+                style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
                 <div className="w-10 h-10 rounded-[12px] flex-shrink-0" style={{ background: 'var(--border)' }} />
                 <div className="flex-1 space-y-2">
                   <div className="h-3.5 rounded-full w-1/3" style={{ background: 'var(--border)' }} />

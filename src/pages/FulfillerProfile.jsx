@@ -19,7 +19,7 @@ function TrustRing({ score }) {
   const r = 28;
   const circ = 2 * Math.PI * r;
   const dash = pct * circ;
-  const color = score >= 80 ? '#10B981' : score >= 60 ? '#2563EB' : score >= 40 ? '#F59E0B' : '#EF4444';
+  const color = score >= 80 ? '#2CE5A7' : score >= 60 ? '#3D7BFF' : score >= 40 ? '#FFB648' : '#FF6E6E';
 
   return (
     <div className="relative w-20 h-20 flex items-center justify-center">
@@ -107,7 +107,7 @@ export default function FulfillerProfile() {
 
             {/* Avatar */}
             <div className="flex-shrink-0 w-24 h-24 rounded-[20px] flex items-center justify-center shadow-float"
-              style={{ background: 'linear-gradient(135deg, #2563EB, #4F46E5)' }}>
+              style={{ background: 'linear-gradient(135deg, #3D7BFF, #4F46E5)' }}>
               <span className="text-3xl font-extrabold text-white">
                 {profile.display_name?.[0]?.toUpperCase() || '?'}
               </span>
@@ -120,13 +120,13 @@ export default function FulfillerProfile() {
                 </h1>
                 {profile.verified && (
                   <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11.5px] font-bold"
-                    style={{ background: 'rgba(37,99,235,0.25)', border: '1px solid rgba(147,197,253,0.3)', color: '#BFDBFE' }}>
+                    style={{ background: 'rgba(61,123,255,0.25)', border: '1px solid rgba(147,197,253,0.3)', color: '#24345E' }}>
                     ✓ Verified
                   </span>
                 )}
                 {(profile.mode === 'fulfiller' || profile.mode === 'both') && (
                   <span className="px-2.5 py-1 rounded-full text-[11.5px] font-bold"
-                    style={{ background: 'rgba(16,185,129,0.2)', border: '1px solid rgba(52,211,153,0.3)', color: '#6EE7B7' }}>
+                    style={{ background: 'rgba(44,229,167,0.2)', border: '1px solid rgba(52,211,153,0.3)', color: '#6EE7B7' }}>
                     Fulfiller
                   </span>
                 )}
@@ -175,7 +175,7 @@ export default function FulfillerProfile() {
                   <p className="text-[11.5px]" style={{ color: 'var(--text-4)' }}>Fulfilled</p>
                 </div>
                 <div className="text-center p-3 rounded-[12px]" style={{ background: 'var(--bg)' }}>
-                  <p className="font-extrabold" style={{ fontSize: '1.75rem', color: '#10B981', letterSpacing: '-0.04em' }}>
+                  <p className="font-extrabold" style={{ fontSize: '1.75rem', color: '#2CE5A7', letterSpacing: '-0.04em' }}>
                     {profile.impact_score || 0}
                   </p>
                   <p className="text-[11.5px]" style={{ color: 'var(--text-4)' }}>Impact Score</p>

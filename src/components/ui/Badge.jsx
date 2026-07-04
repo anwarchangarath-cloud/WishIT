@@ -1,19 +1,19 @@
 const MAP = {
   /* status */
-  draft:     'bg-slate-100 text-slate-600 border-slate-200',
-  pending:   'bg-amber-50  text-amber-700  border-amber-200',
-  approved:  'bg-emerald-50 text-emerald-700 border-emerald-200',
-  published: 'bg-blue-50   text-blue-700   border-blue-200',
-  fulfilled: 'bg-violet-50 text-violet-700  border-violet-200',
-  rejected:  'bg-red-50    text-red-600     border-red-200',
-  matched:   'bg-sky-50    text-sky-700     border-sky-200',
+  draft:     'bg-[#101A33] text-[#8B9AC2] border-[#1B2745]',
+  pending:   'bg-[#2B2110]  text-[#FFB648]  border-[#6E5620]',
+  approved:  'bg-[#0A2B22] text-[#2CE5A7] border-[#1D5C48]',
+  published: 'bg-[#12204A]   text-[#7FA8FF]   border-[#24345E]',
+  fulfilled: 'bg-[#1D1640] text-[#B79CFF]  border-[#453775]',
+  rejected:  'bg-[#2B1218]    text-[#FF6E6E]     border-[#6E2833]',
+  matched:   'bg-[#0C2337]    text-[#4FC7FF]     border-[#1D4A66]',
   /* roles */
-  admin:     'bg-slate-900 text-white        border-slate-900',
-  moderator: 'bg-indigo-50 text-indigo-700  border-indigo-200',
-  user:      'bg-slate-100 text-slate-600   border-slate-200',
+  admin:     'bg-[#0B1222] text-white        border-[#0B1222]',
+  moderator: 'bg-[#171B45] text-[#A5B0FF]  border-[#37407E]',
+  user:      'bg-[#101A33] text-[#8B9AC2]   border-[#1B2745]',
   /* misc */
-  verified:  'bg-emerald-50 text-emerald-700 border-emerald-200',
-  anonymous: 'bg-blue-50   text-blue-700   border-blue-200',
+  verified:  'bg-[#0A2B22] text-[#2CE5A7] border-[#1D5C48]',
+  anonymous: 'bg-[#12204A]   text-[#7FA8FF]   border-[#24345E]',
 };
 
 export default function Badge({ label, type = 'user', dot = false, className = '' }) {

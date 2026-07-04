@@ -5,12 +5,12 @@ export default function Button({
   const base = 'inline-flex items-center justify-center font-semibold transition-all duration-200 select-none disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap';
 
   const variants = {
-    primary:   'bg-blue-600 text-white hover:bg-blue-700 active:scale-[0.98] shadow-blue rounded-2xl',
-    secondary: 'bg-white text-slate-800 border border-slate-200 hover:border-slate-300 hover:bg-slate-50 rounded-2xl',
-    ghost:     'text-slate-600 hover:bg-slate-100 rounded-xl',
-    navy:      'bg-slate-950 text-white hover:bg-slate-900 rounded-2xl shadow-float',
-    outline:   'border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white rounded-2xl',
-    danger:    'bg-red-500 text-white hover:bg-red-600 rounded-2xl',
+    primary:   'bg-[#3D7BFF] text-white hover:bg-[#5B8DFF] active:scale-[0.98] shadow-blue rounded-2xl',
+    secondary: 'bg-[#0B1222] text-[#D6DEF5] border border-[#1B2745] hover:border-[#2C3D6E] hover:bg-[#0E1730] rounded-2xl',
+    ghost:     'text-[#8B9AC2] hover:bg-[#101A33] rounded-xl',
+    navy:      'bg-[#03040A] text-white hover:bg-[#101A33] rounded-2xl shadow-float',
+    outline:   'border-2 border-[#3D7BFF] text-[#6495FF] hover:bg-[#3D7BFF] hover:text-white rounded-2xl',
+    danger:    'bg-[#FF5C5C] text-white hover:bg-[#FF5C5C] rounded-2xl',
     'ghost-white': 'text-white/80 hover:text-white hover:bg-white/10 rounded-xl',
   };
 

@@ -14,7 +14,7 @@ const CAT_CLASS = {
 };
 
 const ACCENT_COLORS = [
-  '#2563EB', '#10B981', '#7C3AED', '#F59E0B', '#EC4899', '#0EA5E9',
+  '#3D7BFF', '#2CE5A7', '#A78BFF', '#FFB648', '#EC4899', '#0EA5E9',
 ];
 
 const MOCK_STORIES = [
@@ -187,7 +187,7 @@ export default function SuccessStories() {
       </div>
 
       {/* Filter bar */}
-      <div className="sticky top-16 z-30" style={{ background: 'rgba(244,247,251,0.9)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--border)' }}>
+      <div className="sticky top-16 z-30" style={{ background: 'rgba(7,12,24,0.85)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--border)' }}>
         <div className="max-w-6xl mx-auto px-6 lg:px-8 py-3">
           <div className="flex gap-2 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
             {cats.map(c => {
@@ -196,10 +196,10 @@ export default function SuccessStories() {
                 <button key={c} onClick={() => setFilter(c)}
                   className="flex-shrink-0 px-4 py-1.5 rounded-full text-[13px] font-bold transition-all"
                   style={{
-                    background: active ? 'var(--blue)' : 'white',
+                    background: active ? 'var(--blue)' : 'var(--surface)',
                     color: active ? 'white' : 'var(--text-2)',
                     border: `1.5px solid ${active ? 'var(--blue)' : 'var(--border)'}`,
-                    boxShadow: active ? '0 2px 8px rgba(37,99,235,0.2)' : 'none',
+                    boxShadow: active ? '0 2px 8px rgba(61,123,255,0.2)' : 'none',
                   }}>
                   {c}
                 </button>
@@ -214,7 +214,7 @@ export default function SuccessStories() {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="rounded-[20px] p-6 animate-pulse" style={{ background: 'white', border: '1px solid var(--border)' }}>
+              <div key={i} className="rounded-[20px] p-6 animate-pulse" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
                 <div className="h-1 rounded mb-5" style={{ background: 'var(--border)' }} />
                 <div className="h-3.5 rounded-full w-20 mb-3" style={{ background: 'var(--border)' }} />
                 <div className="h-5 rounded-full w-3/4 mb-2" style={{ background: 'var(--border)' }} />
@@ -236,7 +236,7 @@ export default function SuccessStories() {
       </div>
 
       {/* CTA */}
-      <div className="py-20" style={{ background: 'white', borderTop: '1px solid var(--border)' }}>
+      <div className="py-20" style={{ background: 'var(--surface)', borderTop: '1px solid var(--border)' }}>
         <div className="max-w-2xl mx-auto px-6 text-center">
           <h2 className="font-extrabold mb-4" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.25rem)', color: 'var(--text)', letterSpacing: '-0.035em' }}>
             Could Your Dream Be Next?

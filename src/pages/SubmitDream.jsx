@@ -22,8 +22,8 @@ const CATEGORIES = [
 
 const URGENCY = [
   { value: 'normal',   label: 'Normal',   desc: 'No immediate pressure',    dot: '#94A3B8' },
-  { value: 'urgent',   label: 'Urgent',   desc: 'Help needed within weeks', dot: '#F59E0B' },
-  { value: 'critical', label: 'Critical', desc: 'Immediate help needed',    dot: '#EF4444' },
+  { value: 'urgent',   label: 'Urgent',   desc: 'Help needed within weeks', dot: '#FFB648' },
+  { value: 'critical', label: 'Critical', desc: 'Immediate help needed',    dot: '#FF6E6E' },
 ];
 
 const SUPPORT_OPTIONS = ['Skills', 'Mentorship', 'Funding', 'Resources', 'Connections', 'Other'];
@@ -38,16 +38,16 @@ function ProgressBar({ step }) {
   const pct = Math.round(((step + 1) / TOTAL_STEPS) * 100);
   return (
     <div style={{ width: '100%', maxWidth: '420px', margin: '0 auto' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-        <span style={{ fontSize: '12px', fontWeight: 600, color: '#9AAAC7' }}>Step {step + 1} of {TOTAL_STEPS}</span>
-        <span style={{ fontSize: '12px', fontWeight: 600, color: '#9AAAC7' }}>{pct}%</span>
+      <div className="font-mono" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+        <span style={{ fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', color: '#5F6F9C' }}>STEP {step + 1} / {TOTAL_STEPS}</span>
+        <span style={{ fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', color: '#4FE3FF' }}>{pct}%</span>
       </div>
-      <div style={{ height: '3px', background: '#E4EAF4', borderRadius: '99px', overflow: 'hidden' }}>
+      <div style={{ height: '3px', background: '#1B2745', borderRadius: '99px', overflow: 'hidden' }}>
         <motion.div
           initial={false}
           animate={{ width: `${pct}%` }}
           transition={{ duration: 0.4, ease }}
-          style={{ height: '100%', background: 'linear-gradient(90deg, #2563EB, #4F46E5)', borderRadius: '99px' }}
+          style={{ height: '100%', background: 'linear-gradient(90deg, #3D7BFF, #4FE3FF)', borderRadius: '99px', boxShadow: '0 0 12px rgba(79,227,255,0.5)' }}
         />
       </div>
     </div>
@@ -57,7 +57,7 @@ function ProgressBar({ step }) {
 /* ── Shared wrapper ── */
 function Shell({ step, onBack, canBack, children }) {
   return (
-    <div style={{ minHeight: '100vh', background: '#fff', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100vh', background: '#05070F', display: 'flex', flexDirection: 'column' }}>
       <Navbar />
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', paddingTop: '80px' }}>
         <div style={{ padding: '24px 20px 0' }}>
@@ -84,7 +84,7 @@ function Shell({ step, onBack, canBack, children }) {
           <div style={{ padding: '0 20px 24px', display: 'flex', justifyContent: 'center' }}>
             <button onClick={onBack} style={{
               background: 'none', border: 'none', cursor: 'pointer',
-              color: '#9AAAC7', fontSize: '13px', fontWeight: 600,
+              color: '#5F6F9C', fontSize: '13px', fontWeight: 600,
               fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
               display: 'flex', alignItems: 'center', gap: '4px',
             }}>
@@ -101,14 +101,14 @@ function Shell({ step, onBack, canBack, children }) {
 function Q({ children }) {
   return (
     <h2 className="font-display" style={{
-      fontSize: 'clamp(1.5rem, 5vw, 2rem)', color: '#0A1628', fontWeight: 400,
+      fontSize: 'clamp(1.5rem, 5vw, 2rem)', color: '#E9EEFF', fontWeight: 400,
       marginBottom: '8px', lineHeight: 1.15, letterSpacing: '-0.02em',
     }}>{children}</h2>
   );
 }
 
 function Hint({ children }) {
-  return <p style={{ fontSize: '14px', color: '#6B7A99', lineHeight: 1.7, marginBottom: '28px' }}>{children}</p>;
+  return <p style={{ fontSize: '14px', color: '#8B9AC2', lineHeight: 1.7, marginBottom: '28px' }}>{children}</p>;
 }
 
 /* ── Continue button ── */
@@ -117,13 +117,13 @@ function ContinueBtn({ onClick, disabled = false, label = 'Continue →', loadin
   return (
     <button onClick={onClick} disabled={disabled || loading} style={{
       width: '100%', height: '52px', marginTop: '24px',
-      background: active ? '#2563EB' : '#E4EAF4',
-      color: active ? '#fff' : '#9AAAC7',
+      background: active ? '#3D7BFF' : '#1B2745',
+      color: active ? '#fff' : '#5F6F9C',
       fontWeight: 700, fontSize: '15px', borderRadius: '14px',
       border: 'none', cursor: active ? 'pointer' : 'not-allowed',
       fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
       letterSpacing: '-0.01em',
-      boxShadow: active ? '0 4px 14px rgba(37,99,235,0.28)' : 'none',
+      boxShadow: active ? '0 4px 14px rgba(61,123,255,0.28)' : 'none',
       transition: 'all 0.2s',
     }}>
       {loading ? 'Submitting…' : label}
@@ -197,7 +197,7 @@ export default function SubmitDream() {
   /* ── Success screen ── */
   if (submitted) {
     return (
-      <div style={{ minHeight: '100vh', background: '#F4F7FB', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ minHeight: '100vh', background: '#05070F', display: 'flex', flexDirection: 'column' }}>
         <Navbar />
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '100px 20px 40px' }}>
           <motion.div
@@ -206,36 +206,36 @@ export default function SubmitDream() {
             transition={{ duration: 0.5, ease }}
             style={{
               width: '100%', maxWidth: '360px', textAlign: 'center',
-              background: '#fff', borderRadius: '24px',
-              padding: '40px', border: '1px solid #E4EAF4',
-              boxShadow: '0 20px 60px rgba(10,22,40,0.09)',
+              background: '#0B1222', borderRadius: '24px',
+              padding: '40px', border: '1px solid #1B2745',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.09)',
             }}>
             <div style={{
               width: '64px', height: '64px', margin: '0 auto 24px',
-              background: 'linear-gradient(135deg, #10B981, #059669)',
+              background: 'linear-gradient(135deg, #2CE5A7, #24C892)',
               borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 8px 24px rgba(16,185,129,0.30)',
+              boxShadow: '0 8px 24px rgba(44,229,167,0.30)',
             }}>
               <svg style={{ width: '32px', height: '32px', color: '#fff' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/>
               </svg>
             </div>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0A1628', letterSpacing: '-0.03em', marginBottom: '10px' }}>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#E9EEFF', letterSpacing: '-0.03em', marginBottom: '10px' }}>
               Dream Submitted!
             </h2>
-            <p style={{ fontSize: '14px', color: '#6B7A99', lineHeight: 1.75, marginBottom: '6px' }}>
+            <p style={{ fontSize: '14px', color: '#8B9AC2', lineHeight: 1.75, marginBottom: '6px' }}>
               Your dream is now under review by our moderation team.
             </p>
-            <p style={{ fontSize: '13px', color: '#9AAAC7', marginBottom: '28px' }}>
+            <p style={{ fontSize: '13px', color: '#5F6F9C', marginBottom: '28px' }}>
               We'll review it within 48 hours.
             </p>
             <button onClick={() => navigate('/dreams')} style={{
               width: '100%', height: '48px',
-              background: '#2563EB', color: '#fff',
+              background: '#3D7BFF', color: '#fff',
               fontWeight: 700, fontSize: '14px', borderRadius: '12px',
               border: 'none', cursor: 'pointer',
               fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
-              boxShadow: '0 4px 14px rgba(37,99,235,0.28)',
+              boxShadow: '0 4px 14px rgba(61,123,255,0.28)',
             }}>
               Explore Dreams
             </button>
@@ -250,7 +250,7 @@ export default function SubmitDream() {
     <Shell step={0} onBack={() => navigate(-1)} canBack>
       <Q>What is your dream?</Q>
       <Hint>A short, clear headline — what would change your life?</Hint>
-      {error && <p style={{ color: '#EF4444', fontSize: '13px', marginBottom: '12px', marginTop: '-16px' }}>{error}</p>}
+      {error && <p style={{ color: '#FF6E6E', fontSize: '13px', marginBottom: '12px', marginTop: '-16px' }}>{error}</p>}
       <input
         value={form.title}
         onChange={e => set('title', e.target.value)}
@@ -261,8 +261,8 @@ export default function SubmitDream() {
         className="input input-lg"
       />
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px' }}>
-        <span style={{ fontSize: '12px', color: '#9AAAC7' }}>Keep it clear and honest</span>
-        <span style={{ fontSize: '12px', color: '#9AAAC7' }}>{form.title.length}/120</span>
+        <span style={{ fontSize: '12px', color: '#5F6F9C' }}>Keep it clear and honest</span>
+        <span style={{ fontSize: '12px', color: '#5F6F9C' }}>{form.title.length}/120</span>
       </div>
       <ContinueBtn onClick={goAfterStep0} disabled={!form.title.trim()} />
     </Shell>
@@ -273,7 +273,7 @@ export default function SubmitDream() {
     <Shell step={1} onBack={back} canBack>
       <Q>Tell us your story.</Q>
       <Hint>The more honest, the more powerful. Why does this dream matter to you?</Hint>
-      {error && <p style={{ color: '#EF4444', fontSize: '13px', marginBottom: '12px', marginTop: '-16px' }}>{error}</p>}
+      {error && <p style={{ color: '#FF6E6E', fontSize: '13px', marginBottom: '12px', marginTop: '-16px' }}>{error}</p>}
       <textarea
         value={form.story}
         onChange={e => set('story', e.target.value)}
@@ -284,10 +284,10 @@ export default function SubmitDream() {
         style={{ borderRadius: '16px', fontSize: '15px', lineHeight: '1.7', resize: 'none' }}
       />
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px' }}>
-        <span style={{ fontSize: '12px', fontWeight: 500, color: form.story.length < 50 ? '#F59E0B' : '#10B981' }}>
+        <span style={{ fontSize: '12px', fontWeight: 500, color: form.story.length < 50 ? '#FFB648' : '#2CE5A7' }}>
           {form.story.length < 50 ? `${50 - form.story.length} more characters` : '✓ Looks good'}
         </span>
-        <span style={{ fontSize: '12px', color: '#9AAAC7' }}>{form.story.length} chars</span>
+        <span style={{ fontSize: '12px', color: '#5F6F9C' }}>{form.story.length} chars</span>
       </div>
       <ContinueBtn
         onClick={() => { if (form.story.length < 50) { setError('Please write at least 50 characters.'); return; } next(); }}
@@ -301,7 +301,7 @@ export default function SubmitDream() {
     <Shell step={2} onBack={back} canBack>
       <Q>What category fits best?</Q>
       <Hint>Pick the one that matches your dream most closely.</Hint>
-      {error && <p style={{ color: '#EF4444', fontSize: '13px', marginBottom: '12px' }}>{error}</p>}
+      {error && <p style={{ color: '#FF6E6E', fontSize: '13px', marginBottom: '12px' }}>{error}</p>}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
         {CATEGORIES.map(cat => {
           const active = form.category === cat.value;
@@ -311,13 +311,13 @@ export default function SubmitDream() {
               style={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
                 padding: '14px 6px', borderRadius: '14px',
-                border: active ? '2px solid #2563EB' : '2px solid #E4EAF4',
-                background: active ? '#EFF6FF' : '#fff',
+                border: active ? '2px solid #3D7BFF' : '2px solid #1B2745',
+                background: active ? '#12204A' : '#0B1222',
                 cursor: 'pointer', transition: 'all 0.15s',
                 fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
               }}>
               <span style={{ fontSize: '22px' }}>{cat.emoji}</span>
-              <span style={{ fontSize: '11px', fontWeight: 700, color: active ? '#2563EB' : '#0A1628', textAlign: 'center', lineHeight: 1.2 }}>
+              <span style={{ fontSize: '11px', fontWeight: 700, color: active ? '#3D7BFF' : '#E9EEFF', textAlign: 'center', lineHeight: 1.2 }}>
                 {cat.value}
               </span>
             </button>
@@ -344,18 +344,18 @@ export default function SubmitDream() {
               style={{
                 display: 'flex', alignItems: 'center', gap: '16px',
                 padding: '16px', borderRadius: '14px', textAlign: 'left',
-                border: active ? '2px solid #2563EB' : '2px solid #E4EAF4',
-                background: active ? '#EFF6FF' : '#fff',
+                border: active ? '2px solid #3D7BFF' : '2px solid #1B2745',
+                background: active ? '#12204A' : '#0B1222',
                 cursor: 'pointer', transition: 'all 0.15s',
                 fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
               }}>
               <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: u.dot, flexShrink: 0 }} />
               <div style={{ flex: 1 }}>
-                <p style={{ fontWeight: 700, fontSize: '14px', color: active ? '#2563EB' : '#0A1628', margin: 0 }}>{u.label}</p>
-                <p style={{ fontSize: '12px', color: active ? '#60A5FA' : '#9AAAC7', margin: '2px 0 0' }}>{u.desc}</p>
+                <p style={{ fontWeight: 700, fontSize: '14px', color: active ? '#3D7BFF' : '#E9EEFF', margin: 0 }}>{u.label}</p>
+                <p style={{ fontSize: '12px', color: active ? '#7FA8FF' : '#5F6F9C', margin: '2px 0 0' }}>{u.desc}</p>
               </div>
               {active && (
-                <div style={{ width: '20px', height: '20px', borderRadius: '50%', background: '#2563EB', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <div style={{ width: '20px', height: '20px', borderRadius: '50%', background: '#3D7BFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <svg style={{ width: '12px', height: '12px' }} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={3}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/>
                   </svg>
@@ -374,7 +374,7 @@ export default function SubmitDream() {
     <Shell step={4} onBack={back} canBack>
       <Q>What kind of support do you need?</Q>
       <Hint>Select all that apply.</Hint>
-      {error && <p style={{ color: '#EF4444', fontSize: '13px', marginBottom: '12px' }}>{error}</p>}
+      {error && <p style={{ color: '#FF6E6E', fontSize: '13px', marginBottom: '12px' }}>{error}</p>}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
         {SUPPORT_OPTIONS.map(opt => {
           const active = form.supportTypes.includes(opt);
@@ -390,9 +390,9 @@ export default function SubmitDream() {
               }}
               style={{
                 padding: '10px 18px', borderRadius: '99px',
-                border: active ? '2px solid #2563EB' : '2px solid #E4EAF4',
-                background: active ? '#2563EB' : '#fff',
-                color: active ? '#fff' : '#3D4F72',
+                border: active ? '2px solid #3D7BFF' : '2px solid #1B2745',
+                background: active ? '#3D7BFF' : '#0B1222',
+                color: active ? '#fff' : '#B5C2E4',
                 fontWeight: 700, fontSize: '13px', cursor: 'pointer',
                 transition: 'all 0.15s',
                 fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
@@ -415,8 +415,8 @@ export default function SubmitDream() {
       <Q>Anything else we should know?</Q>
       <Hint>Optional — any extra context that might help the right person find you.</Hint>
       {error && (
-        <div style={{ marginBottom: '16px', padding: '12px 14px', background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: '12px' }}>
-          <p style={{ color: '#DC2626', fontSize: '13px', margin: 0 }}>{error}</p>
+        <div style={{ marginBottom: '16px', padding: '12px 14px', background: '#2B1218', border: '1px solid #6E2833', borderRadius: '12px' }}>
+          <p style={{ color: '#FF5C5C', fontSize: '13px', margin: 0 }}>{error}</p>
         </div>
       )}
       <textarea
@@ -432,7 +432,7 @@ export default function SubmitDream() {
         <button onClick={handleSubmit} style={{
           width: '100%', marginTop: '12px', padding: '12px',
           background: 'none', border: 'none', cursor: 'pointer',
-          color: '#9AAAC7', fontSize: '13px', fontWeight: 600,
+          color: '#5F6F9C', fontSize: '13px', fontWeight: 600,
           fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
         }}>
           Skip and submit

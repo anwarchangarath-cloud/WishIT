@@ -19,8 +19,8 @@ import Legal from './pages/Legal';
 function ProtectedRoute({ children, roles }) {
   const { user, profile, loading } = useAuth();
   if (loading) return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-      <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+    <div className="min-h-screen bg-[#0E1730] flex items-center justify-center">
+      <div className="w-8 h-8 border-2 border-[#3D7BFF] border-t-transparent rounded-full animate-spin" />
     </div>
   );
   if (!user) return <Navigate to="/login" replace />;

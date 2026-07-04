@@ -6,9 +6,9 @@ import Modal from '../components/ui/Modal';
 import Navbar from '../components/layout/Navbar';
 
 const URGENCY_CONFIG = {
-  critical: { label: 'Critical', color: 'bg-red-100 text-red-700 border-red-200' },
-  urgent:   { label: 'Urgent',   color: 'bg-amber-100 text-amber-700 border-amber-200' },
-  normal:   { label: 'Normal',   color: 'bg-slate-100 text-slate-600 border-slate-200' },
+  critical: { label: 'Critical', color: 'bg-[#3A181E] text-[#FF8F8F] border-[#6E2833]' },
+  urgent:   { label: 'Urgent',   color: 'bg-[#3A2D12] text-[#FFB648] border-[#6E5620]' },
+  normal:   { label: 'Normal',   color: 'bg-[#101A33] text-[#8B9AC2] border-[#1B2745]' },
 };
 
 const BADGE_OPTIONS = ['none', 'verified', 'urgent', 'community_supported', 'featured', 'mod_recommended'];
@@ -25,13 +25,13 @@ const SIDEBAR_ITEMS = [
 function Empty({ title, sub }) {
   return (
     <div className="p-16 text-center">
-      <div className="w-14 h-14 bg-emerald-50 border border-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-        <svg className="w-7 h-7 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div className="w-14 h-14 bg-[#0A2B22] border border-[#153F33] rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <svg className="w-7 h-7 text-[#2CE5A7]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
       </div>
-      <p className="font-semibold text-slate-700">{title}</p>
-      <p className="text-slate-400 text-sm mt-1">{sub}</p>
+      <p className="font-semibold text-[#B5C2E4]">{title}</p>
+      <p className="text-[#5F6F9C] text-sm mt-1">{sub}</p>
     </div>
   );
 }
@@ -49,14 +49,14 @@ function Toast({ msg }) {
 function AuditStep({ label, done }) {
   return (
     <div className="flex items-center gap-2">
-      <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${done ? 'bg-emerald-500' : 'bg-slate-200'}`}>
+      <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${done ? 'bg-[#24C892]' : 'bg-[#1B2745]'}`}>
         {done && (
           <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
           </svg>
         )}
       </div>
-      <span className={`text-[12px] font-medium ${done ? 'text-slate-700' : 'text-slate-400'}`}>{label}</span>
+      <span className={`text-[12px] font-medium ${done ? 'text-[#B5C2E4]' : 'text-[#5F6F9C]'}`}>{label}</span>
     </div>
   );
 }
@@ -175,25 +175,25 @@ export default function ModeratorDashboard() {
         <aside className="hidden lg:flex flex-col w-[230px] fixed top-0 bottom-0 overflow-y-auto z-20"
           style={{ paddingTop: '64px', background: 'var(--surface)', borderRight: '1px solid var(--border)' }}>
           <div className="p-4">
-            <div className="flex items-center gap-3 mb-5 p-3 rounded-[14px]" style={{ background: '#EDE9FE', border: '1px solid #DDD6FE' }}>
-              <div className="w-9 h-9 rounded-[11px] flex items-center justify-center flex-shrink-0" style={{ background: '#7C3AED' }}>
+            <div className="flex items-center gap-3 mb-5 p-3 rounded-[14px]" style={{ background: '#251C4E', border: '1px solid #453775' }}>
+              <div className="w-9 h-9 rounded-[11px] flex items-center justify-center flex-shrink-0" style={{ background: '#A78BFF' }}>
                 <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
                 </svg>
               </div>
               <div className="min-w-0">
                 <div className="font-bold text-[13.5px] truncate" style={{ color: 'var(--text)' }}>{profile.name}</div>
-                <div className="text-[11.5px] font-semibold" style={{ color: '#7C3AED' }}>Moderator</div>
+                <div className="text-[11.5px] font-semibold" style={{ color: '#A78BFF' }}>Moderator</div>
               </div>
             </div>
 
             {/* Quick stats grid */}
             <div className="grid grid-cols-2 gap-2 mb-5">
               {[
-                { label: 'Dreams',      value: stats.pendingDreams,       bg: '#FEF3C7', color: '#92400E' },
-                { label: 'Requests',    value: stats.pendingFulfillments, bg: '#EFF6FF', color: '#1D4ED8' },
-                { label: 'Completions', value: stats.pendingCompletions,  bg: '#FFF7ED', color: '#C2410C' },
-                { label: 'Reports',     value: stats.pendingReports,      bg: '#FEE2E2', color: '#991B1B' },
+                { label: 'Dreams',      value: stats.pendingDreams,       bg: '#3A2D12', color: '#FFC97A' },
+                { label: 'Requests',    value: stats.pendingFulfillments, bg: '#12204A', color: '#5B8DFF' },
+                { label: 'Completions', value: stats.pendingCompletions,  bg: '#2B1A10', color: '#FF9D5C' },
+                { label: 'Reports',     value: stats.pendingReports,      bg: '#3A181E', color: '#FF9D9D' },
               ].map(s => (
                 <div key={s.label} className="p-3 rounded-[12px] text-center" style={{ background: s.bg }}>
                   <div className="text-xl font-extrabold" style={{ color: s.color }}>{s.value}</div>
@@ -222,8 +222,8 @@ export default function ModeratorDashboard() {
                     {count > 0 && (
                       <span className="px-1.5 py-0.5 rounded-full text-[10px] font-extrabold"
                         style={{
-                          background: active ? 'rgba(255,255,255,0.2)' : (item.key === 'completions' ? '#FFF7ED' : '#FEF3C7'),
-                          color: active ? 'white' : (item.key === 'completions' ? '#C2410C' : '#92400E'),
+                          background: active ? 'rgba(255,255,255,0.2)' : (item.key === 'completions' ? '#2B1A10' : '#3A2D12'),
+                          color: active ? 'white' : (item.key === 'completions' ? '#FF9D5C' : '#FFC97A'),
                         }}>
                         {count}
                       </span>
@@ -237,19 +237,19 @@ export default function ModeratorDashboard() {
 
         {/* Mobile bottom bar */}
         <div className="lg:hidden fixed bottom-0 inset-x-0 flex z-40"
-          style={{ background: 'white', borderTop: '1px solid var(--border)' }}>
+          style={{ background: 'var(--surface)', borderTop: '1px solid var(--border)' }}>
           {SIDEBAR_ITEMS.slice(0, 5).map((item) => {
             const count = item.badgeKey ? (stats[item.badgeKey] || 0) : 0;
             return (
               <button key={item.key} onClick={() => setSection(item.key)}
                 className={`flex-1 flex flex-col items-center gap-0.5 py-3 text-[9.5px] font-medium transition-colors relative ${
-                  section === item.key ? 'text-violet-600' : 'text-slate-400'
+                  section === item.key ? 'text-[#B79CFF]' : 'text-[#5F6F9C]'
                 }`}>
                 <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ width: '18px', height: '18px' }}>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon}/>
                 </svg>
                 <span>{item.label.split(' ')[0]}</span>
-                {count > 0 && <span className="absolute top-2 right-1/4 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">{count}</span>}
+                {count > 0 && <span className="absolute top-2 right-1/4 w-4 h-4 bg-[#FF5C5C] text-white text-[9px] font-bold rounded-full flex items-center justify-center">{count}</span>}
               </button>
             );
           })}
@@ -268,7 +268,7 @@ export default function ModeratorDashboard() {
                   <h1 className="text-2xl font-extrabold" style={{ color: 'var(--text)', letterSpacing: '-0.03em' }}>Dream Queue</h1>
                   <p className="text-[13px] mt-1" style={{ color: 'var(--text-3)' }}>Review and moderate submitted dreams</p>
                 </div>
-                <span className="px-3 py-1.5 bg-amber-100 text-amber-700 text-sm font-bold rounded-xl border border-amber-200">{stats.pendingDreams} pending</span>
+                <span className="px-3 py-1.5 bg-[#3A2D12] text-[#FFB648] text-sm font-bold rounded-xl border border-[#6E5620]">{stats.pendingDreams} pending</span>
               </div>
               {pendingDreams.length === 0 ? (
                 <div className="card-white"><Empty title="Queue is clear!" sub="All dreams have been reviewed."/></div>
@@ -280,18 +280,18 @@ export default function ModeratorDashboard() {
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex-1">
                             <div className="flex flex-wrap items-center gap-2 mb-2">
-                              <h3 className="font-bold text-slate-900 text-lg">{dream.title}</h3>
-                              <span className="px-2.5 py-0.5 bg-slate-100 text-slate-600 text-xs font-semibold rounded-full">{dream.category}</span>
+                              <h3 className="font-bold text-[#E9EEFF] text-lg">{dream.title}</h3>
+                              <span className="px-2.5 py-0.5 bg-[#101A33] text-[#8B9AC2] text-xs font-semibold rounded-full">{dream.category}</span>
                               {dream.urgency !== 'normal' && (
                                 <span className={`px-2.5 py-0.5 text-xs font-bold rounded-full border ${URGENCY_CONFIG[dream.urgency]?.color}`}>
                                   {dream.urgency}
                                 </span>
                               )}
                             </div>
-                            <p className="text-slate-600 text-sm leading-relaxed line-clamp-3 mb-3">{dream.story}</p>
-                            <div className="flex flex-wrap items-center gap-4 text-xs text-slate-400">
+                            <p className="text-[#8B9AC2] text-sm leading-relaxed line-clamp-3 mb-3">{dream.story}</p>
+                            <div className="flex flex-wrap items-center gap-4 text-xs text-[#5F6F9C]">
                               <span className="flex items-center gap-1.5">
-                                <div className="w-5 h-5 rounded-lg bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-[10px]">{dream.dreamer_name?.[0]}</div>
+                                <div className="w-5 h-5 rounded-lg bg-[#1A2C5C] flex items-center justify-center text-[#7FA8FF] font-bold text-[10px]">{dream.dreamer_name?.[0]}</div>
                                 Trust: {dream.trust_score}
                               </span>
                               {dream.timeline && <span>Timeline: {dream.timeline}</span>}
@@ -301,15 +301,15 @@ export default function ModeratorDashboard() {
                           </div>
                           <div className="flex flex-col gap-2 flex-shrink-0">
                             <button onClick={() => { setModal(dream); setNotes(''); setBadge('none'); }}
-                              className="px-4 py-2.5 bg-slate-900 text-white text-sm font-semibold rounded-xl hover:bg-slate-800 transition-colors">
+                              className="px-4 py-2.5 bg-[#0B1222] text-white text-sm font-semibold rounded-xl hover:bg-[#16213F] transition-colors">
                               Review
                             </button>
                             <button onClick={() => setNoteModal({ id: dream.id, type: 'dream', title: dream.title })}
-                              className="px-4 py-2 bg-slate-100 text-slate-700 text-sm font-semibold rounded-xl hover:bg-slate-200 transition-colors">
+                              className="px-4 py-2 bg-[#101A33] text-[#B5C2E4] text-sm font-semibold rounded-xl hover:bg-[#22315A] transition-colors">
                               Add Note
                             </button>
                             <button onClick={() => setEscalateModal({ id: dream.id, type: 'dream', title: dream.title })}
-                              className="px-4 py-2 bg-red-50 text-red-600 border border-red-200 text-sm font-semibold rounded-xl hover:bg-red-100 transition-colors">
+                              className="px-4 py-2 bg-[#2B1218] text-[#FF6E6E] border border-[#6E2833] text-sm font-semibold rounded-xl hover:bg-[#3A181E] transition-colors">
                               Escalate
                             </button>
                           </div>
@@ -340,34 +340,34 @@ export default function ModeratorDashboard() {
                       <motion.div key={req.id} layout exit={{ opacity: 0, scale: 0.97 }} className="card-white p-6">
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex-1">
-                            <p className="text-xs text-slate-400 mb-1">For dream: <span className="font-bold text-slate-700">{req.dream_title}</span></p>
+                            <p className="text-xs text-[#5F6F9C] mb-1">For dream: <span className="font-bold text-[#B5C2E4]">{req.dream_title}</span></p>
                             <div className="flex items-center gap-3 mb-4">
-                              <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-700 font-black">{req.fulfiller_name?.[0]}</div>
+                              <div className="w-10 h-10 rounded-xl bg-[#1A2C5C] flex items-center justify-center text-[#7FA8FF] font-black">{req.fulfiller_name?.[0]}</div>
                               <div>
-                                <div className="font-bold text-slate-800">{req.fulfiller_name}</div>
-                                <div className="text-xs text-slate-400">Trust: {req.trust_score} · {req.fulfilled_count} fulfilled</div>
+                                <div className="font-bold text-[#D6DEF5]">{req.fulfiller_name}</div>
+                                <div className="text-xs text-[#5F6F9C]">Trust: {req.trust_score} · {req.fulfilled_count} fulfilled</div>
                               </div>
                             </div>
                             {req.why_help && (
                               <div className="mb-3">
-                                <p className="text-xs font-bold text-slate-700 mb-1">Why they want to help:</p>
-                                <p className="text-sm text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-100">{req.why_help}</p>
+                                <p className="text-xs font-bold text-[#B5C2E4] mb-1">Why they want to help:</p>
+                                <p className="text-sm text-[#8B9AC2] bg-[#0E1730] p-3 rounded-xl border border-[#16213F]">{req.why_help}</p>
                               </div>
                             )}
                             {req.how_fulfill && (
                               <div>
-                                <p className="text-xs font-bold text-slate-700 mb-1">How they'll fulfill it:</p>
-                                <p className="text-sm text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-100">{req.how_fulfill}</p>
+                                <p className="text-xs font-bold text-[#B5C2E4] mb-1">How they'll fulfill it:</p>
+                                <p className="text-sm text-[#8B9AC2] bg-[#0E1730] p-3 rounded-xl border border-[#16213F]">{req.how_fulfill}</p>
                               </div>
                             )}
                           </div>
                           <div className="flex flex-col gap-2 flex-shrink-0">
                             <button onClick={() => handleFulfillmentAction(req.id, 'approve')} disabled={loading}
-                              className="px-4 py-2 bg-emerald-600 text-white text-sm font-semibold rounded-xl hover:bg-emerald-700 transition-colors disabled:opacity-60">
+                              className="px-4 py-2 bg-[#24C892] text-white text-sm font-semibold rounded-xl hover:bg-[#1FA87C] transition-colors disabled:opacity-60">
                               Approve
                             </button>
                             <button onClick={() => handleFulfillmentAction(req.id, 'reject')} disabled={loading}
-                              className="px-4 py-2 bg-red-50 text-red-600 border border-red-200 text-sm font-semibold rounded-xl hover:bg-red-100 transition-colors disabled:opacity-60">
+                              className="px-4 py-2 bg-[#2B1218] text-[#FF6E6E] border border-[#6E2833] text-sm font-semibold rounded-xl hover:bg-[#3A181E] transition-colors disabled:opacity-60">
                               Reject
                             </button>
                           </div>
@@ -390,7 +390,7 @@ export default function ModeratorDashboard() {
                 </div>
                 {stats.pendingCompletions > 0 && (
                   <span className="px-3 py-1.5 text-sm font-bold rounded-xl border"
-                    style={{ background: '#FFF7ED', color: '#C2410C', borderColor: '#FED7AA' }}>
+                    style={{ background: '#2B1A10', color: '#FF9D5C', borderColor: '#6E4420' }}>
                     {stats.pendingCompletions} pending
                   </span>
                 )}
@@ -409,10 +409,10 @@ export default function ModeratorDashboard() {
                   ].map(({ step, label, done }) => (
                     <div key={step} className="flex items-center gap-2 px-3 py-2 rounded-[10px] text-[12px]"
                       style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
-                      <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-extrabold flex-shrink-0 ${done ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-400'}`}>
+                      <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-extrabold flex-shrink-0 ${done ? 'bg-[#24C892] text-white' : 'bg-[#101A33] text-[#5F6F9C]'}`}>
                         {done ? '✓' : step}
                       </div>
-                      <span style={{ color: done ? '#065F46' : 'var(--text-3)' }}>{label}</span>
+                      <span style={{ color: done ? '#7BEFC9' : 'var(--text-3)' }}>{label}</span>
                     </div>
                   ))}
                 </div>
@@ -428,23 +428,23 @@ export default function ModeratorDashboard() {
                       return (
                         <motion.div key={comp.id} layout exit={{ opacity: 0, scale: 0.97 }}
                           className="card-white p-6"
-                          style={isDreamerNotified ? { border: '1.5px solid #A7F3D0' } : { border: '1.5px solid #FED7AA' }}>
+                          style={isDreamerNotified ? { border: '1.5px solid #1D5C48' } : { border: '1.5px solid #6E4420' }}>
 
                           {/* Header row */}
                           <div className="flex items-start justify-between gap-4 mb-4">
                             <div className="flex-1">
                               <div className="flex flex-wrap items-center gap-2 mb-1">
-                                <h3 className="font-bold text-slate-900 text-[15px]">{comp.dream_title}</h3>
+                                <h3 className="font-bold text-[#E9EEFF] text-[15px]">{comp.dream_title}</h3>
                                 <span className="px-2.5 py-0.5 text-xs font-bold rounded-full border"
                                   style={{
-                                    background: isDreamerNotified ? '#ECFDF5' : '#FFF7ED',
-                                    color: isDreamerNotified ? '#065F46' : '#C2410C',
-                                    borderColor: isDreamerNotified ? '#A7F3D0' : '#FED7AA',
+                                    background: isDreamerNotified ? '#0A2B22' : '#2B1A10',
+                                    color: isDreamerNotified ? '#7BEFC9' : '#FF9D5C',
+                                    borderColor: isDreamerNotified ? '#1D5C48' : '#6E4420',
                                   }}>
                                   {isDreamerNotified ? '✓ Dreamer Notified' : '⏳ Pending Review'}
                                 </span>
                               </div>
-                              <p className="text-xs text-slate-400">
+                              <p className="text-xs text-[#5F6F9C]">
                                 Submitted {new Date(comp.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                               </p>
                             </div>
@@ -455,12 +455,12 @@ export default function ModeratorDashboard() {
                             <div className="p-3 rounded-[12px]" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
                               <p className="text-[11px] font-bold uppercase tracking-wider mb-2" style={{ color: 'var(--text-4)' }}>Fulfiller</p>
                               <div className="flex items-center gap-2.5">
-                                <div className="w-9 h-9 rounded-[10px] bg-blue-100 flex items-center justify-center text-blue-700 font-black text-[13px] flex-shrink-0">
+                                <div className="w-9 h-9 rounded-[10px] bg-[#1A2C5C] flex items-center justify-center text-[#7FA8FF] font-black text-[13px] flex-shrink-0">
                                   {comp.fulfiller_name?.[0]}
                                 </div>
                                 <div>
-                                  <div className="font-bold text-slate-800 text-[13px]">{comp.fulfiller_name}</div>
-                                  <div className="text-[11px] text-slate-400">Trust: {comp.trust_score} · {comp.fulfilled_count} fulfilled</div>
+                                  <div className="font-bold text-[#D6DEF5] text-[13px]">{comp.fulfiller_name}</div>
+                                  <div className="text-[11px] text-[#5F6F9C]">Trust: {comp.trust_score} · {comp.fulfilled_count} fulfilled</div>
                                 </div>
                               </div>
                             </div>
@@ -469,12 +469,12 @@ export default function ModeratorDashboard() {
                             <div className="p-3 rounded-[12px]" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
                               <p className="text-[11px] font-bold uppercase tracking-wider mb-2" style={{ color: 'var(--text-4)' }}>Dreamer</p>
                               <div className="flex items-center gap-2.5">
-                                <div className="w-9 h-9 rounded-[10px] bg-violet-100 flex items-center justify-center text-violet-700 font-black text-[13px] flex-shrink-0">
+                                <div className="w-9 h-9 rounded-[10px] bg-[#251C4E] flex items-center justify-center text-[#B79CFF] font-black text-[13px] flex-shrink-0">
                                   {comp.dreamer_name?.[0]}
                                 </div>
                                 <div>
-                                  <div className="font-bold text-slate-800 text-[13px]">{comp.dreamer_name}</div>
-                                  <div className="text-[11px] text-slate-400">Awaiting confirmation</div>
+                                  <div className="font-bold text-[#D6DEF5] text-[13px]">{comp.dreamer_name}</div>
+                                  <div className="text-[11px] text-[#5F6F9C]">Awaiting confirmation</div>
                                 </div>
                               </div>
                             </div>
@@ -484,7 +484,7 @@ export default function ModeratorDashboard() {
                           {comp.note && (
                             <div className="mb-4">
                               <p className="text-[11px] font-bold uppercase tracking-wider mb-1.5" style={{ color: 'var(--text-4)' }}>Fulfillment Note</p>
-                              <p className="text-[13.5px] text-slate-700 leading-relaxed bg-slate-50 p-3 rounded-[12px] border border-slate-100">
+                              <p className="text-[13.5px] text-[#B5C2E4] leading-relaxed bg-[#0E1730] p-3 rounded-[12px] border border-[#16213F]">
                                 {comp.note}
                               </p>
                             </div>
@@ -495,7 +495,7 @@ export default function ModeratorDashboard() {
                             <div className="mb-4">
                               <p className="text-[11px] font-bold uppercase tracking-wider mb-1.5" style={{ color: 'var(--text-4)' }}>Proof / Supporting Details</p>
                               <a href={comp.proof_url} target="_blank" rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 text-[13px] font-semibold text-blue-600 hover:text-blue-800 transition-colors">
+                                className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#6495FF] hover:text-[#93B5FF] transition-colors">
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/>
                                 </svg>
@@ -523,7 +523,7 @@ export default function ModeratorDashboard() {
                                 onClick={() => handleNotifyDreamer(comp.id)}
                                 disabled={loading}
                                 className="flex items-center gap-2 px-5 py-2.5 text-white font-bold text-sm rounded-xl transition-all disabled:opacity-60"
-                                style={{ background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)', boxShadow: '0 4px 12px rgba(16,185,129,0.25)' }}>
+                                style={{ background: 'linear-gradient(135deg, #2CE5A7 0%, #24C892 100%)', boxShadow: '0 4px 12px rgba(44,229,167,0.25)' }}>
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                   <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
                                 </svg>
@@ -531,15 +531,15 @@ export default function ModeratorDashboard() {
                               </button>
                             ) : (
                               <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl"
-                                style={{ background: '#ECFDF5', border: '1px solid #A7F3D0' }}>
-                                <svg className="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                style={{ background: '#0A2B22', border: '1px solid #1D5C48' }}>
+                                <svg className="w-4 h-4 text-[#2CE5A7]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
-                                <span className="text-[13px] font-semibold text-emerald-700">Dreamer notified — awaiting confirmation</span>
+                                <span className="text-[13px] font-semibold text-[#2CE5A7]">Dreamer notified — awaiting confirmation</span>
                               </div>
                             )}
                             <button onClick={() => setNoteModal({ id: comp.dream_id, type: 'dream', title: comp.dream_title })}
-                              className="px-4 py-2.5 bg-slate-100 text-slate-700 text-sm font-semibold rounded-xl hover:bg-slate-200 transition-colors">
+                              className="px-4 py-2.5 bg-[#101A33] text-[#B5C2E4] text-sm font-semibold rounded-xl hover:bg-[#22315A] transition-colors">
                               Add Note
                             </button>
                           </div>
@@ -555,7 +555,7 @@ export default function ModeratorDashboard() {
           {/* REPORTS */}
           {section === 'reports' && (
             <div>
-              <h1 className="text-2xl font-black text-slate-900 mb-6">Reports</h1>
+              <h1 className="text-2xl font-black text-[#E9EEFF] mb-6">Reports</h1>
               {reports.length === 0 ? (
                 <div className="card-white"><Empty title="No pending reports" sub="Community looks healthy."/></div>
               ) : (
@@ -564,18 +564,18 @@ export default function ModeratorDashboard() {
                     <div key={report.id} className="card-white p-6">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
-                          <h3 className="font-bold text-slate-900 mb-1">{report.dream_title}</h3>
-                          <span className="inline-block px-2.5 py-0.5 bg-red-50 text-red-600 border border-red-100 text-xs font-bold rounded-full mb-2">{report.reason}</span>
-                          {report.details && <p className="text-sm text-slate-600 leading-relaxed mb-2">{report.details}</p>}
-                          <p className="text-xs text-slate-400">By {report.reporter_name} · {new Date(report.created_at).toLocaleDateString()}</p>
+                          <h3 className="font-bold text-[#E9EEFF] mb-1">{report.dream_title}</h3>
+                          <span className="inline-block px-2.5 py-0.5 bg-[#2B1218] text-[#FF6E6E] border border-[#4A1F28] text-xs font-bold rounded-full mb-2">{report.reason}</span>
+                          {report.details && <p className="text-sm text-[#8B9AC2] leading-relaxed mb-2">{report.details}</p>}
+                          <p className="text-xs text-[#5F6F9C]">By {report.reporter_name} · {new Date(report.created_at).toLocaleDateString()}</p>
                         </div>
                         <div className="flex flex-col gap-2 flex-shrink-0">
                           <button onClick={() => handleReportAction(report.id, 'actioned')}
-                            className="px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700 transition-colors">Take Action</button>
+                            className="px-4 py-2 bg-[#FF5C5C] text-white text-sm font-semibold rounded-xl hover:bg-[#E04848] transition-colors">Take Action</button>
                           <button onClick={() => handleReportAction(report.id, 'dismissed')}
-                            className="px-4 py-2 bg-slate-100 text-slate-600 text-sm font-semibold rounded-xl hover:bg-slate-200 transition-colors">Dismiss</button>
+                            className="px-4 py-2 bg-[#101A33] text-[#8B9AC2] text-sm font-semibold rounded-xl hover:bg-[#22315A] transition-colors">Dismiss</button>
                           <button onClick={() => setEscalateModal({ id: report.id, type: 'report', title: report.dream_title })}
-                            className="px-4 py-2 bg-violet-50 text-violet-600 border border-violet-200 text-sm font-semibold rounded-xl hover:bg-violet-100 transition-colors">Escalate</button>
+                            className="px-4 py-2 bg-[#1D1640] text-[#B79CFF] border border-[#453775] text-sm font-semibold rounded-xl hover:bg-[#251C4E] transition-colors">Escalate</button>
                         </div>
                       </div>
                     </div>
@@ -588,9 +588,9 @@ export default function ModeratorDashboard() {
           {/* ESCALATIONS */}
           {section === 'escalations' && (
             <div>
-              <h1 className="text-2xl font-black text-slate-900 mb-6">Escalations</h1>
-              <div className="bg-white rounded-2xl border border-slate-100 shadow-card p-8 text-center">
-                <p className="text-slate-500 text-sm">Escalations you create are sent to the admin for review. Use the Escalate button on any dream, request, or report to flag critical issues.</p>
+              <h1 className="text-2xl font-black text-[#E9EEFF] mb-6">Escalations</h1>
+              <div className="bg-[#0B1222] rounded-2xl border border-[#16213F] shadow-card p-8 text-center">
+                <p className="text-[#8B9AC2] text-sm">Escalations you create are sent to the admin for review. Use the Escalate button on any dream, request, or report to flag critical issues.</p>
               </div>
             </div>
           )}
@@ -609,19 +609,19 @@ export default function ModeratorDashboard() {
                   {flaggedUsers.map((u) => (
                     <div key={u.uid} className="card-white p-5 flex items-center justify-between gap-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center text-red-700 font-bold">{u.name?.[0]}</div>
+                        <div className="w-10 h-10 rounded-xl bg-[#3A181E] flex items-center justify-center text-[#FF8F8F] font-bold">{u.name?.[0]}</div>
                         <div>
-                          <div className="font-bold text-slate-900">{u.name}</div>
-                          <div className="text-xs text-slate-400">{u.email}</div>
+                          <div className="font-bold text-[#E9EEFF]">{u.name}</div>
+                          <div className="text-xs text-[#5F6F9C]">{u.email}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-4">
                         <div className="text-center">
-                          <div className="text-2xl font-black text-red-600">{u.trust_score}</div>
-                          <div className="text-xs text-slate-400">Trust</div>
+                          <div className="text-2xl font-black text-[#FF6E6E]">{u.trust_score}</div>
+                          <div className="text-xs text-[#5F6F9C]">Trust</div>
                         </div>
                         <button onClick={() => setEscalateModal({ id: u.uid, type: 'user', title: u.name })}
-                          className="px-3 py-2 bg-red-50 text-red-600 border border-red-200 text-sm font-semibold rounded-xl hover:bg-red-100 transition-colors">
+                          className="px-3 py-2 bg-[#2B1218] text-[#FF6E6E] border border-[#6E2833] text-sm font-semibold rounded-xl hover:bg-[#3A181E] transition-colors">
                           Escalate
                         </button>
                       </div>
@@ -638,44 +638,44 @@ export default function ModeratorDashboard() {
       <Modal open={!!modal} onClose={() => { setModal(null); setNotes(''); setBadge('none'); }} title="Review Dream" size="lg">
         {modal && (
           <div className="space-y-4">
-            <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100">
+            <div className="p-5 bg-[#0E1730] rounded-2xl border border-[#16213F]">
               <div className="flex flex-wrap items-center gap-2 mb-2">
-                <h3 className="font-bold text-slate-900">{modal.title}</h3>
-                <span className="px-2.5 py-0.5 bg-white border border-slate-200 text-slate-600 text-xs font-semibold rounded-full">{modal.category}</span>
+                <h3 className="font-bold text-[#E9EEFF]">{modal.title}</h3>
+                <span className="px-2.5 py-0.5 bg-[#0B1222] border border-[#1B2745] text-[#8B9AC2] text-xs font-semibold rounded-full">{modal.category}</span>
                 {modal.urgency !== 'normal' && <span className={`px-2.5 py-0.5 text-xs font-bold rounded-full border ${URGENCY_CONFIG[modal.urgency]?.color}`}>{modal.urgency}</span>}
               </div>
-              <p className="text-sm text-slate-600 leading-relaxed">{modal.story}</p>
-              <div className="flex gap-4 mt-3 text-xs text-slate-400">
+              <p className="text-sm text-[#8B9AC2] leading-relaxed">{modal.story}</p>
+              <div className="flex gap-4 mt-3 text-xs text-[#5F6F9C]">
                 {modal.timeline && <span>Timeline: {modal.timeline}</span>}
                 {modal.country && <span>{modal.country}</span>}
                 <span>Trust: {modal.trust_score}</span>
               </div>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">Assign Badge (optional)</label>
+              <label className="block text-sm font-semibold text-[#B5C2E4] mb-2">Assign Badge (optional)</label>
               <div className="flex flex-wrap gap-2">
                 {BADGE_OPTIONS.map((b) => (
                   <button key={b} onClick={() => setBadge(b)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold border-2 transition-all capitalize ${badge === b ? 'border-blue-600 bg-blue-600 text-white' : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}>
+                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold border-2 transition-all capitalize ${badge === b ? 'border-[#3D7BFF] bg-[#3D7BFF] text-white' : 'border-[#1B2745] text-[#8B9AC2] hover:border-[#2C3D6E]'}`}>
                     {b.replace(/_/g, ' ')}
                   </button>
                 ))}
               </div>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Moderator Notes <span className="text-slate-400 font-normal">(required for rejection)</span>
+              <label className="block text-sm font-semibold text-[#B5C2E4] mb-2">
+                Moderator Notes <span className="text-[#5F6F9C] font-normal">(required for rejection)</span>
               </label>
               <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3}
                 placeholder="Add feedback for the dreamer..." className="input resize-none"/>
             </div>
             <div className="flex gap-3">
               <button onClick={() => handleDreamAction('reject')} disabled={loading}
-                className="flex-1 py-3 bg-red-50 text-red-600 border border-red-200 font-semibold rounded-2xl hover:bg-red-100 transition-colors text-sm disabled:opacity-60">
+                className="flex-1 py-3 bg-[#2B1218] text-[#FF6E6E] border border-[#6E2833] font-semibold rounded-2xl hover:bg-[#3A181E] transition-colors text-sm disabled:opacity-60">
                 Reject
               </button>
               <button onClick={() => handleDreamAction('approve')} disabled={loading}
-                className="flex-1 py-3 bg-emerald-600 text-white font-bold rounded-2xl hover:bg-emerald-700 transition-colors text-sm disabled:opacity-60">
+                className="flex-1 py-3 bg-[#24C892] text-white font-bold rounded-2xl hover:bg-[#1FA87C] transition-colors text-sm disabled:opacity-60">
                 {loading ? 'Processing…' : 'Approve & Publish'}
               </button>
             </div>
@@ -686,12 +686,12 @@ export default function ModeratorDashboard() {
       <Modal open={!!noteModal} onClose={() => { setNoteModal(null); setNoteText(''); }} title="Add Case Note">
         {noteModal && (
           <div className="space-y-4">
-            <p className="text-sm text-slate-600">Adding note to: <strong>{noteModal.title}</strong></p>
+            <p className="text-sm text-[#8B9AC2]">Adding note to: <strong>{noteModal.title}</strong></p>
             <textarea value={noteText} onChange={(e) => setNoteText(e.target.value)} rows={4}
               placeholder="Write your case note..." className="input resize-none"/>
             <div className="flex gap-3">
-              <button onClick={() => { setNoteModal(null); setNoteText(''); }} className="flex-1 py-3 bg-slate-100 text-slate-700 font-semibold rounded-2xl hover:bg-slate-200 transition-colors text-sm">Cancel</button>
-              <button onClick={handleAddNote} className="flex-1 py-3 bg-blue-600 text-white font-semibold rounded-2xl hover:bg-blue-700 transition-colors text-sm">Save Note</button>
+              <button onClick={() => { setNoteModal(null); setNoteText(''); }} className="flex-1 py-3 bg-[#101A33] text-[#B5C2E4] font-semibold rounded-2xl hover:bg-[#22315A] transition-colors text-sm">Cancel</button>
+              <button onClick={handleAddNote} className="flex-1 py-3 bg-[#3D7BFF] text-white font-semibold rounded-2xl hover:bg-[#5B8DFF] transition-colors text-sm">Save Note</button>
             </div>
           </div>
         )}
@@ -700,12 +700,12 @@ export default function ModeratorDashboard() {
       <Modal open={!!escalateModal} onClose={() => { setEscalateModal(null); setEscalateReason(''); }} title="Escalate to Admin">
         {escalateModal && (
           <div className="space-y-4">
-            <p className="text-sm text-slate-600">Escalating: <strong>{escalateModal.title}</strong></p>
+            <p className="text-sm text-[#8B9AC2]">Escalating: <strong>{escalateModal.title}</strong></p>
             <textarea value={escalateReason} onChange={(e) => setEscalateReason(e.target.value)} rows={4}
               placeholder="Describe the reason for escalation..." className="input resize-none"/>
             <div className="flex gap-3">
-              <button onClick={() => { setEscalateModal(null); setEscalateReason(''); }} className="flex-1 py-3 bg-slate-100 text-slate-700 font-semibold rounded-2xl hover:bg-slate-200 transition-colors text-sm">Cancel</button>
-              <button onClick={handleEscalate} className="flex-1 py-3 bg-red-600 text-white font-semibold rounded-2xl hover:bg-red-700 transition-colors text-sm">Escalate</button>
+              <button onClick={() => { setEscalateModal(null); setEscalateReason(''); }} className="flex-1 py-3 bg-[#101A33] text-[#B5C2E4] font-semibold rounded-2xl hover:bg-[#22315A] transition-colors text-sm">Cancel</button>
+              <button onClick={handleEscalate} className="flex-1 py-3 bg-[#FF5C5C] text-white font-semibold rounded-2xl hover:bg-[#E04848] transition-colors text-sm">Escalate</button>
             </div>
           </div>
         )}

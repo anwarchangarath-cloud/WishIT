@@ -8,12 +8,12 @@ import Navbar from '../components/layout/Navbar';
 const ease = [0.22, 1, 0.36, 1];
 
 const JOURNEY = [
-  { key: 'pending',             label: 'Under Review',  color: '#F59E0B' },
-  { key: 'published',           label: 'Published',     color: '#2563EB' },
-  { key: 'matched',             label: 'Matched',       color: '#7C3AED' },
+  { key: 'pending',             label: 'Under Review',  color: '#FFB648' },
+  { key: 'published',           label: 'Published',     color: '#3D7BFF' },
+  { key: 'matched',             label: 'Matched',       color: '#A78BFF' },
   { key: 'in_progress',         label: 'In Progress',   color: '#0EA5E9' },
   { key: 'pending_fulfillment', label: 'Verifying',     color: '#F97316' },
-  { key: 'fulfilled',           label: 'Fulfilled',     color: '#10B981' },
+  { key: 'fulfilled',           label: 'Fulfilled',     color: '#2CE5A7' },
 ];
 
 const STATUS_STYLE = {
@@ -97,16 +97,16 @@ function FulfilledSuccessCard() {
     <motion.div
       initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
       className="mt-4 p-4 rounded-[16px] flex items-center gap-4"
-      style={{ background: 'linear-gradient(135deg, #ECFDF5 0%, #F0FDF4 100%)', border: '1.5px solid #A7F3D0' }}>
+      style={{ background: 'linear-gradient(135deg, #0A2B22 0%, #F0FDF4 100%)', border: '1.5px solid #1D5C48' }}>
       <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-        style={{ background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)', boxShadow: '0 4px 12px rgba(16,185,129,0.30)' }}>
+        style={{ background: 'linear-gradient(135deg, #2CE5A7 0%, #24C892 100%)', boxShadow: '0 4px 12px rgba(44,229,167,0.30)' }}>
         <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
       </div>
       <div className="flex-1 min-w-0">
-        <p className="font-extrabold text-[14px]" style={{ color: '#065F46', letterSpacing: '-0.02em' }}>Dream Fulfilled</p>
-        <p className="text-[12px] mt-0.5" style={{ color: '#059669' }}>Fulfilled by verified connection · Moderated and confirmed</p>
+        <p className="font-extrabold text-[14px]" style={{ color: '#7BEFC9', letterSpacing: '-0.02em' }}>Dream Fulfilled</p>
+        <p className="text-[12px] mt-0.5" style={{ color: '#24C892' }}>Fulfilled by verified connection · Moderated and confirmed</p>
       </div>
     </motion.div>
   );
@@ -117,19 +117,19 @@ function DreamerConfirmCard({ dream, onConfirm, onMoreSupport, loading }) {
     <motion.div
       initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
       className="mt-4 p-4 rounded-[16px]"
-      style={{ background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)', border: '1.5px solid #FDE68A' }}>
+      style={{ background: 'linear-gradient(135deg, #2B2110 0%, #3A2D12 100%)', border: '1.5px solid #6E5620' }}>
       <div className="flex items-start gap-3 mb-4">
         <div className="w-9 h-9 rounded-[11px] flex items-center justify-center flex-shrink-0"
-          style={{ background: '#F59E0B', boxShadow: '0 4px 10px rgba(245,158,11,0.28)' }}>
+          style={{ background: '#FFB648', boxShadow: '0 4px 10px rgba(245,158,11,0.28)' }}>
           <svg className="w-4.5 h-4.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} style={{ width: '18px', height: '18px' }}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
           </svg>
         </div>
         <div className="flex-1 min-w-0">
-          <p className="font-extrabold text-[14px]" style={{ color: '#92400E', letterSpacing: '-0.02em' }}>
+          <p className="font-extrabold text-[14px]" style={{ color: '#FFC97A', letterSpacing: '-0.02em' }}>
             Fulfiller marked your dream as fulfilled
           </p>
-          <p className="text-[12.5px] mt-1 leading-relaxed" style={{ color: '#B45309' }}>
+          <p className="text-[12.5px] mt-1 leading-relaxed" style={{ color: '#FFB166' }}>
             Please confirm or let us know if you need more support. This is moderated and safe.
           </p>
         </div>
@@ -139,7 +139,7 @@ function DreamerConfirmCard({ dream, onConfirm, onMoreSupport, loading }) {
           onClick={() => onConfirm(dream.id)}
           disabled={loading}
           className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[12px] font-bold text-[13px] text-white transition-all disabled:opacity-60"
-          style={{ background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)', boxShadow: '0 4px 12px rgba(16,185,129,0.30)' }}>
+          style={{ background: 'linear-gradient(135deg, #2CE5A7 0%, #24C892 100%)', boxShadow: '0 4px 12px rgba(44,229,167,0.30)' }}>
           {loading ? (
             <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
@@ -156,7 +156,7 @@ function DreamerConfirmCard({ dream, onConfirm, onMoreSupport, loading }) {
           onClick={() => onMoreSupport(dream.id)}
           disabled={loading}
           className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[12px] font-bold text-[13px] transition-all disabled:opacity-60"
-          style={{ background: 'white', color: '#92400E', border: '1.5px solid #FDE68A' }}>
+          style={{ background: 'var(--surface)', color: '#FFC97A', border: '1.5px solid #6E5620' }}>
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"/>
           </svg>
@@ -313,7 +313,7 @@ export default function Dashboard() {
                 <span className="flex-1">{t.label}</span>
                 {showBadge && (
                   <span className="px-1.5 py-0.5 rounded-full text-[10px] font-extrabold"
-                    style={{ background: '#FEF3C7', color: '#92400E' }}>
+                    style={{ background: '#3A2D12', color: '#FFC97A' }}>
                     {pendingConfirmCount}
                   </span>
                 )}
@@ -361,26 +361,26 @@ export default function Dashboard() {
           {/* Stats */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 mb-8">
             <StatCard label="Active Dreams"   value={activeCount}          sub="Live on the platform"  accent="var(--blue)" />
-            <StatCard label="Fulfilled"        value={fulfilledCount}       sub="Dreams come true"      accent="#10B981" />
-            <StatCard label="Applications"     value={fulfillments.length}  sub="Dreams you applied to" accent="#7C3AED" />
-            <StatCard label="Saved"            value={saved.length}         sub="Bookmarked dreams"     accent="#F59E0B" />
+            <StatCard label="Fulfilled"        value={fulfilledCount}       sub="Dreams come true"      accent="#2CE5A7" />
+            <StatCard label="Applications"     value={fulfillments.length}  sub="Dreams you applied to" accent="#A78BFF" />
+            <StatCard label="Saved"            value={saved.length}         sub="Bookmarked dreams"     accent="#FFB648" />
           </div>
 
           {/* Pending confirmation banner */}
           {pendingConfirmCount > 0 && (
             <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
               className="mb-6 flex items-center gap-3 p-4 rounded-[16px]"
-              style={{ background: '#FFF7ED', border: '1px solid #FED7AA' }}>
+              style={{ background: '#2B1A10', border: '1px solid #6E4420' }}>
               <div className="w-2 h-2 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#F97316' }} />
               <div className="flex-1 min-w-0">
-                <span className="font-bold text-[13px]" style={{ color: '#C2410C' }}>
+                <span className="font-bold text-[13px]" style={{ color: '#FF9D5C' }}>
                   {pendingConfirmCount} dream{pendingConfirmCount > 1 ? 's' : ''} awaiting your confirmation
                 </span>
-                <span className="text-[12.5px] ml-2" style={{ color: '#B45309' }}>
+                <span className="text-[12.5px] ml-2" style={{ color: '#FFB166' }}>
                   A fulfiller has marked it as complete
                 </span>
               </div>
-              <button onClick={() => setTab('dreams')} className="text-[12.5px] font-bold flex-shrink-0 no-min-h" style={{ color: '#C2410C' }}>
+              <button onClick={() => setTab('dreams')} className="text-[12.5px] font-bold flex-shrink-0 no-min-h" style={{ color: '#FF9D5C' }}>
                 Review →
               </button>
             </motion.div>
@@ -476,7 +476,7 @@ export default function Dashboard() {
                         <motion.div key={dream.id} layout
                           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.04, ease }}
                           className="card-white p-5 hover:shadow-float transition-shadow"
-                          style={isPendingConfirmation ? { border: '1.5px solid #FDE68A' } : {}}>
+                          style={isPendingConfirmation ? { border: '1.5px solid #6E5620' } : {}}>
                           <div className="flex items-start gap-3.5">
                             {/* Category badge */}
                             <div className={`w-11 h-11 rounded-[13px] flex items-center justify-center flex-shrink-0 text-xl ${catClass}`}>
@@ -490,7 +490,7 @@ export default function Dashboard() {
                                 </h3>
                                 <div className="flex items-center gap-2 flex-shrink-0">
                                   <span className={`${STATUS_STYLE[dream.status] || 'badge'}`}
-                                    style={isPendingConfirmation ? { background: '#FFF7ED', color: '#C2410C', borderColor: '#FED7AA' } : {}}>
+                                    style={isPendingConfirmation ? { background: '#2B1A10', color: '#FF9D5C', borderColor: '#6E4420' } : {}}>
                                     {STATUS_LABEL[dream.status] || dream.status?.replace('_', ' ')}
                                   </span>
                                 </div>
@@ -527,9 +527,9 @@ export default function Dashboard() {
                           )}
 
                           {dream.moderator_notes && dream.status === 'rejected' && (
-                            <div className="mt-4 p-3 rounded-[12px]" style={{ background: '#FEF2F2', border: '1px solid #FECACA' }}>
-                              <p className="text-[11.5px] font-bold mb-1" style={{ color: '#DC2626' }}>Moderator Note</p>
-                              <p className="text-[12px] leading-relaxed" style={{ color: '#EF4444' }}>{dream.moderator_notes}</p>
+                            <div className="mt-4 p-3 rounded-[12px]" style={{ background: '#2B1218', border: '1px solid #6E2833' }}>
+                              <p className="text-[11.5px] font-bold mb-1" style={{ color: '#FF5C5C' }}>Moderator Note</p>
+                              <p className="text-[12px] leading-relaxed" style={{ color: '#FF6E6E' }}>{dream.moderator_notes}</p>
                             </div>
                           )}
 
@@ -587,7 +587,7 @@ export default function Dashboard() {
                                     {req.status}
                                   </span>
                                   {isPendingVerif && (
-                                    <span className="badge" style={{ background: '#FFF7ED', color: '#C2410C', borderColor: '#FED7AA', fontSize: '10px' }}>
+                                    <span className="badge" style={{ background: '#2B1A10', color: '#FF9D5C', borderColor: '#6E4420', fontSize: '10px' }}>
                                       Pending Verification
                                     </span>
                                   )}
@@ -620,11 +620,11 @@ export default function Dashboard() {
                           )}
                           {isFulfilled && (
                             <div className="mt-3 p-3 rounded-[12px] flex items-center gap-2"
-                              style={{ background: '#ECFDF5', border: '1px solid #A7F3D0' }}>
-                              <svg className="w-4 h-4 flex-shrink-0" style={{ color: '#059669' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                              style={{ background: '#0A2B22', border: '1px solid #1D5C48' }}>
+                              <svg className="w-4 h-4 flex-shrink-0" style={{ color: '#24C892' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                               </svg>
-                              <p className="text-[12.5px] font-bold" style={{ color: '#065F46' }}>
+                              <p className="text-[12.5px] font-bold" style={{ color: '#7BEFC9' }}>
                                 You successfully fulfilled this dream!
                               </p>
                             </div>
@@ -665,7 +665,7 @@ export default function Dashboard() {
                               <span className={`badge ${catClass} mt-1 inline-block`}>{item.category}</span>
                             </div>
                             <button onClick={() => handleUnsave(item.dream_id)}
-                              className="w-8 h-8 rounded-[10px] flex items-center justify-center flex-shrink-0 transition-all hover:bg-red-50 no-min-h"
+                              className="w-8 h-8 rounded-[10px] flex items-center justify-center flex-shrink-0 transition-all hover:bg-[#2B1218] no-min-h"
                               style={{ color: 'var(--text-4)' }}>
                               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/>
@@ -770,9 +770,9 @@ export default function Dashboard() {
                       </div>
                       <div className="space-y-3">
                         {[
-                          ['Dreams Submitted', dreams.length,               '#2563EB'],
-                          ['Dreams Fulfilled', fulfilledCount,              '#10B981'],
-                          ['Others Helped',    profile.fulfilled_count || 0, '#7C3AED'],
+                          ['Dreams Submitted', dreams.length,               '#3D7BFF'],
+                          ['Dreams Fulfilled', fulfilledCount,              '#2CE5A7'],
+                          ['Others Helped',    profile.fulfilled_count || 0, '#A78BFF'],
                         ].map(([label, val, color]) => (
                           <div key={label} className="flex items-center justify-between">
                             <span className="text-[13px]" style={{ color: 'var(--text-3)' }}>{label}</span>

@@ -101,7 +101,7 @@ function FulfillModal({ dreamTitle, onClose, onSubmit, submitting }) {
         {/* Header */}
         <div className="flex items-start justify-between gap-3 mb-5">
           <div className="w-11 h-11 rounded-[14px] flex items-center justify-center flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)' }}>
+            style={{ background: 'linear-gradient(135deg, #2CE5A7 0%, #24C892 100%)' }}>
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
@@ -112,7 +112,7 @@ function FulfillModal({ dreamTitle, onClose, onSubmit, submitting }) {
               Submit completion for moderator review
             </p>
           </div>
-          <button onClick={onClose} className="w-8 h-8 rounded-[10px] flex items-center justify-center flex-shrink-0 no-min-h transition-colors hover:bg-[#F4F7FB]"
+          <button onClick={onClose} className="w-8 h-8 rounded-[10px] flex items-center justify-center flex-shrink-0 no-min-h transition-colors hover:bg-[#0E1730]"
             style={{ color: 'var(--text-4)' }}>
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/>
@@ -129,11 +129,11 @@ function FulfillModal({ dreamTitle, onClose, onSubmit, submitting }) {
 
         {/* Status change notice */}
         <div className="px-3 py-2.5 rounded-[12px] mb-5 flex items-center gap-2.5"
-          style={{ background: '#FFF7ED', border: '1px solid #FED7AA' }}>
-          <svg className="w-4 h-4 flex-shrink-0" style={{ color: '#C2410C' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          style={{ background: '#2B1A10', border: '1px solid #6E4420' }}>
+          <svg className="w-4 h-4 flex-shrink-0" style={{ color: '#FF9D5C' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"/>
           </svg>
-          <span className="text-[12px] font-semibold" style={{ color: '#C2410C' }}>
+          <span className="text-[12px] font-semibold" style={{ color: '#FF9D5C' }}>
             Status will change: <strong>In Progress → Pending Moderator Verification</strong>
           </span>
         </div>
@@ -176,7 +176,7 @@ function FulfillModal({ dreamTitle, onClose, onSubmit, submitting }) {
             onClick={() => onSubmit(note, proof)}
             disabled={submitting}
             className="flex-1 py-3 rounded-[14px] font-bold text-[13.5px] text-white transition-all disabled:opacity-60 flex items-center justify-center gap-2"
-            style={{ background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)', boxShadow: '0 4px 14px rgba(16,185,129,0.35)' }}>
+            style={{ background: 'linear-gradient(135deg, #2CE5A7 0%, #24C892 100%)', boxShadow: '0 4px 14px rgba(44,229,167,0.35)' }}>
             {submitting ? (
               <>
                 <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -342,7 +342,7 @@ export default function Messages() {
           </div>
 
           {/* Chat panel */}
-          <div className={`${!activeDreamId ? 'hidden md:flex' : 'flex'} flex-col flex-1`} style={{ background: 'white' }}>
+          <div className={`${!activeDreamId ? 'hidden md:flex' : 'flex'} flex-col flex-1`} style={{ background: 'var(--surface)' }}>
             {!activeDreamId ? (
               <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
                 <div className="text-5xl mb-4">✦</div>
@@ -375,9 +375,9 @@ export default function Messages() {
                     {/* Pending verification status pill */}
                     {isPendingVerification && (
                       <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full"
-                        style={{ background: '#FFF7ED', border: '1px solid #FED7AA' }}>
+                        style={{ background: '#2B1A10', border: '1px solid #6E4420' }}>
                         <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#F97316' }} />
-                        <span className="text-[11px] font-bold" style={{ color: '#C2410C' }}>Pending Verification</span>
+                        <span className="text-[11px] font-bold" style={{ color: '#FF9D5C' }}>Pending Verification</span>
                       </div>
                     )}
 
@@ -386,7 +386,7 @@ export default function Messages() {
                       <button
                         onClick={() => setShowFulfillModal(true)}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-[12px] font-bold text-[12px] text-white transition-all hover:shadow-lg no-min-h"
-                        style={{ background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)', boxShadow: '0 2px 8px rgba(16,185,129,0.30)' }}>
+                        style={{ background: 'linear-gradient(135deg, #2CE5A7 0%, #24C892 100%)', boxShadow: '0 2px 8px rgba(44,229,167,0.30)' }}>
                         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
@@ -397,9 +397,9 @@ export default function Messages() {
                     {/* Secure badge */}
                     {!isPendingVerification && (
                       <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full"
-                        style={{ background: '#D1FAE5', border: '1px solid #A7F3D0' }}>
-                        <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#10B981' }} />
-                        <span className="text-[11.5px] font-bold" style={{ color: '#065F46' }}>Secure</span>
+                        style={{ background: '#0F3A2E', border: '1px solid #1D5C48' }}>
+                        <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#2CE5A7' }} />
+                        <span className="text-[11.5px] font-bold" style={{ color: '#7BEFC9' }}>Secure</span>
                       </div>
                     )}
                   </div>
@@ -435,12 +435,12 @@ export default function Messages() {
 
                 {/* Pending fulfillment notice */}
                 {isPendingVerification && (
-                  <div className="px-5 py-3" style={{ background: '#FFF7ED', borderTop: '1px solid #FED7AA' }}>
+                  <div className="px-5 py-3" style={{ background: '#2B1A10', borderTop: '1px solid #6E4420' }}>
                     <div className="flex items-center gap-2">
-                      <svg className="w-4 h-4 flex-shrink-0" style={{ color: '#C2410C' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <svg className="w-4 h-4 flex-shrink-0" style={{ color: '#FF9D5C' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
                       </svg>
-                      <p className="text-[12.5px] font-semibold" style={{ color: '#C2410C' }}>
+                      <p className="text-[12.5px] font-semibold" style={{ color: '#FF9D5C' }}>
                         Fulfillment under moderator review — dreamer confirmation pending
                       </p>
                     </div>
@@ -448,7 +448,7 @@ export default function Messages() {
                 )}
 
                 {/* Input bar */}
-                <div className="p-4" style={{ borderTop: isPendingVerification ? 'none' : '1px solid var(--border)', background: 'white' }}>
+                <div className="p-4" style={{ borderTop: isPendingVerification ? 'none' : '1px solid var(--border)', background: 'var(--surface)' }}>
                   <div className="flex gap-2.5 items-end">
                     <input
                       value={newMsg}

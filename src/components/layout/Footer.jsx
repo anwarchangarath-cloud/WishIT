@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 const Logo = () => (
   <div className="flex items-center gap-2.5">
-    <div className="w-8 h-8 rounded-[10px] bg-blue-600 flex items-center justify-center">
+    <div className="w-8 h-8 rounded-[10px] bg-[#3D7BFF] flex items-center justify-center">
       <svg className="w-4 h-4 text-white" viewBox="0 0 16 16" fill="none">
         <path d="M8 2L9.6 5.3 13.3 5.8 10.6 8.4 11.3 12 8 10.3 4.7 12 5.4 8.4 2.7 5.8 6.4 5.3Z" fill="currentColor"/>
       </svg>
@@ -70,19 +70,19 @@ export default function Footer() {
           {/* Brand — spans 2 cols */}
           <div className="col-span-2 lg:col-span-2">
             <Logo />
-            <p className="mt-4 text-[#6B7A99] text-[13.5px] leading-[1.75] max-w-[240px]">
+            <p className="mt-4 text-[#8B9AC2] text-[13.5px] leading-[1.75] max-w-[240px]">
               Where Dreams Meet Their Fulfillers — a safe, moderated platform built on human trust.
             </p>
 
             <div className="flex items-center gap-2 mt-5 w-fit px-3 py-1.5 rounded-full border border-white/[0.07]" style={{ background: 'rgba(255,255,255,0.04)' }}>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-[11.5px] text-[#6B7A99] font-medium">Platform Online</span>
+              <span className="text-[11.5px] text-[#8B9AC2] font-medium">Platform Online</span>
             </div>
 
             <div className="flex items-center gap-2 mt-5">
               {SOCIAL.map(({ label, href, path }) => (
                 <a key={label} href={href} aria-label={label}
-                  className="w-8 h-8 flex items-center justify-center rounded-[10px] border border-white/[0.07] text-[#6B7A99] hover:text-white hover:border-white/20 transition-all no-min-h"
+                  className="w-8 h-8 flex items-center justify-center rounded-[10px] border border-white/[0.07] text-[#8B9AC2] hover:text-white hover:border-white/20 transition-all no-min-h"
                   style={{ background: 'rgba(255,255,255,0.04)' }}>
                   <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
                     <path d={path}/>
@@ -95,14 +95,14 @@ export default function Footer() {
           {/* Link columns */}
           {LINKS.map((col) => (
             <div key={col.heading}>
-              <h4 className="text-[10.5px] font-bold uppercase tracking-[0.16em] text-[#3D4F72] mb-4">
+              <h4 className="text-[10.5px] font-bold uppercase tracking-[0.16em] text-[#B5C2E4] mb-4">
                 {col.heading}
               </h4>
               <ul className="space-y-2.5">
                 {col.items.map(([label, to]) => (
                   <li key={label}>
                     <Link to={to}
-                      className="text-[13px] text-[#6B7A99] hover:text-white transition-colors no-min-h">
+                      className="text-[13px] text-[#8B9AC2] hover:text-white transition-colors no-min-h">
                       {label}
                     </Link>
                   </li>
@@ -114,8 +114,8 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 py-6">
-          <p className="text-[12px] text-[#3D4F72]">© {new Date().getFullYear()} WishIT. All rights reserved.</p>
-          <p className="text-[12px] text-[#3D4F72] font-display italic">Where Dreams Meet Their Fulfillers</p>
+          <p className="text-[12px] text-[#B5C2E4]">© {new Date().getFullYear()} WishIT. All rights reserved.</p>
+          <p className="text-[12px] text-[#B5C2E4] font-display italic">Where Dreams Meet Their Fulfillers</p>
         </div>
       </div>
     </footer>

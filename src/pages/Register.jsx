@@ -55,13 +55,13 @@ export default function Register() {
       {/* Left panel */}
       <div className="hidden lg:flex lg:w-[46%] gradient-mesh noise relative overflow-hidden flex-col justify-between p-12">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -top-24 -right-20 w-[440px] h-[440px] rounded-full blur-[130px]" style={{ background: 'rgba(37,99,235,0.14)' }} />
+          <div className="absolute -top-24 -right-20 w-[440px] h-[440px] rounded-full blur-[130px]" style={{ background: 'rgba(61,123,255,0.14)' }} />
           <div className="absolute -bottom-20 -left-16 w-[360px] h-[360px] rounded-full blur-[110px]" style={{ background: 'rgba(79,70,229,0.10)' }} />
           <div className="absolute inset-0 dot-pattern opacity-50" />
         </div>
 
         <Link to="/" className="flex items-center gap-2.5 relative z-10 no-min-h">
-          <div className="w-9 h-9 rounded-[11px] bg-blue-600 flex items-center justify-center shadow-blue">
+          <div className="w-9 h-9 rounded-[11px] bg-[#3D7BFF] flex items-center justify-center shadow-blue">
             <svg className="w-4 h-4 text-white" viewBox="0 0 16 16" fill="none">
               <path d="M8 2L9.6 5.3 13.3 5.8 10.6 8.4 11.3 12 8 10.3 4.7 12 5.4 8.4 2.7 5.8 6.4 5.3Z" fill="currentColor"/>
             </svg>
@@ -102,7 +102,7 @@ export default function Register() {
       </div>
 
       {/* Right panel — form */}
-      <div className="flex-1 flex items-center justify-center p-6 bg-white overflow-y-auto">
+      <div className="flex-1 flex items-center justify-center p-6 bg-[#0B1222] overflow-y-auto">
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -112,18 +112,18 @@ export default function Register() {
           {/* Mobile logo */}
           <div className="lg:hidden mb-8 flex justify-center">
             <Link to="/" className="flex items-center gap-2.5 no-min-h">
-              <div className="w-8 h-8 rounded-[10px] bg-blue-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-[10px] bg-[#3D7BFF] flex items-center justify-center">
                 <svg className="w-4 h-4 text-white" viewBox="0 0 16 16" fill="none">
                   <path d="M8 2L9.6 5.3 13.3 5.8 10.6 8.4 11.3 12 8 10.3 4.7 12 5.4 8.4 2.7 5.8 6.4 5.3Z" fill="currentColor"/>
                 </svg>
               </div>
-              <span className="font-extrabold text-[18px] text-[#0A1628]" style={{ letterSpacing: '-0.03em' }}>WishIT</span>
+              <span className="font-extrabold text-[18px] text-[#E9EEFF]" style={{ letterSpacing: '-0.03em' }}>WishIT</span>
             </Link>
           </div>
 
           <div className="mb-6">
-            <h2 className="font-extrabold text-[#0A1628] mb-1.5" style={{ fontSize: '1.75rem', letterSpacing: '-0.03em' }}>Create account</h2>
-            <p className="text-[#6B7A99] text-[13.5px]">Join thousands making dreams real</p>
+            <h2 className="font-extrabold text-[#E9EEFF] mb-1.5" style={{ fontSize: '1.75rem', letterSpacing: '-0.03em' }}>Create account</h2>
+            <p className="text-[#8B9AC2] text-[13.5px]">Join thousands making dreams real</p>
           </div>
 
           {/* Mode selector — visual cards */}
@@ -133,18 +133,18 @@ export default function Register() {
               return (
                 <button key={m.id} type="button" onClick={() => setForm({ ...form, mode: m.id })}
                   className={`relative p-4 rounded-[16px] border-2 text-left transition-all duration-200 ${
-                    active ? 'border-blue-600 bg-blue-50/60' : 'border-[#E4EAF4] hover:border-[#C8D5F0] bg-white'
+                    active ? 'border-[#3D7BFF] bg-[#12204A]/60' : 'border-[#1B2745] hover:border-[#2C3D6E] bg-[#0B1222]'
                   }`}>
                   {active && (
-                    <div className="absolute top-2.5 right-2.5 w-4 h-4 rounded-full bg-blue-600 flex items-center justify-center">
+                    <div className="absolute top-2.5 right-2.5 w-4 h-4 rounded-full bg-[#3D7BFF] flex items-center justify-center">
                       <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/>
                       </svg>
                     </div>
                   )}
-                  <div className={`text-xl mb-2.5 ${active ? 'text-blue-600' : 'text-[#9AAAC7]'}`}>{m.emoji}</div>
-                  <div className={`font-bold text-[13px] ${active ? 'text-blue-700' : 'text-[#0A1628]'}`}>{m.label}</div>
-                  <div className={`text-[11.5px] mt-0.5 ${active ? 'text-blue-500/80' : 'text-[#9AAAC7]'}`}>{m.sub}</div>
+                  <div className={`text-xl mb-2.5 ${active ? 'text-[#6495FF]' : 'text-[#5F6F9C]'}`}>{m.emoji}</div>
+                  <div className={`font-bold text-[13px] ${active ? 'text-[#7FA8FF]' : 'text-[#E9EEFF]'}`}>{m.label}</div>
+                  <div className={`text-[11.5px] mt-0.5 ${active ? 'text-[#6495FF]/80' : 'text-[#5F6F9C]'}`}>{m.sub}</div>
                 </button>
               );
             })}
@@ -153,39 +153,39 @@ export default function Register() {
           <AnimatePresence>
             {error && (
               <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                className="mb-4 flex items-start gap-3 p-3.5 bg-red-50 border border-red-100 rounded-[14px]">
-                <svg className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                className="mb-4 flex items-start gap-3 p-3.5 bg-[#2B1218] border border-[#4A1F28] rounded-[14px]">
+                <svg className="w-4 h-4 text-[#FF6E6E] mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
-                <p className="text-red-600 text-[13px]">{error}</p>
+                <p className="text-[#FF6E6E] text-[13px]">{error}</p>
               </motion.div>
             )}
           </AnimatePresence>
 
           <form onSubmit={handleSubmit} className="space-y-3.5">
             <div>
-              <label className="block text-[12.5px] font-bold text-[#3D4F72] mb-1.5 uppercase tracking-[0.06em]">Full name</label>
+              <label className="block text-[12.5px] font-bold text-[#B5C2E4] mb-1.5 uppercase tracking-[0.06em]">Full name</label>
               <input type="text" required value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 placeholder="Your full name"
                 className="input" />
             </div>
             <div>
-              <label className="block text-[12.5px] font-bold text-[#3D4F72] mb-1.5 uppercase tracking-[0.06em]">Email</label>
+              <label className="block text-[12.5px] font-bold text-[#B5C2E4] mb-1.5 uppercase tracking-[0.06em]">Email</label>
               <input type="email" required value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 placeholder="you@example.com"
                 className="input" />
             </div>
             <div>
-              <label className="block text-[12.5px] font-bold text-[#3D4F72] mb-1.5 uppercase tracking-[0.06em]">Password</label>
+              <label className="block text-[12.5px] font-bold text-[#B5C2E4] mb-1.5 uppercase tracking-[0.06em]">Password</label>
               <div className="relative">
                 <input type={showPass ? 'text' : 'password'} required value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
                   placeholder="At least 6 characters"
                   className="input pr-12" />
                 <button type="button" onClick={() => setShowPass(!showPass)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#9AAAC7] hover:text-[#3D4F72] transition-colors no-min-h">
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#5F6F9C] hover:text-[#B5C2E4] transition-colors no-min-h">
                   {showPass
                     ? <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
                     : <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
@@ -196,8 +196,8 @@ export default function Register() {
 
             <button
               type="submit" disabled={loading}
-              className="w-full h-[50px] bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-[14px] transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-1"
-              style={{ fontSize: '14.5px', letterSpacing: '-0.01em', boxShadow: '0 4px 14px rgba(37,99,235,0.30)' }}>
+              className="w-full h-[50px] bg-[#3D7BFF] hover:bg-[#5B8DFF] text-white font-bold rounded-[14px] transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-1"
+              style={{ fontSize: '14.5px', letterSpacing: '-0.01em', boxShadow: '0 4px 14px rgba(61,123,255,0.30)' }}>
               {loading ? (
                 <>
                   <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -210,17 +210,17 @@ export default function Register() {
             </button>
           </form>
 
-          <p className="text-center text-[11px] text-[#9AAAC7] mt-4">
+          <p className="text-center text-[11px] text-[#5F6F9C] mt-4">
             By creating an account you agree to our{' '}
-            <Link to="/terms" className="text-blue-500 hover:underline no-min-h">Terms</Link>
+            <Link to="/terms" className="text-[#6495FF] hover:underline no-min-h">Terms</Link>
             {' '}and{' '}
-            <Link to="/privacy" className="text-blue-500 hover:underline no-min-h">Privacy Policy</Link>
+            <Link to="/privacy" className="text-[#6495FF] hover:underline no-min-h">Privacy Policy</Link>
           </p>
 
-          <div className="mt-6 pt-5 border-t border-[#E4EAF4] text-center">
-            <p className="text-[#6B7A99] text-[13px]">
+          <div className="mt-6 pt-5 border-t border-[#1B2745] text-center">
+            <p className="text-[#8B9AC2] text-[13px]">
               Already have an account?{' '}
-              <Link to="/login" className="text-blue-600 font-bold hover:text-blue-700 transition-colors no-min-h">Sign in</Link>
+              <Link to="/login" className="text-[#6495FF] font-bold hover:text-[#7FA8FF] transition-colors no-min-h">Sign in</Link>
             </p>
           </div>
         </motion.div>

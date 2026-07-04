@@ -16,22 +16,22 @@ const SIDEBAR = [
 ];
 
 const ACTION_COLORS = {
-  DREAM_APPROVED:       'bg-emerald-50 text-emerald-700 border-emerald-100',
-  DREAM_REJECTED:       'bg-red-50 text-red-700 border-red-100',
-  FULFILLMENT_APPROVED: 'bg-blue-50 text-blue-700 border-blue-100',
-  FULFILLMENT_REJECTED: 'bg-orange-50 text-orange-700 border-orange-100',
-  USER_SUSPENDED:       'bg-amber-50 text-amber-700 border-amber-100',
-  USER_BANNED:          'bg-red-50 text-red-700 border-red-100',
-  MODERATOR_PROMOTED:   'bg-violet-50 text-violet-700 border-violet-100',
-  ESCALATION_CREATED:   'bg-rose-50 text-rose-700 border-rose-100',
+  DREAM_APPROVED:       'bg-[#0A2B22] text-[#2CE5A7] border-[#153F33]',
+  DREAM_REJECTED:       'bg-[#2B1218] text-[#FF8F8F] border-[#4A1F28]',
+  FULFILLMENT_APPROVED: 'bg-[#12204A] text-[#7FA8FF] border-[#24345E]',
+  FULFILLMENT_REJECTED: 'bg-[#2B1A10] text-[#FF9D5C] border-[#4A2F18]',
+  USER_SUSPENDED:       'bg-[#2B2110] text-[#FFB648] border-[#4A3B18]',
+  USER_BANNED:          'bg-[#2B1218] text-[#FF8F8F] border-[#4A1F28]',
+  MODERATOR_PROMOTED:   'bg-[#1D1640] text-[#B79CFF] border-[#2E2458]',
+  ESCALATION_CREATED:   'bg-[#2B1218] text-[#FF8FA3] border-[#4A1F28]',
 };
 
 const KPI_COLORS = {
-  blue:    { bg: '#2563EB', text: 'white' },
-  emerald: { bg: '#059669', text: 'white' },
-  violet:  { bg: '#7C3AED', text: 'white' },
-  amber:   { bg: '#D97706', text: 'white' },
-  red:     { bg: '#DC2626', text: 'white' },
+  blue:    { bg: '#3D7BFF', text: 'white' },
+  emerald: { bg: '#24C892', text: 'white' },
+  violet:  { bg: '#A78BFF', text: 'white' },
+  amber:   { bg: '#FFAE33', text: 'white' },
+  red:     { bg: '#FF5C5C', text: 'white' },
   sky:     { bg: '#0284C7', text: 'white' },
 };
 
@@ -43,7 +43,7 @@ function KPI({ label, value, sub, trend, color = 'blue' }) {
       <div className="font-extrabold mb-1" style={{ fontSize: '2.25rem', letterSpacing: '-0.05em', lineHeight: 1 }}>{value}</div>
       {sub && <p className="text-[12px]" style={{ opacity: 0.6 }}>{sub}</p>}
       {trend != null && (
-        <div className={`flex items-center gap-1 mt-2 text-[12px] font-bold ${trend >= 0 ? 'text-emerald-300' : 'text-red-300'}`}>
+        <div className={`flex items-center gap-1 mt-2 text-[12px] font-bold ${trend >= 0 ? 'text-[#7BEFC9]' : 'text-[#FFB3B3]'}`}>
           <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d={trend >= 0 ? 'M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25' : 'M19.5 4.5l-15 15m0 0h11.25m-11.25 0V8.25'}/>
           </svg>
@@ -57,7 +57,7 @@ function KPI({ label, value, sub, trend, color = 'blue' }) {
 function UserRow({ user, onAction, onEdit }) {
   const roleStyle = {
     admin:     { background: 'var(--navy)', color: 'white' },
-    moderator: { background: '#EDE9FE', color: '#5B21B6' },
+    moderator: { background: '#251C4E', color: '#C3AFFF' },
     user:      { background: 'var(--bg)', color: 'var(--text-2)' },
   };
   return (
@@ -67,15 +67,15 @@ function UserRow({ user, onAction, onEdit }) {
       <td className="px-4 py-3.5">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-[11px] flex items-center justify-center text-white font-extrabold text-[13px] flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg, #2563EB, #4F46E5)' }}>
+            style={{ background: 'linear-gradient(135deg, #3D7BFF, #4F46E5)' }}>
             {user.name?.[0]}
           </div>
           <div>
             <div className="font-semibold text-[13.5px] flex items-center gap-2" style={{ color: 'var(--text)' }}>
               {user.name}
-              {user.verified === 1 && <span style={{ color: '#10B981', fontSize: '11px' }}>✓</span>}
-              {user.banned === 1 && <span className="px-1.5 py-0.5 text-[9px] font-extrabold rounded-full" style={{ background: '#FEE2E2', color: '#991B1B' }}>Banned</span>}
-              {user.suspended === 1 && <span className="px-1.5 py-0.5 text-[9px] font-extrabold rounded-full" style={{ background: '#FEF3C7', color: '#92400E' }}>Suspended</span>}
+              {user.verified === 1 && <span style={{ color: '#2CE5A7', fontSize: '11px' }}>✓</span>}
+              {user.banned === 1 && <span className="px-1.5 py-0.5 text-[9px] font-extrabold rounded-full" style={{ background: '#3A181E', color: '#FF9D9D' }}>Banned</span>}
+              {user.suspended === 1 && <span className="px-1.5 py-0.5 text-[9px] font-extrabold rounded-full" style={{ background: '#3A2D12', color: '#FFC97A' }}>Suspended</span>}
             </div>
             <div className="text-[12px] truncate max-w-[180px]" style={{ color: 'var(--text-4)' }}>{user.email}</div>
           </div>
@@ -89,7 +89,7 @@ function UserRow({ user, onAction, onEdit }) {
       <td className="px-4 py-3.5">
         <div className="flex items-center gap-1.5">
           <div className="w-2 h-2 rounded-full" style={{
-            background: user.trust_score >= 80 ? '#10B981' : user.trust_score >= 50 ? '#F59E0B' : '#EF4444'
+            background: user.trust_score >= 80 ? '#2CE5A7' : user.trust_score >= 50 ? '#FFB648' : '#FF6E6E'
           }}/>
           <span className="text-[13px] font-bold" style={{ color: 'var(--text)' }}>{user.trust_score}</span>
         </div>
@@ -106,19 +106,19 @@ function UserRow({ user, onAction, onEdit }) {
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/></svg>
           </button>
           {user.banned ? (
-            <button onClick={() => onAction('unban', user)} className="p-1.5 rounded-[8px] transition-colors" title="Unban" style={{ color: '#10B981' }}>
+            <button onClick={() => onAction('unban', user)} className="p-1.5 rounded-[8px] transition-colors" title="Unban" style={{ color: '#2CE5A7' }}>
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </button>
           ) : user.suspended ? (
-            <button onClick={() => onAction('unsuspend', user)} className="p-1.5 rounded-[8px] transition-colors" title="Unsuspend" style={{ color: '#10B981' }}>
+            <button onClick={() => onAction('unsuspend', user)} className="p-1.5 rounded-[8px] transition-colors" title="Unsuspend" style={{ color: '#2CE5A7' }}>
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </button>
           ) : (
             <>
-              <button onClick={() => onAction('suspend', user)} className="p-1.5 rounded-[8px] transition-colors" title="Suspend" style={{ color: '#F59E0B' }}>
+              <button onClick={() => onAction('suspend', user)} className="p-1.5 rounded-[8px] transition-colors" title="Suspend" style={{ color: '#FFB648' }}>
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
               </button>
-              <button onClick={() => onAction('ban', user)} className="p-1.5 rounded-[8px] transition-colors" title="Ban" style={{ color: '#EF4444' }}>
+              <button onClick={() => onAction('ban', user)} className="p-1.5 rounded-[8px] transition-colors" title="Ban" style={{ color: '#FF6E6E' }}>
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/></svg>
               </button>
             </>
@@ -279,10 +279,10 @@ export default function AdminDashboard() {
             {/* Quick stats */}
             <div className="grid grid-cols-2 gap-2 mb-5">
               {[
-                { label: 'Users',     value: stats.totalUsers || 0,      bg: '#EFF6FF', color: '#1D4ED8' },
-                { label: 'Dreams',    value: stats.totalDreams || 0,     bg: '#EDE9FE', color: '#5B21B6' },
-                { label: 'Reports',   value: stats.pendingReports || 0,  bg: '#FEE2E2', color: '#991B1B' },
-                { label: 'Fulfilled', value: stats.fulfilledDreams || 0, bg: '#D1FAE5', color: '#065F46' },
+                { label: 'Users',     value: stats.totalUsers || 0,      bg: '#12204A', color: '#5B8DFF' },
+                { label: 'Dreams',    value: stats.totalDreams || 0,     bg: '#251C4E', color: '#C3AFFF' },
+                { label: 'Reports',   value: stats.pendingReports || 0,  bg: '#3A181E', color: '#FF9D9D' },
+                { label: 'Fulfilled', value: stats.fulfilledDreams || 0, bg: '#0F3A2E', color: '#7BEFC9' },
               ].map(s => (
                 <div key={s.label} className="p-3 rounded-[12px] text-center" style={{ background: s.bg }}>
                   <div className="text-xl font-extrabold" style={{ color: s.color, letterSpacing: '-0.04em' }}>{s.value}</div>
@@ -316,7 +316,7 @@ export default function AdminDashboard() {
 
         {/* Mobile tab bar */}
         <div className="lg:hidden fixed bottom-0 inset-x-0 flex z-40"
-          style={{ background: 'white', borderTop: '1px solid var(--border)' }}>
+          style={{ background: 'var(--surface)', borderTop: '1px solid var(--border)' }}>
           {SIDEBAR.slice(0, 5).map(item => (
             <button key={item.key} onClick={() => setSection(item.key)}
               className="flex-1 flex flex-col items-center gap-0.5 py-3 text-[9px] font-medium transition-colors"
@@ -359,7 +359,7 @@ export default function AdminDashboard() {
                 <div>
                   {logs.slice(0, 8).map(log => (
                     <div key={log.id} className="flex items-center gap-4 px-6 py-3.5" style={{ borderBottom: '1px solid var(--border)' }}>
-                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold border whitespace-nowrap ${ACTION_COLORS[log.action] || 'bg-slate-50 text-slate-600 border-slate-100'}`}>
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold border whitespace-nowrap ${ACTION_COLORS[log.action] || 'bg-[#0E1730] text-[#8B9AC2] border-[#16213F]'}`}>
                         {log.action.replace(/_/g, ' ')}
                       </span>
                       <span className="text-[13px] flex-1" style={{ color: 'var(--text-2)' }}>{log.actor_name || 'System'}</span>
@@ -446,7 +446,7 @@ export default function AdminDashboard() {
                             {new Date(dream.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                           </td>
                           <td className="px-4 py-3.5">
-                            <button onClick={() => handleDeleteDream(dream.id)} className="p-1.5 rounded-[8px] transition-colors" style={{ color: '#EF4444' }}>
+                            <button onClick={() => handleDeleteDream(dream.id)} className="p-1.5 rounded-[8px] transition-colors" style={{ color: '#FF6E6E' }}>
                               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
                               </svg>
@@ -479,7 +479,7 @@ export default function AdminDashboard() {
                   <div key={mod.uid} className="card-white p-5 flex items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
                       <div className="w-11 h-11 rounded-[14px] flex items-center justify-center text-white font-extrabold text-lg"
-                        style={{ background: 'linear-gradient(135deg, #7C3AED, #5B21B6)' }}>{mod.name?.[0]}</div>
+                        style={{ background: 'linear-gradient(135deg, #A78BFF, #C3AFFF)' }}>{mod.name?.[0]}</div>
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="font-bold text-[14px]" style={{ color: 'var(--text)' }}>{mod.name}</span>
@@ -493,7 +493,7 @@ export default function AdminDashboard() {
                     </div>
                     <button onClick={() => handleRemoveMod(mod.uid)}
                       className="px-4 py-2 rounded-[12px] text-[13px] font-bold transition-colors"
-                      style={{ background: '#FEE2E2', color: '#991B1B', border: '1px solid #FECACA' }}>
+                      style={{ background: '#3A181E', color: '#FF9D9D', border: '1px solid #6E2833' }}>
                       Remove
                     </button>
                   </div>
@@ -535,7 +535,7 @@ export default function AdminDashboard() {
                         <div className="flex gap-2 flex-shrink-0">
                           <button onClick={() => handleResolveEscalation(esc.id, 'resolved')}
                             className="px-4 py-2 rounded-[12px] text-[13px] font-bold text-white transition-colors"
-                            style={{ background: '#059669' }}>Resolve</button>
+                            style={{ background: '#24C892' }}>Resolve</button>
                           <button onClick={() => handleResolveEscalation(esc.id, 'dismissed')}
                             className="px-4 py-2 rounded-[12px] text-[13px] font-bold transition-colors"
                             style={{ background: 'var(--bg)', color: 'var(--text-2)', border: '1px solid var(--border)' }}>Dismiss</button>
@@ -567,7 +567,7 @@ export default function AdminDashboard() {
                           <h3 className="font-bold text-[15px]" style={{ color: 'var(--text)' }}>{s.title}</h3>
                           {s.featured === 1 && <span className="badge badge-amber" style={{ fontSize: '10px' }}>Featured</span>}
                         </div>
-                        {s.outcome && <p className="text-[13px] font-bold mb-2" style={{ color: '#059669' }}>{s.outcome}</p>}
+                        {s.outcome && <p className="text-[13px] font-bold mb-2" style={{ color: '#24C892' }}>{s.outcome}</p>}
                         <p className="text-[13px] line-clamp-2" style={{ color: 'var(--text-3)' }}>{s.story}</p>
                         {s.quote && <p className="text-[13px] italic mt-2 font-display" style={{ color: 'var(--text-4)' }}>"{s.quote}"</p>}
                       </div>
@@ -599,7 +599,7 @@ export default function AdminDashboard() {
                       {logs.map(log => (
                         <tr key={log.id} className="transition-colors" style={{ borderBottom: '1px solid var(--border)' }}>
                           <td className="px-4 py-3.5">
-                            <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold border ${ACTION_COLORS[log.action] || 'bg-slate-50 text-slate-600 border-slate-100'}`}>
+                            <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold border ${ACTION_COLORS[log.action] || 'bg-[#0E1730] text-[#8B9AC2] border-[#16213F]'}`}>
                               {log.action.replace(/_/g, ' ')}
                             </span>
                           </td>
@@ -633,7 +633,7 @@ export default function AdminDashboard() {
             </p>
             {['suspend', 'ban'].includes(actionModal.type) && (
               <div>
-                <FieldLabel>Reason <span style={{ color: '#EF4444' }}>*</span></FieldLabel>
+                <FieldLabel>Reason <span style={{ color: '#FF6E6E' }}>*</span></FieldLabel>
                 <textarea value={actionReason} onChange={e => setActionReason(e.target.value)} rows={3}
                   placeholder="Provide a reason..." className="input resize-none"/>
               </div>
@@ -643,8 +643,8 @@ export default function AdminDashboard() {
               <button onClick={handleAction} disabled={loading}
                 className="flex-1 py-3 font-bold rounded-[14px] transition-colors text-[14px] text-white disabled:opacity-60"
                 style={{
-                  background: actionModal.type === 'ban' ? '#DC2626' :
-                              actionModal.type === 'suspend' ? '#D97706' : '#059669'
+                  background: actionModal.type === 'ban' ? '#FF5C5C' :
+                              actionModal.type === 'suspend' ? '#FFAE33' : '#24C892'
                 }}>
                 {loading ? 'Processing…' : 'Confirm'}
               </button>
@@ -694,7 +694,7 @@ export default function AdminDashboard() {
           <div className="flex gap-3">
             <button onClick={() => { setPromoteModal(false); setPromoteUid(''); }} className="flex-1 btn-secondary">Cancel</button>
             <button onClick={handlePromote} className="flex-1 py-3 font-bold rounded-[14px] text-white text-[14px]"
-              style={{ background: '#7C3AED' }}>Promote</button>
+              style={{ background: '#A78BFF' }}>Promote</button>
           </div>
         </div>
       </Modal>
