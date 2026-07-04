@@ -48,10 +48,10 @@ function AppRoutes() {
       <Route path="/careers" element={<Legal />} />
       <Route path="/report" element={<Legal />} />
 
+      {/* Dream submission — auth gate handled inside the component after step 1 */}
+      <Route path="/submit-dream" element={<SubmitDream />} />
+
       {/* Protected — any authenticated user */}
-      <Route path="/submit-dream" element={
-        <ProtectedRoute><SubmitDream /></ProtectedRoute>
-      } />
       <Route path="/dashboard" element={
         <ProtectedRoute><Dashboard /></ProtectedRoute>
       } />
